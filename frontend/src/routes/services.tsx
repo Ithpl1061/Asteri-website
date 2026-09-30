@@ -357,10 +357,10 @@ function Services() {
           <div className="figma-services__partner-card">{partners.map((p) => <figure key={p.name}><img src={p.logoUrl} alt={p.name} /></figure>)}</div>
         </section>
 
-        <section className="figma-services__quote figma-services__quote--mobile"><h2 className="type-statement" style={{ fontSize: "clamp(30px, 5vw, 60px)" }}>Technology works best</h2><h2 className="type-statement" style={{ fontSize: "clamp(30px, 5vw, 60px)" }}>when it works quietly.</h2></section>
+        <section className="figma-services__quote figma-services__quote--mobile"><h2 className="type-statement">Technology works best</h2><h2 className="type-statement">when it works quietly.</h2></section>
         <p className="figma-services__support figma-services__support--mobile type-statement">Systems that support teams, decisions, and growth — without unnecessary complexity.</p>
 
-        <section className="figma-services__cta figma-services__cta--mobile"><div><h2 className="type-cta-title">Let’s design the systems</h2><p className="type-cta-subtitle">behind your next phase of growth.</p><Button href="/contact">Start a conversation</Button></div></section>
+        <section className="figma-services__cta figma-services__cta--mobile"><div><h2 className="type-title">Let’s design the systems</h2><p className="type-lead font-semibold">behind your next phase of growth.</p><Button href="/contact">Start a conversation</Button></div></section>
       </div>
 
       <section ref={introSectionRef} className="intro-absolute flex items-center justify-center">
@@ -419,8 +419,8 @@ function Services() {
       </section>
 
       <section ref={quoteSectionRef} className="figma-services__quote--desktop w-full flex flex-col justify-center min-h-[75vh] items-center">
-        <h2 ref={quoteLine1Ref} className="type-statement whitespace-nowrap" style={{ fontSize: "clamp(30px, 5vw, 60px)" }}>Technology works best</h2>
-          <h2 ref={quoteLine2Ref} className="type-statement whitespace-nowrap" style={{ fontSize: "clamp(30px, 5vw, 60px)" }}>when it works quietly.</h2>
+        <h2 ref={quoteLine1Ref} className="type-statement whitespace-nowrap">Technology works best</h2>
+        <h2 ref={quoteLine2Ref} className="type-statement whitespace-nowrap">when it works quietly.</h2>
       </section>
 
       <section ref={supportSectionRef} className="figma-services__support--desktop w-full flex justify-center min-h-[75vh] items-center">
@@ -431,8 +431,8 @@ function Services() {
 
       <section ref={ctaSectionRef} className="figma-services__cta--desktop w-full flex flex-col justify-center min-h-[75vh] items-center">
         <div className="flex flex-col items-center justify-center text-center w-full max-w-[1200px] mx-auto">
-          <h2 className="type-cta-title">Let’s design the systems</h2>
-          <p className="type-cta-subtitle">behind your next phase of growth.</p>
+          <h2 className="type-title">Let’s design the systems</h2>
+          <p className="type-lead font-semibold">behind your next phase of growth.</p>
           <div className="flex justify-center items-center w-full">
             <Button href="/contact">Start a conversation</Button>
           </div>

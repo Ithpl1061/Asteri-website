@@ -234,8 +234,8 @@
     width: 100%;
     margin: 0 auto;
   }
-  
-  
+  .figma-services__cta--desktop h2 { margin: 0; font-size: clamp(2.25rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -2px; }
+  .figma-services__cta--desktop p { margin: 20px 0 40px; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 500; }
   .figma-services__cta--desktop .figma-service-button { transform: scale(1); margin: 0 auto; }
 
   .figma-services__quote { top: 12200px; }
