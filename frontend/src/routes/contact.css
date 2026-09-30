@@ -1,0 +1,108 @@
+.contact-page{overflow-x:clip;background:#000;color:#fff;font-family:Inter,Arial,sans-serif}.contact-page *{box-sizing:border-box}
+.contact-frame{position:relative;width:1440px;margin:auto;overflow:hidden;background:#000;display:block}
+.contact-header{position:absolute;z-index:2;top:22px;left:156px;width:1128px;height:82px;border-radius:17px;background:#272626}
+.contact-logo{position:absolute;top:-16px;left:45px;width:115px;height:115px}
+.contact-logo img,.contact-header-icons img,.contact-menu-button img,.contact-social img,.contact-footer-social img{display:block;width:100%;height:100%;object-fit:contain}
+.contact-header-icons{position:absolute;top:15px;right:312px;display:flex;gap:10px}
+.contact-header-icons a{width:44px;height:48px}
+.contact-menu-button{position:absolute;top:15px;right:75px;width:51px;height:48px;padding:0;border:0;background:none;cursor:pointer}
+.contact-menu{position:absolute;top:94px;right:0;display:grid;width:240px;padding:14px;border:1px solid #555;border-radius:12px;background:#272626}
+.contact-menu a{padding:8px;color:#fff;font-weight:600;text-decoration:none}
+.contact-hero{position:relative;margin-top:196px;margin-left:110px;height:616px}
+.contact-hero h1{margin:0;letter-spacing:-4px}
+.contact-hero h1 span{display:block;white-space:nowrap}
+.contact-hero h1 i{font-style:normal;color:transparent;-webkit-text-stroke:2px #82e926}
+.contact-hero h1 span:first-child i{margin-right:20px}
+.contact-hero p{margin:78px 0 0 20px;font-family:Geist,Inter,sans-serif;font-weight:600}
+.contact-information{position:relative;width:1440px;height:820px;background:#000;z-index:10}
+.contact-information h2{position:absolute;top:0;left:81px;margin:0;letter-spacing:-4px}
+.contact-details{position:absolute;top:170px;left:84px;width:600px;line-height:45px}
+.detail{position:absolute;display:flex;align-items:flex-start}
+.detail b,.contact-social b{font-weight:700}
+.detail-email{top:0;gap:58px}
+.detail-phone{top:125px;gap:46px}
+.detail-address{top:258px;gap:22px;width:591px}
+.detail-address span{width:455px}
+.contact-social{position:absolute;top:410px;display:flex;align-items:center;gap:22px}
+.contact-social>div{display:flex;gap:14px}
+.contact-social a{width:48px;height:48px}
+.contact-social a:nth-child(2){width:48px}
+.contact-form{position:absolute;top:120px;left:720px;width:661px;transform:scale(0.75);transform-origin:top left}
+.contact-form>div{position:relative;height:568px;padding:25px 29px;border-radius:25px;background:#fff}
+.contact-form label{display:block;height:173px;color:#676767;font-size:25px;font-weight:700;line-height:45px}
+.contact-form label:last-child{height:auto}
+.contact-form input,.contact-form textarea{display:block;width:597px;border:0;border-radius:12px;outline:0;background:#d9d9d9;color:#222;font:inherit;padding:15px}
+.contact-form input{height:94px}
+.contact-form textarea{height:140px;resize:none}
+.contact-form button{position:relative;width:660px;height:94px;margin-top:27px;border:0;border-radius:15px;background:#fff;color:#82e926;font:700 34px/44px Inter,Arial,sans-serif;cursor:pointer}
+.contact-conversation{position:relative;width:100%;max-width:1440px;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 5vw;text-align:left}
+.contact-conversation h2{margin:0 auto;width:auto;max-width:1200px;text-align:left;transform:translate(7.5%, 1.5%)}
+.contact-footer{position:absolute;top:2533px;width:1440px;height:629px}
+.contact-footer-logo{position:absolute;top:0;left:68px;width:319px;height:218px;object-fit:contain}
+.contact-footer-links{position:absolute;top:5px;display:grid;gap:14px}
+.contact-footer-links-one{left:454px}
+.contact-footer-links-two{left:660px}
+.contact-footer-links a{color:#fff;font-size:20px;font-weight:600;line-height:27px;text-decoration:none;white-space:nowrap}
+.contact-footer-contact{position:absolute;top:7px;left:944px;width:420px}
+.contact-footer-contact>div:not(.contact-footer-social){display:flex;align-items:center;height:60px;gap:33px}
+.contact-footer-contact>div>img:first-child{width:31px;height:31px}
+.footer-copy{height:20px!important;width:auto!important}
+.email-copy{width:334px!important}
+.phone-copy{width:359px!important}
+.location-copy{width:207px!important}
+.contact-footer-social{display:flex;gap:16px;margin:13px 0 0 13px}
+.contact-footer-social a{width:31px;height:31px}
+.footer-green{position:absolute;top:365px;left:856px;width:218px;height:36px;background:#68bc45}
+.footer-word{position:absolute;top:413px;width:1440px;height:214px;background:url('/figma/contact/footer-art.png') center/1440px 214px no-repeat;-webkit-mask:url('/figma/contact/footer-mask.svg') center/1440px 214px no-repeat;mask:url('/figma/contact/footer-mask.svg') center/1440px 214px no-repeat}
+@media(max-width:900px){.contact-frame{display:flex;width:100%;height:auto;min-height:0;flex-direction:column;overflow:visible}.contact-header,.contact-hero,.contact-information,.contact-conversation,.contact-footer,.contact-information h2,.contact-details,.contact-form{position:relative;inset:auto;width:auto;height:auto}.contact-header{width:calc(100% - 32px);height:68px;margin:18px 16px 0;border-radius:14px}.contact-logo{top:-11px;left:20px;width:88px;height:88px}.contact-header-icons{top:17px;right:84px;gap:7px}.contact-header-icons a{width:27px;height:32px}.contact-menu-button{top:17px;right:19px;width:34px;height:32px}.contact-hero{order:1;margin:106px 24px 0;height:auto}.contact-hero h1 span{white-space:normal}.contact-hero p{margin:46px 0 0 4px}.contact-information{order:2;margin:180px 24px 0;height:auto;display:block}.contact-details{margin-top:80px;line-height:1.45}.detail{position:static;gap:18px;margin-bottom:34px}.detail-address{width:100%}.detail-address span{width:auto}.contact-social{position:static;margin-top:64px}.contact-social>div{margin-top:18px}.contact-form{margin-top:72px;width:100%}.contact-form>div{height:auto;padding:22px}.contact-form label{height:auto;margin-bottom:25px}.contact-form input,.contact-form textarea,.contact-form button{width:100%}.contact-conversation{order:3;margin:180px 24px;padding:0;text-align:left}.contact-conversation h2{text-align:left;transform:translate(7.5%, 1.5%)}.contact-footer{order:4;width:100%;margin-top:40px;padding:0 24px}.contact-footer-logo{position:static;display:block;width:min(300px,80vw);height:auto;margin:0 auto 54px}.contact-footer-links{position:static;display:grid;gap:10px;margin:0 0 26px}.contact-footer-links a{font-size:18px}.contact-footer-contact{position:static;width:100%;margin-top:36px}.contact-footer-contact>div:not(.contact-footer-social){height:auto;min-height:45px;gap:16px}.contact-footer-contact>div>img:first-child{width:27px;height:27px}.footer-copy{max-width:calc(100% - 46px);max-height:17px}.contact-footer-social{margin-left:0}.footer-green{position:static;width:42%;height:18px;margin:70px auto 28px}.footer-word{position:static;width:100%;height:auto;aspect-ratio:1439.56/213.642;background-size:100% 100%;-webkit-mask-size:100% 100%;mask-size:100% 100%}}
+
+/* Standardized Global Typography System */
+.contact-hero h1 {    }
+.contact-hero h1 i {
+  color: #000;
+  -webkit-text-stroke: clamp(1.5px, .2vw, 3px) #82e926;
+  paint-order: stroke fill;
+}
+.contact-hero p {  }
+.contact-information h2 {    }
+.contact-conversation h2 {    text-align: left; }
+.contact-details {   }
+.contact-social a { display: grid; place-items: center; color: #7ed957; }
+.contact-social svg { width: 28px; height: 28px; stroke-width: 2.5px; }
+
+/* Keep the fixed 1440px Figma composition fully visible on narrower desktops. */
+@media (min-width: 901px) and (max-width: 1439px) {
+  .contact-frame {
+    zoom: .95;
+    zoom: calc(100vw / 1440px);
+  }
+}
+
+/* Infinite Pink Moving Border Animation for Contact Form */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0turn;
+  inherits: false;
+}
+
+.contact-form > div::after, .contact-form button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  border-radius: inherit;
+  padding: 3px; 
+  background: conic-gradient(from var(--border-angle), transparent 40%, #ff1493, #ff69b4, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: bg-spin 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes bg-spin {
+  to {
+    --border-angle: 1turn;
+  }
+}
+
