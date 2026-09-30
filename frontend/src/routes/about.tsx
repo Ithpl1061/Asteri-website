@@ -106,19 +106,19 @@ function VisionariesSection({
                   opacity: index === 0 ? 1 : 0,
                 }}
               >
-                <p className="text-sm uppercase tracking-[0.3em] text-zinc-400">
+                <p className="type-label text-zinc-400">
                   The Visionaries
                 </p>
 
-                <h2 className="text-[clamp(2.25rem,5vw,4.5rem)] font-bold leading-none text-white">
+                <h2 className="type-heading text-white">
                   {person.name}
                 </h2>
 
-                <h3 className="text-xl sm:text-2xl font-semibold text-zinc-300">
+                <h3 className="type-card text-zinc-300">
                   {person.role}
                 </h3>
 
-                <p className="max-w-xl text-base md:text-lg leading-7 text-zinc-400">
+                <p className="max-w-xl type-body text-zinc-400">
                   {person.experience}
                 </p>
 
@@ -739,7 +739,7 @@ function About() {
               <h1
                 ref={heroHeadlineRef}
                 data-about-motion
-                className="hero-headline font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[1.2] tracking-normal text-white max-w-full md:max-w-[1000px] text-center"
+                className="hero-headline font-display type-display text-white max-w-full md:max-w-[1000px] text-center"
               >
                 We Design{" "}
                 <span
@@ -789,7 +789,7 @@ function About() {
                   hover:scale-105
                 "
               >
-                <span className="text-black text-base sm:text-lg font-bold">
+                <span className="text-black type-button">
                   Get in touch
                 </span>
                 <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
@@ -873,7 +873,7 @@ function About() {
           <div className="w-full text-center px-6">
             <h2
               ref={serveClientsHeadingRef}
-              className="text-[clamp(2.25rem,5vw,4.5rem)] font-bold text-white tracking-tight text-center"
+              className="type-title text-white text-center"
             >
               We Serve Clients
             </h2>
@@ -885,7 +885,7 @@ function About() {
             className="mt-16 sm:mt-24 flex items-start gap-4 sm:gap-6 pl-0"
           >
             <div className="w-12 sm:w-20 lg:w-28 h-[1.5px] bg-white/90 mt-5 sm:mt-8 shrink-0 serve-client-left-item" />
-            <div className="flex flex-col space-y-1 sm:space-y-3 font-bold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-left">
+            <div className="flex flex-col space-y-1 sm:space-y-3 type-display text-left">
               <span
                 className="serve-client-left-item"
                 style={{
@@ -968,8 +968,8 @@ function About() {
             <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
               <Search className="w-14 h-14 text-[#82E926] mb-6" />
               <div>
-                <h3 className="text-white text-xl sm:text-2xl font-bold mb-2">Discovery</h3>
-                <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">Understand the challenge and goals.</p>
+                <h3 className="text-white type-card font-bold mb-2">Discovery</h3>
+                <p className="text-zinc-400 type-body">Understand the challenge and goals.</p>
               </div>
             </div>
 
@@ -977,8 +977,8 @@ function About() {
             <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
               <Users className="w-14 h-14 text-[#82E926] mb-6" />
               <div>
-                <h3 className="text-white text-xl sm:text-2xl font-bold mb-2">Team Assembly</h3>
-                <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">Exact specialists for the job.</p>
+                <h3 className="text-white type-card font-bold mb-2">Team Assembly</h3>
+                <p className="text-zinc-400 type-body">Exact specialists for the job.</p>
               </div>
             </div>
 
@@ -986,8 +986,8 @@ function About() {
             <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
               <RotateCw className="w-14 h-14 text-[#82E926] mb-6" />
               <div>
-                <h3 className="text-white text-xl sm:text-2xl font-bold mb-2">Agile Delivery</h3>
-                <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">Iterative sprints, continuous feedback.</p>
+                <h3 className="text-white type-card font-bold mb-2">Agile Delivery</h3>
+                <p className="text-zinc-400 type-body">Iterative sprints, continuous feedback.</p>
               </div>
             </div>
 
@@ -995,8 +995,8 @@ function About() {
             <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
               <HeartHandshake className="w-14 h-14 text-[#82E926] mb-6" />
               <div>
-                <h3 className="text-white text-xl sm:text-2xl font-bold mb-2">Support &amp; Scale</h3>
-                <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">Managed support post-delivery.</p>
+                <h3 className="text-white type-card font-bold mb-2">Support &amp; Scale</h3>
+                <p className="text-zinc-400 type-body">Managed support post-delivery.</p>
               </div>
             </div>
           </div>
@@ -1027,7 +1027,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left">
+                    <h3 className="text-white type-card font-bold text-left">
                       Innovation
                     </h3>
                     <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
@@ -1037,15 +1037,15 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left z-10">
+                    <h3 className="text-white type-card font-bold text-left z-10">
                       Innovation
                     </h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
-                      <h4 className="text-white font-bold text-sm sm:text-base leading-snug text-left">
+                      <h4 className="text-white type-body font-bold text-left">
                         We don't follow trends<br />We apply what actually works.
                       </h4>
-                      <p className="text-zinc-200 font-normal text-sm leading-relaxed text-left">
+                      <p className="text-zinc-200 type-body text-left">
                         At Asteri, innovation means finding smarter ways to solve real problems. Every solution we build is designed to move faster, cost less, and outlast the alternatives.
                       </p>
                     </div>
@@ -1062,7 +1062,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left">
+                    <h3 className="text-white type-card font-bold text-left">
                       Integrity
                     </h3>
                     <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
@@ -1072,15 +1072,15 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left z-10">
+                    <h3 className="text-white type-card font-bold text-left z-10">
                       Integrity
                     </h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
-                      <h4 className="text-white font-bold text-sm sm:text-base leading-snug text-left">
+                      <h4 className="text-white type-body font-bold text-left">
                         We say what we mean,<br />and deliver what we promise.
                       </h4>
-                      <p className="text-zinc-200 font-normal text-sm leading-relaxed text-left">
+                      <p className="text-zinc-200 type-body text-left">
                         Honest scoping, transparent timelines, and no surprises at go-live. Our clients trust us because we treat their business like our own — always.
                       </p>
                     </div>
@@ -1097,7 +1097,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left">
+                    <h3 className="text-white type-card font-bold text-left">
                       Client-First
                     </h3>
                     <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
@@ -1107,15 +1107,15 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left z-10">
+                    <h3 className="text-white type-card font-bold text-left z-10">
                       Client-First
                     </h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
-                      <h4 className="text-white font-bold text-sm sm:text-base leading-snug text-left">
+                      <h4 className="text-white type-body font-bold text-left">
                         We say what we mean,<br />and deliver what we promise.
                       </h4>
-                      <p className="text-zinc-200 font-normal text-sm leading-relaxed text-left">
+                      <p className="text-zinc-200 type-body text-left">
                         Honest scoping, transparent timelines, and no surprises at go-live. Our clients trust us because we treat their business like our own — always.
                       </p>
                     </div>
@@ -1132,7 +1132,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left">
+                    <h3 className="text-white type-card font-bold text-left">
                       Agility
                     </h3>
                     <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
@@ -1142,15 +1142,15 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight text-left z-10">
+                    <h3 className="text-white type-card font-bold text-left z-10">
                       Agility
                     </h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
-                      <h4 className="text-white font-bold text-sm sm:text-base leading-snug text-left">
+                      <h4 className="text-white type-body font-bold text-left">
                         Built to move fast without<br />breaking things.
                       </h4>
-                      <p className="text-zinc-200 font-normal text-sm leading-relaxed text-left">
+                      <p className="text-zinc-200 type-body text-left">
                         Markets shift. Priorities change. Our on-demand model means we can assemble, scale, and pivot your team without the lag of traditional IT engagements.
                       </p>
                     </div>
@@ -1168,7 +1168,7 @@ function About() {
         {/* ============= TECHNOLOGY MATTERS SECTION ============= */}
         <section ref={techSectionRef} className="relative h-screen w-full bg-black flex items-center justify-center px-6 sm:px-10 overflow-hidden">
           <div className="w-full max-w-[1100px] mx-auto text-center">
-            <h2 ref={techHeadingRef} className="text-[clamp(2.25rem,5vw,4.5rem)] font-medium leading-[1.3] text-center text-white tracking-tight">
+            <h2 ref={techHeadingRef} className="type-statement text-center text-white">
               <span className="block">Technology Only Matters</span>
               <span className="block">When It Delivers Clarity.</span>
             </h2>
@@ -1179,17 +1179,17 @@ function About() {
         <section ref={nextSectionRef} className="relative h-screen w-full bg-black flex flex-col items-center justify-center px-5 overflow-hidden">
           {/* CONTENT */}
           <div className="relative z-10 text-center max-w-4xl mx-auto flex flex-col items-center justify-center">
-            <h2 className="next-text-item text-white font-bold leading-tight text-[clamp(2rem,4.5vw,3.75rem)] text-center">
+            <h2 className="next-text-item text-white type-title text-center">
               Designed For What’s Next.
             </h2>
-            <p className="next-text-item mt-8 text-white text-[clamp(1rem,1.8vw,1.35rem)] font-semibold leading-snug text-center">
+            <p className="next-text-item mt-8 text-white type-lead font-semibold text-center">
               Tell us where complexity is slowing you down.
               <br />
               We’ll design what comes next.
             </p>
 
             <button className="next-text-item mt-10 mx-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-[#8AF500] bg-[#D9D9D9] text-black font-bold hover:scale-105 transition-transform">
-              <span className="text-black text-base sm:text-lg font-bold text-center">
+              <span className="text-black type-button text-center">
                 Talk To Us
               </span>
               <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
