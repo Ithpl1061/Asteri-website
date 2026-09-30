@@ -1,0 +1,157 @@
+/*
+ * Shared small-screen safety net
+ *
+ * Most of the product pages use desktop-sized, pinned story sections. These
+ * rules retain that presentation on large screens and turn the same content
+ * into a normal vertical document on phones/tablets, where fixed positioning
+ * and multi-viewport heights cause clipping and horizontal overflow.
+ */
+
+@media (max-width: 1023px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    min-width: 0;
+  }
+
+  main {
+    padding-top: calc(5rem + env(safe-area-inset-top)) !important;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  /* Long footer/contact strings should wrap instead of widening the page. */
+  .footer-content {
+    padding-top: 4rem;
+  }
+
+  .footer-contact-item,
+  .footer-contact-item span,
+  .footer-middle a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* The navigation is intentionally compact below desktop width. */
+  .navbar-premium {
+    flex-wrap: nowrap;
+  }
+
+  header > div[role="dialog"],
+  header nav + div {
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    max-height: calc(100dvh - 6.5rem);
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* Remove the artificial 320px page floor so very narrow displays can scroll normally. */
+  body {
+    min-width: 0 !important;
+  }
+
+  .navbar-premium {
+    padding-inline: 0.75rem;
+  }
+
+  /* On tiny screens, leave room for the logo and the menu control. */
+  @media (max-width: 420px) {
+    .navbar-premium a:has(svg) {
+      display: none;
+    }
+  }
+
+  /*
+   * Desktop pages are built as pinned, animated scenes. A pinned 700vh scene
+   * with 1250px cards cannot be scaled down safely, so make it a readable
+   * stacked layout on mobile. The desktop styles and animations remain intact.
+   */
+  main section:has(> .sticky) {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 3.5rem 1rem;
+  }
+
+  main section > .sticky {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    display: flex !important;
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    flex-direction: column;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 1.5rem;
+    overflow: visible !important;
+  }
+
+  main section > .sticky [class~="absolute"] {
+    position: static !important;
+    inset: auto !important;
+    max-width: 100% !important;
+    margin: 0.75rem auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Fixed cards, charts, and logo panels can now fit inside the viewport. */
+  main section > .sticky [class*="w-\["] {
+    max-width: 100% !important;
+  }
+
+  main section > .sticky [class*="h-\["] {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  main section > .sticky :is(h1, h2) {
+    max-width: 100% !important;
+    font-size: clamp(2rem, 11vw, 3.5rem) !important;
+    line-height: 0.98 !important;
+    overflow-wrap: anywhere;
+    white-space: normal !important;
+  }
+
+  main section > .sticky h3 {
+    font-size: clamp(1.35rem, 7vw, 2rem) !important;
+    overflow-wrap: anywhere;
+  }
+
+  main section > .sticky p,
+  main section > .sticky span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  main section > .sticky .grid-cols-4,
+  main section > .sticky .grid-cols-3,
+  main section > .sticky .grid-cols-2 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Some scene elements are only revealed by GSAP on desktop scroll. */
+  main section > .sticky [style] {
+    opacity: 1 !important;
+  }
+
+  .footer-word {
+    margin-top: 5rem;
+    padding-bottom: 2rem;
+  }
+}

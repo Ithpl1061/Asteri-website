@@ -1,0 +1,383 @@
+.about-page {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.about-page img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.about-page svg {
+  max-width: 100%;
+}
+
+@font-face {
+  font-family: "Asteri Figma Geist";
+  src: url("/Geist-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Direct Figma translation of nodes 2432:1552–1559 on the 1440px artboard. */
+.mission-vision-section {
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+}
+
+.mission-vision-canvas {
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, 1440px);
+  aspect-ratio: 1440 / 2100;
+  margin: 0 auto;
+}
+
+.mission-vision-heading,
+.mission-vision-mission,
+.mission-vision-vision {
+  position: absolute;
+  margin: 0;
+  text-align: center;
+}
+
+.mission-vision-heading {
+  top: 9.795%;
+  left: 11.513%;
+  width: 78.125%;
+  color: #fff;
+  font-family: "Asteri Figma Geist", "Geist", sans-serif;
+  font-size: 8.8889cqw;
+  font-weight: 600;
+  line-height: 1.296875;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.mission-vision-mission,
+.mission-vision-vision {
+  inset: 0;
+}
+
+.mission-vision-mission img,
+.mission-vision-vision img {
+  position: absolute;
+  display: block;
+  height: auto;
+  max-width: none;
+}
+
+.mission-vision-mission img {
+  top: 34.105%;
+  left: 42.642%;
+  width: 14.792%;
+}
+
+.mission-vision-vision img {
+  top: 72.533%;
+  left: 42.243%;
+  width: 16.25%;
+}
+
+.mission-vision-mission h3,
+.mission-vision-vision h3,
+.mission-vision-mission p,
+.mission-vision-vision p {
+  position: absolute;
+  margin: 0;
+  color: #fff;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 3.1944cqw;
+  letter-spacing: 0;
+  line-height: 1.217391;
+  text-align: center;
+}
+
+.mission-vision-mission h3,
+.mission-vision-vision h3 {
+  font-weight: 700;
+}
+
+.mission-vision-mission p,
+.mission-vision-vision p {
+  font-weight: 400;
+}
+
+.mission-vision-mission h3 {
+  top: 47.053%;
+  left: 40.563%;
+  width: 18.75%;
+}
+
+.mission-vision-mission p {
+  top: 50.754%;
+  left: 14.573%;
+  width: 70.625%;
+}
+
+.mission-vision-vision h3 {
+  top: 85.577%;
+  left: 42.054%;
+  width: 16.458%;
+}
+
+.mission-vision-vision p {
+  top: 89.413%;
+  left: 10.92%;
+  width: 78.632%;
+}
+
+/* Direct Figma translation of nodes 2441:1565–1567 and 2555:4421–4431. */
+.approach-section {
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+}
+
+.approach-canvas {
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, 4120px);
+  aspect-ratio: 4120 / 850;
+  margin: 0 auto;
+}
+
+.approach-heading,
+.approach-card,
+.approach-card h3,
+.approach-card p,
+.approach-card img {
+  position: absolute;
+  margin: 0;
+}
+
+.approach-heading {
+  top: 26.811%;
+  left: 2.66%;
+  width: 24.806%;
+  color: #fff;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 3.1068cqw;
+  font-weight: 600;
+  line-height: 1.210938;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.approach-card {
+  inset: 0;
+}
+
+.approach-card img {
+  display: block;
+  max-width: none;
+  object-fit: contain;
+}
+
+.approach-card h3,
+.approach-card p {
+  color: #fff;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.1165cqw;
+  letter-spacing: 0;
+  line-height: 1.217391;
+  text-align: left;
+}
+
+.approach-card h3 {
+  font-weight: 700;
+}
+
+.approach-card p {
+  font-weight: 400;
+}
+
+.approach-card-discovery img {
+  top: 50.513%;
+  left: 5.9686%;
+  width: 5.3155%;
+  height: 30.8987%;
+}
+
+.approach-card-discovery h3 {
+  top: 53.015%;
+  left: 15.045%;
+  width: 5.510%;
+}
+
+.approach-card-discovery p {
+  top: 64.427%;
+  left: 15.037%;
+  width: 11.82%;
+}
+
+.approach-card-team img {
+  top: 54.664%;
+  left: 29.388%;
+  width: 5.388%;
+  height: 26.118%;
+}
+
+.approach-card-team h3 {
+  top: 54.555%;
+  left: 37.058%;
+  width: 8.689%;
+}
+
+.approach-card-team p {
+  top: 65.966%;
+  left: 37.05%;
+  width: 11.82%;
+}
+
+.approach-card-agile img {
+  top: 55.072%;
+  left: 54.17%;
+  width: 4.854%;
+  height: 23.529%;
+}
+
+.approach-card-agile h3 {
+  top: 55.181%;
+  left: 60.771%;
+  width: 7.573%;
+}
+
+.approach-card-agile p {
+  top: 66.592%;
+  left: 60.763%;
+  width: 11.82%;
+}
+
+.approach-card-support img {
+  top: 54.047%;
+  left: 77.641%;
+  width: 7.403%;
+  height: 25.765%;
+}
+
+.approach-card-support h3 {
+  top: 55.37%;
+  left: 86.524%;
+  width: 8.738%;
+}
+
+.approach-card-support p {
+  top: 66.782%;
+  left: 86.516%;
+  width: 11.82%;
+}
+
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(82, 82, 91, 0.4);
+  background-color: rgb(137, 137, 137);
+}
+
+.flip-front {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.75rem;
+  text-align: left;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.75rem;
+  text-align: left;
+  background-color: rgb(137, 137, 137);
+}
+
+.card-number {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.1);
+  line-height: 1;
+}
+
+@media (max-width: 767px) {
+  .about-page {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  .about-page .about-hero {
+    min-height: 100svh;
+  }
+
+  .about-page h1,
+  .about-page h2,
+  .about-page h3,
+  .about-page p {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner {
+    transition: none;
+  }
+}
+
+.about-page .solutions-outcomes-heading {
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  background: #000;
+}
+
+.about-page .solutions-outcomes-heading h2 {
+  font-size: clamp(1.2rem, 2.8vw, 2.35rem) !important;
+  line-height: 1.35 !important;
+  letter-spacing: -.02em !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 auto !important;
+  max-width: 1250px !important;
+  padding: 0 1.5rem !important;
+}
+

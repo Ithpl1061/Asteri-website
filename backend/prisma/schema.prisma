@@ -1,0 +1,304 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// 1. Home Page
+// ==========================================
+
+model Service {
+  id             Int      @id @default(autoincrement())
+  sequenceNumber String   @map("sequence_number")
+  title          String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("services")
+}
+
+model Industry {
+  id             Int      @id @default(autoincrement())
+  iconName       String   @map("icon_name")
+  titleLine1     String   @map("title_line_1")
+  titleLine2     String   @map("title_line_2")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  industryDetails IndustryDetail[]
+
+  @@map("industries")
+}
+
+model Testimonial {
+  id             Int      @id @default(autoincrement())
+  authorName     String   @map("author_name")
+  authorRole     String   @map("author_role")
+  content        String   @db.Text
+  avatarUrl      String   @map("avatar_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonials")
+}
+
+model HomePageContent {
+  id             Int      @id @default(autoincrement())
+  sectionName    String   @map("section_name")
+  heading        String   @db.Text
+  subheading     String   @db.Text
+  contentText    String   @map("content_text") @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("home_page_content")
+}
+
+// ==========================================
+// 2. About Page
+// ==========================================
+
+model TeamMember {
+  id             Int      @id @default(autoincrement())
+  name           String
+  role           String
+  experience     String   @db.Text
+  imageUrl       String   @map("image_url")
+  linkedinUrl    String   @map("linkedin_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("team_members")
+}
+
+model AboutPageContent {
+  id             Int      @id @default(autoincrement())
+  sectionName    String   @map("section_name")
+  heading        String
+  contentText    String   @map("content_text") @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("about_page_content")
+}
+
+// ==========================================
+// 3. Services Page
+// ==========================================
+
+model ServiceDetail {
+  id               Int      @id @default(autoincrement())
+  title            String
+  subtitle         String
+  shortDescription String   @map("short_description") @db.Text
+  fullDescription  String   @map("full_description") @db.Text
+  linkUrl          String   @map("link_url")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("service_details")
+}
+
+model WorkProcess {
+  id             Int      @id @default(autoincrement())
+  stepNumber     Int      @map("step_number")
+  title          String
+  description    String   @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("work_processes")
+}
+
+model Partner {
+  id             Int      @id @default(autoincrement())
+  name           String
+  logoUrl        String   @map("logo_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("partners")
+}
+
+// ==========================================
+// 4. Solutions Page
+// ==========================================
+
+model SolutionDetail {
+  id               Int      @id @default(autoincrement())
+  titleMain        String   @map("title_main")
+  titleSecondary   String   @map("title_secondary")
+  subtitle         String
+  shortDescription String   @map("short_description")
+  fullDescription  String   @map("full_description") @db.Text
+  linkUrl          String   @map("link_url")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("solutions_details")
+}
+
+model SolutionOutcome {
+  id             Int      @id @default(autoincrement())
+  title          String
+  description    String   @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("solutions_outcomes")
+}
+
+// ==========================================
+// 5. Industries Page
+// ==========================================
+
+model IndustryDetail {
+  id                    Int      @id @default(autoincrement())
+  industryId            Int      @map("industry_id")
+  name                  String
+  challengesDescription String   @map("challenges_description") @db.Text
+  solutionsDescription  String   @map("solutions_description") @db.Text
+  impactDescription     String   @map("impact_description") @db.Text
+  imageUrl              String   @map("image_url")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  industry              Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+
+  @@map("industry_details")
+}
+
+// ==========================================
+// 6. Partnership Page
+// ==========================================
+
+model PartnerEcosystemDetail {
+  id             Int      @id @default(autoincrement())
+  partnerName    String   @map("partner_name")
+  subtitle       String
+  description    String   @db.Text
+  logoUrl        String   @map("logo_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("partner_ecosystem_details")
+}
+
+model PartnershipPrinciple {
+  id             Int      @id @default(autoincrement())
+  title          String
+  description    String   @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("partnership_principles")
+}
+
+// ==========================================
+// 7. Products Page
+// ==========================================
+
+model Product {
+  id             Int      @id @default(autoincrement())
+  name           String
+  type           String
+  description    String   @db.Text
+  logoUrl        String   @map("logo_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model ProductEnabler {
+  id             Int      @id @default(autoincrement())
+  title          String
+  iconName       String   @map("icon_name")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("product_enablers")
+}
+
+// ==========================================
+// 8. Case Studies Page
+// ==========================================
+
+model CaseStudy {
+  id             Int      @id @default(autoincrement())
+  industryName   String   @map("industry_name")
+  situationText  String   @map("situation_text") @db.Text
+  approachList   String   @map("approach_list") @db.Text
+  outcomeText    String   @map("outcome_text") @db.Text
+  imageUrl       String?  @map("image_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("case_studies")
+}
+
+// ==========================================
+// 9. Blog Page
+// ==========================================
+
+model BlogCategory {
+  id             Int      @id @default(autoincrement())
+  name           String
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  posts          BlogPost[]
+
+  @@map("blog_categories")
+}
+
+model BlogPost {
+  id             Int      @id @default(autoincrement())
+  categoryId     Int      @map("category_id")
+  title          String
+  content        String   @db.Text
+  imageUrl       String   @map("image_url")
+  isFeatured     Boolean  @default(false) @map("is_featured")
+  isAccent       Boolean  @default(false) @map("is_accent")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  category       BlogCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@map("blog_posts")
+}
+
+model NewsletterSubscriber {
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  subscribedAt   DateTime @default(now()) @map("subscribed_at")
+
+  @@map("newsletter_subscribers")
+}
+
+// ==========================================
+// 10. Contact Page
+// ==========================================
+
+model ContactMessage {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String
+  message        String   @db.Text
+  status         String   @default("new")
+  submittedAt    DateTime @default(now()) @map("submitted_at")
+
+  @@map("contact_messages")
+}
+
+model CompanySetting {
+  id             Int      @id @default(autoincrement())
+  key            String   @unique
+  value          String   @db.Text
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("company_settings")
+}
