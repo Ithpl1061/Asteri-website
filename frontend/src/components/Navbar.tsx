@@ -352,9 +352,9 @@ useEffect(() => {
 
               <span
                 className="
-                  text-4xl
-                  sm:text-5xl
-                  md:text-6xl
+                  text-2xl
+                  sm:text-3xl
+                  md:text-4xl
                   font-light
                   uppercase
                   tracking-tight
@@ -410,9 +410,9 @@ useEffect(() => {
                     to={child.to}
                     onClick={() => setOpen(false)}
                     className={`
-                      text-4xl
-                      sm:text-5xl
-                      md:text-6xl
+                      text-2xl
+                      sm:text-3xl
+                      md:text-4xl
                       font-light
                       tracking-tight
                       leading-tight
