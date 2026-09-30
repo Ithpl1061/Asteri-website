@@ -1,0 +1,64 @@
+.partnership-page { --green:#82e926; --page-width:1440px; background:#000; color:#fff; font-family:Inter,Arial,sans-serif; margin-top:-6rem; overflow:hidden; }
+.partnership-page * { box-sizing:border-box; }.partnership-page a { color:inherit; text-decoration:none; }
+.partnership-hero { height:900px; min-height:100svh; position:relative; }.partnership-hero-copy { left:max(7.4vw,calc((100% - var(--page-width))/2 + 106px)); position:absolute; top:216px; }
+.partnership-hero h1 { font-size:clamp(2.5rem, 6vw, 5.5rem); font-weight:600; letter-spacing:-.02em; line-height:1.05; margin:0; display:grid; }
+.partnership-hero h1 span { color:transparent; -webkit-text-stroke:2px var(--green); paint-order:stroke fill; }
+.partnership-hero p { font-family:"Geist Mono",monospace; font-size:clamp(1rem, 2vw, 1.4rem); font-weight:500; margin:30px 0 0; }
+.partnership-primary-button,.partnership-contact-button { align-items:center; background:var(--green); border-radius:37px; color:#000; display:inline-flex; font-size:clamp(1rem, 1.5vw, 1.25rem); font-weight:600; gap:13px; margin-top:50px; min-height:60px; padding:11px 22px; }.partnership-arrow { display:block; flex:none; height:42px; width:42px; }
+.partnership-statement { align-items:center; display:flex; justify-content:center; text-align:center; }
+.partnership-statement--headline { height:450px; }
+.partnership-statement--headline h2 {    margin:0; }
+.partnership-statement--proof { height:400px; }
+.partnership-statement--proof p { font-family:Geist,Inter,sans-serif;   margin:0; max-width:1200px;   }
+.partnership-ecosystem { height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0; overflow:hidden; position:relative; }
+.partnership-ecosystem>h2 {  text-align:center; white-space:nowrap; margin:0 0 3vh 0; }
+.partnership-partner-panel { background:#fff; color:#000; display:grid; grid-template-columns:minmax(300px,42%) minmax(400px,58%); height:100%; min-height:700px; margin-top:0; overflow:hidden; width:100%; }
+.partnership-partner-intro { padding:10vh 8%; display:flex; flex-direction:column; justify-content:center; position:relative; }
+.partnership-partner-intro h3 {    margin:0;  }
+.partnership-partner-intro>p {   margin:24px 0 0; flex-grow:0;  }
+.partnership-outline-button { align-items:center; background:rgba(130,233,38,.22); border:1px solid var(--green); border-radius:37px; display:inline-flex;   gap:14px; padding:10px 24px; align-self:flex-start; margin-top:60px; }
+.partnership-outline-button .partnership-arrow { background:var(--green); height:36px; width:36px; }
+.partnership-partner-slider { background:#DDDDDD; padding:0; display:flex; align-items:center; position:relative; overflow:hidden; scrollbar-width:none; border-radius:40px 0 0 40px; }.partnership-partner-slider::-webkit-scrollbar { display:none; }
+.partnership-partner-card { background:#F3F3F3; border-radius:35px; display:inline-flex; flex-direction:column; height:520px; justify-content:center; padding:40px; flex-shrink:0; width:400px; transform:translateY(-40px); }.partnership-partner-card+.partnership-partner-card { margin-left:32px; }
+.partnership-partner-card img { height:clamp(80px,10vh,140px); max-width:170px; object-fit:contain; object-position:left center; width:100%; margin-bottom: 20px; }.partnership-partner-card:nth-child(2) img { max-width:170px; }
+.partnership-partner-card p { font-size:18px; font-weight:500; line-height:1.3; margin:30px 0 0; overflow-y:auto; }
+.partnership-slider-controls { bottom:2vh; display:flex; gap:15px; right:3vw; position:absolute; }
+.partnership-slider-controls span { align-items:center; background:var(--green); border-radius:50%; display:flex; font-size:24px; height:40px; justify-content:center; line-height:1; width:40px; color:#000; }
+.partnership-benefits { align-items:center; display:flex; flex-direction:column; min-height:100vh; justify-content:center; text-align:center; overflow:hidden; position:relative; }
+.partnership-benefits p {     margin:0; }
+.partnership-principles { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:5vh 4vw; position:relative; overflow:hidden; }
+.partnership-principles>h2 {  margin:0 auto; text-align:center; text-transform:uppercase; white-space:nowrap; }
+.partnership-principle-grid { display:grid; gap:76px; grid-template-columns:repeat(3,minmax(0,363px)); justify-content:center; margin-top:60px; }
+.partnership-principle-card { background:#6e6e6e; border-radius:43px; min-height:346px; padding:48px 43px; }
+.partnership-principle-card h3 { font-size:clamp(1.5rem, 2.2vw, 2rem); font-weight:700; margin:0; }
+.partnership-principle-card p { font-size:clamp(1.1rem, 1.5vw, 1.4rem); line-height:1.2; margin:66px 0 0; }
+.partnership-cta { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; overflow:hidden; position:relative; }
+.partnership-cta-art { height:100%; left:0; object-fit:cover; position:absolute; top:0; width:100%; z-index:-1; }
+.partnership-cta-copy { align-items:center; display:flex; flex-direction:column; text-align:center; position:relative; z-index:1; }
+.partnership-cta h2 {   margin:0; }
+.partnership-cta p {    margin:30px 0 0; max-width:904px; }
+.partnership-contact-button { background:#e6e6e6; font-size:clamp(1rem, 1.5vw, 1.25rem); margin-top:40px; padding-left:22px; }
+@media (max-width:900px) {
+  .partnership-hero { height:700px; }
+  .partnership-hero-copy { left:7vw; top:170px; }
+  .partnership-hero p { margin-top:26px; max-width:85vw; }
+  .partnership-primary-button { margin-top:40px; min-height:54px; }
+  .partnership-arrow { height:36px; width:36px; }
+  .partnership-statement--headline { height:350px; }
+  .partnership-statement--proof { height:280px; padding:0 8vw; }
+  .partnership-ecosystem { min-height:auto; padding-bottom:80px; }
+  .partnership-ecosystem>h2,.partnership-principles>h2 { white-space:normal; }
+  .partnership-partner-panel { display:block; height:auto; margin-top:50px; }
+  .partnership-partner-intro { min-height:400px; padding:60px 8vw; }
+  .partnership-outline-button { bottom:40px; left:8vw; }
+  .partnership-partner-slider { overflow-x:auto; padding:36px 20px 100px; white-space:nowrap; }
+  .partnership-partner-card { height:400px; padding:30px 24px; width:min(80vw,360px); white-space:normal; }
+  .partnership-partner-card p { font-size:15px; }
+  .partnership-principles { min-height:auto; padding-bottom:80px; }
+  .partnership-principle-grid { gap:20px; grid-template-columns:1fr; margin:40px 6vw 0; }
+  .partnership-principle-card { min-height:220px; padding:28px; }
+  .partnership-cta { height:450px; }
+  .partnership-cta-copy { inset:100px 6vw auto; }
+  .partnership-cta p { margin-top:24px; }
+  .partnership-contact-button { margin-top:30px; min-height:54px; }
+}
