@@ -327,15 +327,15 @@ function Services() {
         <section className="figma-services__core figma-services__core--mobile">
           <h2 className="type-title">CORE SERVICES</h2>
           <article>
-            <h3 className="type-heading">Salesforce</h3>
-            <div className="figma-services__core-side"><h4 className="type-card font-bold">Consulting</h4><p className="type-body">Strategic CRM solutions that enhance customer engagement and operational visibility.</p></div>
-            <p className="figma-services__core-copy type-body">We help organizations implement, customize, and optimize Salesforce platforms to align with business processes and drive measurable outcomes.</p>
+            <h3>Salesforce</h3>
+            <div className="figma-services__core-side"><h4>Consulting</h4><p>Strategic CRM solutions that enhance customer engagement and operational visibility.</p></div>
+            <p className="figma-services__core-copy">We help organizations implement, customize, and optimize Salesforce platforms to align with business processes and drive measurable outcomes.</p>
             <Button href="/Services- Salesforce Consulting" dark>Explore More</Button>
           </article>
           <article className="figma-services__sap-card">
-            <h3 className="type-heading">SAP</h3>
-            <div className="figma-services__sap-side"><h4 className="type-card font-bold">Consulting</h4><p className="type-body">Enterprise-grade solutions designed to streamline complex business operations.</p></div>
-            <p className="figma-services__sap-copy type-body">We support implementation, optimization, and integration of SAP systems to improve efficiency, visibility, and decision-making.</p>
+            <h3>SAP</h3>
+            <div className="figma-services__sap-side"><h4>Consulting</h4><p>Enterprise-grade solutions designed to streamline complex business operations.</p></div>
+            <p className="figma-services__sap-copy">We support implementation, optimization, and integration of SAP systems to improve efficiency, visibility, and decision-making.</p>
             <Button href="/contact" dark>Explore More</Button>
           </article>
         </section>
@@ -382,15 +382,15 @@ function Services() {
       <section ref={coreSectionRef} className="figma-services__core figma-services__core--desktop">
         <h2 className="type-title">CORE SERVICES</h2>
         <article className="core-card">
-          <h3 className="type-heading">Salesforce</h3>
-          <div className="figma-services__core-side"><h4 className="type-card font-bold">Consulting</h4><p className="type-body">Strategic CRM solutions that enhance customer engagement and operational visibility.</p></div>
-          <p className="figma-services__core-copy type-body">We help organizations implement, customize, and optimize Salesforce platforms to align with business processes and drive measurable outcomes.</p>
+          <h3>Salesforce</h3>
+          <div className="figma-services__core-side"><h4>Consulting</h4><p>Strategic CRM solutions that enhance customer engagement and operational visibility.</p></div>
+          <p className="figma-services__core-copy">We help organizations implement, customize, and optimize Salesforce platforms to align with business processes and drive measurable outcomes.</p>
           <Button href="/Services- Salesforce Consulting" dark>Explore More</Button>
         </article>
         <article className="figma-services__sap-card core-card">
-          <h3 className="type-heading">SAP</h3>
-          <div className="figma-services__sap-side"><h4 className="type-card font-bold">Consulting</h4><p className="type-body">Enterprise-grade solutions designed to streamline complex business operations.</p></div>
-          <p className="figma-services__sap-copy type-body">We support implementation, optimization, and integration of SAP systems to improve efficiency, visibility, and decision-making.</p>
+          <h3>SAP</h3>
+          <div className="figma-services__sap-side"><h4>Consulting</h4><p>Enterprise-grade solutions designed to streamline complex business operations.</p></div>
+          <p className="figma-services__sap-copy">We support implementation, optimization, and integration of SAP systems to improve efficiency, visibility, and decision-making.</p>
           <Button href="/contact" dark>Explore More</Button>
         </article>
       </section>
