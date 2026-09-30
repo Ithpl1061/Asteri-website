@@ -46,7 +46,7 @@
   .figma-services__support--mobile { display: none; }
   .figma-services__cta--mobile { display: none; }
   .figma-services__core--desktop > h2 { position: relative; top: 60px; }
-  .figma-services__core article { left: 406.5px; top: 220px; transform: scale(.6); transform-origin: left top; will-change: transform, opacity; backface-visibility: hidden; }
+  .figma-services__core article { left: 406.5px; top: 180px; transform: scale(.6); transform-origin: left top; will-change: transform, opacity; backface-visibility: hidden; }
   .figma-services__sap-card { top: 220px !important; }
 
   .figma-services__work-heading--desktop {
@@ -415,7 +415,7 @@
 
 @media (min-width: 769px) {
   .figma-services__partner-grid--desktop .figma-services__partner-card {
-    top: 220px;
+    top: 180px;
     left: -20px;
     width: 1400px;
     grid-auto-rows: 235px;
