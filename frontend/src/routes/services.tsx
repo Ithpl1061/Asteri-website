@@ -322,7 +322,7 @@ function Services() {
             <Button href="/Services- Salesforce Consulting">Explore More</Button>
           </section>
 
-        <p className="figma-services__statement type-statement">Our services combine strategic thinking with practical implementation — ensuring systems are not only well designed, but dependable in real-world environments.</p>
+        <p className="figma-services__statement type-lead font-medium">Our services combine strategic thinking with practical implementation — ensuring systems are not only well designed, but dependable in real-world environments.</p>
 
         <section className="figma-services__core figma-services__core--mobile">
           <h2 className="type-title">CORE SERVICES</h2>
