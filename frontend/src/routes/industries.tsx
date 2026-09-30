@@ -1440,15 +1440,13 @@ function Services() {
 
               <h2
                 ref={nextTitleRef}
-                className="type-title text-white"
-              >
+                className="type-cta-title text-white">
                 Don't see your sector?
               </h2>
 
               <p
                 ref={nextTextRef}
-                className="mt-10 type-lead font-semibold text-white"
-              >
+                className="mt-10 type-cta-subtitle text-white">
                 Reach out and let's discuss your 
                 <br />
                 specific context.

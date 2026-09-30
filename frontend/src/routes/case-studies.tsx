@@ -267,8 +267,8 @@ function CaseStudies() {
 
         <section className="case-cta" data-node-id="2513:1189">
           <div className="case-cta-content">
-            <h2 className="type-title">Let&apos;s build your success story</h2>
-            <p className="type-lead font-semibold">Start a conversation and define what success looks like for your project.</p>
+            <h2 className="type-cta-title">Let&apos;s build your success story</h2>
+            <p className="type-cta-subtitle">Start a conversation and define what success looks like for your project.</p>
             <Link to="/contact" className="case-talk-button">
               <img src="/figma/case-studies/talk-to-us.png" alt="Talk to Us" />
             </Link>

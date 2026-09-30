@@ -917,14 +917,12 @@ function Home() {
           <div className="relative z-10 max-w-5xl text-center">
             <h2
               ref={nextTitleRef}
-              className="text-white type-title"
-            >
+              className="text-white type-cta-title">
               Let&apos;s Build What&apos;s Next.
             </h2>
             <p
               ref={nextTextRef}
-              className="mt-4 type-lead font-semibold text-white"
-            >
+              className="mt-4 type-cta-subtitle text-white">
               We&apos;ll help you design the path forward.
             </p>
 

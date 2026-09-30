@@ -341,8 +341,8 @@ function Partnership() {
         <section ref={ctaSectionRef} className="partnership-cta">
           <img className="partnership-cta-art" src="/figma/partnership/raw-09.png" alt="" />
           <div className="partnership-cta-copy">
-            <h2 ref={ctaHeadingRef} className="type-title">Need access to a specific platform?</h2>
-            <p ref={ctaTextRef} className="type-lead font-semibold">Our partnerships give you better pricing and direct escalation paths.</p>
+            <h2 ref={ctaHeadingRef} className="type-cta-title">Need access to a specific platform?</h2>
+            <p ref={ctaTextRef} className="type-cta-subtitle">Our partnerships give you better pricing and direct escalation paths.</p>
             <Link 
               ref={ctaButtonRef}
               to="/contact" 
