@@ -912,8 +912,6 @@ function Home() {
           ref={nextRef}
           className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-black px-6 py-20 sm:min-h-[100dvh] lg:h-screen lg:min-h-0 lg:px-0 lg:py-0"
         >
-          <div className="absolute w-[90vw] max-w-[1300px] h-[50vh] max-h-[700px] rounded-[40px] bg-[#65ff00] opacity-[0.12] blur-[100px] sm:blur-[140px]" />
-
           <div className="relative z-10 max-w-5xl text-center">
             <h2
               ref={nextTitleRef}
