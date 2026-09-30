@@ -355,7 +355,7 @@ useEffect(() => {
                   text-2xl
                   sm:text-3xl
                   md:text-4xl
-                  font-light
+                  font-semibold
                   uppercase
                   tracking-tight
                   leading-none
@@ -413,7 +413,7 @@ useEffect(() => {
                       text-2xl
                       sm:text-3xl
                       md:text-4xl
-                      font-light
+                      font-semibold
                       tracking-tight
                       leading-tight
                       text-white/90
