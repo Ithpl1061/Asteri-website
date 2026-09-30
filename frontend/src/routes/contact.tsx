@@ -143,7 +143,7 @@ function ContactConversation() {
   }, []);
 
   return <section className="contact-conversation" ref={sectionRef}>
-    <h2>
+    <h2 className="type-title">
       <span className="line-1" style={{ display: "block", textAlign: "left", width: "100%" }}>Every solution starts</span>
       <span className="line-2" style={{ display: "block", textAlign: "left", width: "100%" }}>with a conversation.</span>
     </h2>
