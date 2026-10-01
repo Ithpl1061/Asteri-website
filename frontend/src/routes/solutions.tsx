@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { gsap } from "gsap";
@@ -37,7 +38,7 @@ function Solutions() {
   const [outcomes, setOutcomes] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/solutions-outcomes')
+    fetch(apiUrl('/api/solutions-outcomes'))
       .then(res => res.json())
       .then(data => setOutcomes(data))
       .catch(err => console.error(err));

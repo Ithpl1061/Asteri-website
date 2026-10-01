@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { PageShell } from "@/components/PageShell";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -16,7 +17,7 @@ function CaseStudies() {
   const [caseStudies, setCaseStudies] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/case-studies')
+    fetch(apiUrl('/api/case-studies'))
       .then(res => res.json())
       .then(data => setCaseStudies(data))
       .catch(console.error);

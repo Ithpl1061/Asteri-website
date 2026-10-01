@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { PageShell } from "@/components/PageShell";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -27,12 +28,12 @@ function Partnership() {
   const [ecosystem, setEcosystem] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/partnership-principles')
+    fetch(apiUrl('/api/partnership-principles'))
       .then(res => res.json())
       .then(data => setPartnerCards(data))
       .catch(console.error);
 
-    fetch('http://localhost:5000/api/partner-ecosystem')
+    fetch(apiUrl('/api/partner-ecosystem'))
       .then(res => res.json())
       .then(data => {
         setEcosystem(data);

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
@@ -99,7 +100,7 @@ function ContactInformation() {
       const email = formData.get('email');
       const message = formData.get('message');
       
-      fetch('http://localhost:5000/api/contact', {
+      fetch(apiUrl('/api/contact'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message })

@@ -16,6 +16,11 @@ const lovableConfig = defineConfig({
     resolve: {
       tsconfigPaths: true,
     },
+    server: {
+      proxy: {
+        '/api': 'http://localhost:5000',
+      },
+    },
   },
 });
 

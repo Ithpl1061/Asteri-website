@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -151,7 +152,7 @@ function About() {
   const [teamLoaded, setTeamLoaded] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/team')
+    fetch(apiUrl('/api/team'))
       .then(res => res.json())
       .then(data => setVisionaries(data))
       .catch(err => console.error(err))

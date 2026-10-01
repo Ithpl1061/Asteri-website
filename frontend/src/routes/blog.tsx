@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { PageShell } from "@/components/PageShell";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -90,7 +91,7 @@ function Blog() {
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/blog/posts')
+    fetch(apiUrl('/api/blog/posts'))
       .then(res => res.json())
       .then(data => {
         setFeaturedPosts(data.filter((p: any) => p.isFeatured));
@@ -359,7 +360,7 @@ function Blog() {
             <form className="blog-subscribe-form" onSubmit={(e) => {
               e.preventDefault();
               const email = new FormData(e.currentTarget).get('email');
-              fetch('http://localhost:5000/api/newsletter', {
+              fetch(apiUrl('/api/newsletter'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })

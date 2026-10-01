@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -103,12 +104,12 @@ function Home() {
   const [industries, setIndustries] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/services')
+    fetch(apiUrl('/api/services'))
       .then(res => res.json())
       .then(data => setServices(data))
       .catch(err => console.error(err));
 
-    fetch('http://localhost:5000/api/industries')
+    fetch(apiUrl('/api/industries'))
       .then(res => res.json())
       .then(data => setIndustries(data))
       .catch(err => console.error(err));

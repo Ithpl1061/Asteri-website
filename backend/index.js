@@ -7,7 +7,8 @@ const prisma = new PrismaClient();
 const app = express();
 
 // Middleware
-app.use(cors());
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:8080';
+app.use(cors({ origin: CORS_ORIGIN }));
 app.use(express.json());
 
 // Health Check Route
@@ -192,7 +193,8 @@ app.post('/api/newsletter', async (req, res) => {
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const HOST = process.env.HOST || '0.0.0.0';
+app.listen(PORT, HOST, () => {
   console.log(`\n🚀 Asteri Backend Server is running on http://localhost:${PORT}`);
   console.log(`👉 Test the health route at http://localhost:${PORT}/api/health\n`);
 });

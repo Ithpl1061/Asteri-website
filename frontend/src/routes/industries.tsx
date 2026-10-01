@@ -1,6 +1,7 @@
 // ========================================= IMPORTS =================================================
 
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -50,7 +51,7 @@ function Services() {
   const [details, setDetails] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/industry-details')
+    fetch(apiUrl('/api/industry-details'))
       .then(res => res.json())
       .then(data => setDetails(data))
       .catch(console.error);

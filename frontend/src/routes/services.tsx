@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { apiUrl } from "@/lib/api";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { gsap } from "gsap";
@@ -42,7 +43,7 @@ function Services() {
   const [partners, setPartners] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/partners')
+    fetch(apiUrl('/api/partners'))
       .then(res => res.json())
       .then(data => setPartners(data))
       .catch(err => console.error(err));
