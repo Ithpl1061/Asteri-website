@@ -17,6 +17,7 @@ usermod -aG sudo asteriadmin
 ```
 
 Copy your SSH key to the new user and switch to it:
+*(Note: The `rsync` command below is only needed if the root user already uses SSH keys. If you logged in with a password, skip the rsync line and just run `su - asteriadmin`).*
 ```bash
 rsync --archive --chown=asteriadmin:asteriadmin ~/.ssh /home/asteriadmin
 su - asteriadmin
@@ -81,6 +82,7 @@ Because there are no seed scripts, the safest way to clone your local database e
 
 **On your local Windows machine:**
 Export the database in custom format (`-Fc`). Open Command Prompt or PowerShell:
+*(Note: If `pg_dump` is not recognized, you can find it in `C:\Program Files\PostgreSQL\18\bin`. Also, verify the exact database name in pgAdmin, as it is case-sensitive).*
 ```powershell
 pg_dump -U postgres -h localhost -p 5432 -Fc -d Asteri -f asteri_dump.custom
 ```
@@ -89,17 +91,25 @@ pg_dump -U postgres -h localhost -p 5432 -Fc -d Asteri -f asteri_dump.custom
 **On your VPS:**
 Restore the dump into the new database, ignoring the original ownership and privileges from your local machine, and assign them to the new user.
 ```bash
+# Copy the dump to /tmp first
+sudo cp /home/asteriadmin/asteri_dump.custom /tmp/
+sudo chmod 644 /tmp/asteri_dump.custom
+
 # Restore data
-sudo -u postgres pg_restore -d asteri --no-owner --no-privileges /home/asteriadmin/asteri_dump.custom
+sudo -u postgres pg_restore -d asteri --no-owner --no-privileges --role=asteri_user /tmp/asteri_dump.custom
 
 # Ensure asteri_user owns the tables and sequences
 sudo -u postgres psql -d asteri -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO asteri_user;"
 sudo -u postgres psql -d asteri -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO asteri_user;"
+
+# Verify table ownership (should show asteri_user)
+sudo -u postgres psql -d asteri -c "\dt"
 ```
 
 ## 5. Get the Code
 
 Clone your repository (or upload it via SFTP if it's private and you haven't set up SSH keys for Git):
+*(Note: If cloning a private GitHub repository, generate a fine-grained personal access token with read-only access for this repo only. Use it as your password when prompted).*
 ```bash
 git clone <YOUR_REPO_URL> ~/asteri-web
 cd ~/asteri-web
@@ -114,6 +124,7 @@ npm ci
 cp .env.production.example .env
 ```
 Edit `.env` (`nano .env`) and update `CORS_ORIGIN` to your real domain and `DATABASE_URL` with your strong password.
+*(Warning: The DB password should ideally contain letters and numbers only. If it contains special characters, they must be URL-encoded because it goes inside the DATABASE_URL connection string).*
 
 Generate Prisma Client and verify the database status:
 ```bash
@@ -133,7 +144,7 @@ VITE_API_URL= npm run build
 ```
 Verify there are no hardcoded localhost strings in the final output:
 ```bash
-grep -rn "localhost" .output/client || echo "Clean!"
+grep -rn "localhost:5000" .output/ && echo "FOUND localhost - do not deploy" || echo "Clean"
 ```
 
 ## 8. Start Apps with PM2
@@ -168,6 +179,8 @@ sudo systemctl reload nginx
 3. Ensure you have an **A Record** (or CNAME) for `www` pointing to your `<VPS_IP>`.
 4. Wait for DNS propagation (can take a few minutes to hours).
 
+*(Important: Before proceeding with SSL in Step 11, make sure that ports 80 and 443 are also open in Hostinger's own VPS firewall interface in hPanel, if you have it enabled).*
+
 ## 11. SSL with Certbot
 
 Once your domain correctly points to the VPS, generate an SSL certificate:
@@ -192,7 +205,15 @@ Visit `https://yourdomain.com` and manually verify:
 
 ## 13. Automated Daily Backups
 
+To allow `pg_dump` to run in a cron job without prompting for a password, create a `.pgpass` file:
+```bash
+echo "localhost:5432:asteri:asteri_user:CHANGE_ME_STRONG_PASSWORD" > ~/.pgpass
+chmod 600 ~/.pgpass
+```
+
 Set up a daily cron job to back up the database and keep the last 7 days.
+*(Note: Be sure to download these backup files off the server regularly, or enable Hostinger VPS snapshots for full server safety).*
+
 ```bash
 mkdir -p ~/backups
 nano ~/backup_db.sh
@@ -255,3 +276,10 @@ sudo tail -f /var/log/nginx/error.log
 - Ensure both apps are `online` in `pm2 status`.
 - Check if the port matches (Backend must be `5000`, Frontend must be `3000`).
 - Ensure `.env` is correctly configured in the `backend` folder.
+
+## 16. Optional: Log Management
+
+To prevent PM2 logs from filling up your disk over time, install the `pm2-logrotate` module:
+```bash
+pm2 install pm2-logrotate
+```
