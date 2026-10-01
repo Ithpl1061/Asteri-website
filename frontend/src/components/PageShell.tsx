@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
-import AIChat from "./AIChat";
 
 export function PageShell({
   children,
@@ -20,8 +19,6 @@ export function PageShell({
 
       <Footer disableAnimations={disableAnimations} />
 
-      {/* Global AI Chat */}
-      <AIChat disableAnimations={disableAnimations} />
     </div>
   );
 }
