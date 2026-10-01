@@ -694,11 +694,9 @@ function Home() {
               </h2>
               <h2
                 ref={quote2Ref}
-                className="absolute left-1/2 top-1/2 w-full max-w-5xl -translate-x-1/2 -translate-y-1/2 px-6 text-center type-statement text-black"
+                className="absolute left-1/2 top-1/2 w-full max-w-5xl -translate-x-1/2 -translate-y-1/2 px-6 text-center type-statement text-black text-balance"
               >
-                Enduring systems emerge when business, data and
-                <br />
-                infrastructure move in harmony.
+                Enduring systems emerge when business, data and infrastructure move in harmony.
               </h2>
             </div>
           </div>
