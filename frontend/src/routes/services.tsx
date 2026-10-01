@@ -354,7 +354,10 @@ function Services() {
 
 
         <section className="figma-services__partner-grid figma-services__partner-grid--canvas">
-          <h2 className="type-title">PLATFORMS &amp;<br />PARTNERS</h2><span className="figma-services__grid-next">→</span>
+          <div className="flex items-center justify-between w-full lg:pr-[36px]">
+            <h2 className="type-title !text-[clamp(2.5rem,4vw,5.5rem)] lg:whitespace-nowrap mb-0">PLATFORMS &amp; PARTNERS</h2>
+            <span className="figma-services__grid-next !relative !top-0 !right-0">→</span>
+          </div>
           <div className="figma-services__partner-card">{partners.map((p) => <figure key={p.name}><img src={p.logoUrl} alt={p.name} /></figure>)}</div>
         </section>
 
@@ -415,7 +418,10 @@ function Services() {
       </section>
 
       <section ref={partnerSectionRef} className="figma-services__partner-grid figma-services__partner-grid--desktop">
-        <h2 className="type-title">PLATFORMS &amp;<br />PARTNERS</h2><span className="figma-services__grid-next">→</span>
+        <div className="flex items-center justify-between w-full lg:pr-[36px]">
+          <h2 className="type-title !text-[clamp(2.5rem,4vw,5.5rem)] lg:whitespace-nowrap mb-0">PLATFORMS &amp; PARTNERS</h2>
+          <span className="figma-services__grid-next !relative !top-0 !right-0">→</span>
+        </div>
         <div ref={partnerCardRef} className="figma-services__partner-card">{partners.map((p) => <figure key={p.name}><img src={p.logoUrl} alt={p.name} /></figure>)}</div>
       </section>
 
