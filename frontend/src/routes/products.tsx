@@ -812,7 +812,7 @@ function Services() {
                 className="
                   text-white
                   font-bold
-                  text-[clamp(1.2rem,2.8vw,2.35rem)]
+                  text-[clamp(1.5rem,3.5vw,3rem)]
                   leading-[1.05]
                 "
               >
