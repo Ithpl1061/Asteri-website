@@ -415,7 +415,7 @@
 
 @media (min-width: 769px) {
   .figma-services__partner-grid--desktop .figma-services__partner-card {
-    top: calc(180px - 5%);
+    top: calc(180px - 8%);
     left: -20px;
     width: 1400px;
     grid-auto-rows: 235px;
