@@ -198,3 +198,5 @@ app.listen(PORT, HOST, () => {
   console.log(`\n🚀 Asteri Backend Server is running on http://localhost:${PORT}`);
   console.log(`👉 Test the health route at http://localhost:${PORT}/api/health\n`);
 });
+
+

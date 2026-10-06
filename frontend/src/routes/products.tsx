@@ -690,9 +690,9 @@ function Services() {
                 className="
                   text-white
                   font-bold
-                  text-[46px]
-                  md:text-[68px]
-                  xl:text-[76px]
+                  text-[41px]
+                  md:text-[63px]
+                  xl:text-[71px]
                   leading-[1]
                 "
               >

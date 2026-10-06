@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { SplitText } from "gsap/SplitText";
 import * as LucideIcons from "lucide-react";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { Hero3DBackground } from "@/components/Hero3DBackground";
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, SplitText);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -63,6 +64,10 @@ function Home() {
   const heroOrbTrackRef = useRef<HTMLDivElement>(null);
   const heroOrbPathRef = useRef<SVGPathElement>(null);
   const orbRef = useRef<HTMLDivElement>(null);
+  const heroTextWrapRef = useRef<HTMLDivElement>(null);
+  const heroLine1Ref = useRef<HTMLHeadingElement>(null);
+  const heroLine2Ref = useRef<HTMLParagraphElement>(null);
+  const heroLine3Ref = useRef<HTMLParagraphElement>(null);
 
   const aboutRef = useRef<HTMLDivElement>(null);
   const aboutIntroTitleRef = useRef<HTMLHeadingElement>(null);
@@ -115,6 +120,73 @@ function Home() {
       .catch(err => console.error(err));
   }, []);
   // =================================== END REFS ==========================================
+
+  //======================================= HERO ENTRANCE (runs once on load, all breakpoints) ===========
+  useEffect(() => {
+    const lines = [heroLine1Ref.current, heroLine2Ref.current, heroLine3Ref.current].filter(
+      Boolean,
+    ) as HTMLElement[];
+    if (!lines.length) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion) {
+      gsap.set(lines, { opacity: 1 });
+      return;
+    }
+
+    // Hide the raw text immediately so there's no flash of unsplit text
+    // before fonts are ready and SplitText can measure the glyphs.
+    gsap.set(lines, { opacity: 0 });
+
+    let splits: SplitText[] = [];
+    let tl: gsap.core.Timeline | undefined;
+    let cancelled = false;
+
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
+
+      // type: "chars" + mask: "chars" splits each line into one span per
+      // character and wraps each in its own tiny overflow-hidden mask, so
+      // characters can slide up into view without clipping descenders.
+      splits = lines.map(
+        (line) =>
+          new SplitText(line, {
+            // "words, chars" keeps each word intact (no mid-word line
+            // breaks) while still giving us a per-character span to animate.
+            type: "words, chars",
+            mask: "chars",
+            charsClass: "hero-char",
+            wordsClass: "hero-word",
+          }),
+      );
+
+      gsap.set(lines, { opacity: 1 });
+
+      // Sentence by sentence: each line's characters cascade in together,
+      // and the next sentence only starts once the previous one has landed.
+      tl = gsap.timeline({ delay: 0.15 });
+      splits.forEach((split, i) => {
+        tl!.from(
+          split.chars,
+          {
+            opacity: 0,
+            yPercent: 120,
+            duration: 0.55,
+            ease: "power3.out",
+            stagger: 0.022,
+          },
+          i === 0 ? undefined : "+=0.15",
+        );
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      tl?.kill();
+      splits.forEach((split) => split.revert());
+    };
+  }, []);
 
   //======================================= ALL GSAP ANIMATIONS =========================================
   useEffect(() => {
@@ -221,6 +293,24 @@ function Home() {
               onRefresh: updateHeroOrb,
             },
           });
+
+          // Headline gently recedes (fades/scales/blurs) as the hero scrolls
+          // out, tied to the same pinned scroll distance as the orb above.
+          if (heroTextWrapRef.current) {
+            gsap.to(heroTextWrapRef.current, {
+              opacity: 0.12,
+              scale: 0.94,
+              filter: "blur(6px)",
+              ease: "none",
+              scrollTrigger: {
+                trigger: heroRef.current,
+                start: "top top",
+                end: () => `+=${Math.max(getOrbTravel(), window.innerHeight)}`,
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
         }
 
 
@@ -600,8 +690,11 @@ function Home() {
           <Hero3DBackground />
 
           <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl items-center justify-center px-6 sm:min-h-[100dvh] lg:min-h-screen">
-            <div className="flex flex-col items-center text-center font-display font-bold leading-[1.1] tracking-tight">
-              <h1 className="type-display text-white">
+            <div
+              ref={heroTextWrapRef}
+              className="flex flex-col items-center text-center font-display font-bold leading-[1.1] tracking-tight will-change-transform"
+            >
+              <h1 ref={heroLine1Ref} className="type-display text-white">
                 Engineering{" "}
                 <span
                   style={{
@@ -616,6 +709,7 @@ function Home() {
               </h1>
 
               <p
+                ref={heroLine2Ref}
                 className="type-display"
                 style={{
                   color: "#000000",
@@ -628,7 +722,7 @@ function Home() {
 
               <div className="text-center">
                 <div className="relative inline-block">
-                  <p className="type-display text-white">Ambition</p>
+                  <p ref={heroLine3Ref} className="type-display text-white">Ambition</p>
                 </div>
               </div>
             </div>

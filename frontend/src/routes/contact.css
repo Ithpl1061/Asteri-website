@@ -16,7 +16,7 @@
 .contact-hero p{margin:78px 0 0 20px;font-family:Geist,Inter,sans-serif;font-weight:600}
 .contact-information{position:relative;width:1440px;height:820px;background:#000;z-index:10}
 .contact-information h2{position:absolute;top:0;left:81px;margin:0;letter-spacing:-4px}
-.contact-details{position:absolute;top:170px;left:84px;width:600px;line-height:45px}
+.contact-details{position:absolute;top:170px;left:84px;width:600px;line-height:45px;font-size:21px}
 .detail{position:absolute;display:flex;align-items:flex-start}
 .detail b,.contact-social b{font-weight:700}
 .detail-email{top:0;gap:58px}

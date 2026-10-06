@@ -181,12 +181,7 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
                 Case Studies
               </Link>
 
-              <Link
-                to="/Asteri_product-suite"
-                className="transition hover:text-[#7ED957]"
-              >
-                Asteri Product Suite
-              </Link>
+
 
               <Link
                 to="/products"

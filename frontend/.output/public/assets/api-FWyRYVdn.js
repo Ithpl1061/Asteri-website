@@ -1,0 +1,1 @@
+var e=``,t=t=>`${e}${t}`;export{t};

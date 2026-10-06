@@ -12,6 +12,9 @@ const lovableConfig = defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
+  nitro: {
+    preset: 'node-server',
+  },
   vite: {
     resolve: {
       tsconfigPaths: true,

@@ -42,13 +42,16 @@ export function Hero3DBackground() {
     const ambientLight = new THREE.AmbientLight(0x18440d, 3.2);
     scene.add(ambientLight);
 
-    const pointLight1 = new THREE.PointLight(0x82e926, 12, 60);
+    const pointLight1 = new THREE.PointLight(0x82e926, 0, 60);
     pointLight1.position.set(0, 2, 8);
     scene.add(pointLight1);
+    const pointLight1Intensity = 12;
 
-    const pointLight2 = new THREE.PointLight(0x39ff14, 9, 50);
+    const pointLight2 = new THREE.PointLight(0x39ff14, 0, 50);
     pointLight2.position.set(-15, -4, 4);
     scene.add(pointLight2);
+    const pointLight2Intensity = 9;
+    const ambientBaseIntensity = 3.2;
 
     // --- 4. Silky Luminous Particle Wave Flow (Rich Vibrant Neon) ---
     const cols = 110; // X density (stream length)
@@ -195,23 +198,49 @@ export function Hero3DBackground() {
 
     window.addEventListener("resize", handleResize);
 
+    // --- 7b. Cursor-reactive parallax (subtle camera drift toward pointer) ---
+    let mouseX = 0;
+    let mouseY = 0;
+    const handlePointerMove = (e: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      mouseX = (((e.clientX - rect.left) / rect.width) * 2 - 1) || 0;
+      mouseY = (((e.clientY - rect.top) / rect.height) * 2 - 1) || 0;
+    };
+    window.addEventListener("pointermove", handlePointerMove);
+
     // --- 8. 60FPS Fluid Wave Animation Loop (Fixed Position Undulation) ---
     const clock = new THREE.Clock();
+    const introDuration = 1.6; // seconds for the background to "power on"
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
       const elapsedTime = clock.getElapsedTime();
 
-      // Camera is 100% stable at its designated angle
-      camera.position.set(0, 4.8, 20);
-      camera.lookAt(0, -2.2, 0);
+      // Eased 0 -> 1 ignition ramp played once on load (ease-out cubic)
+      const introT = Math.min(elapsedTime / introDuration, 1);
+      const introEased = 1 - Math.pow(1 - introT, 3);
+
+      pointLight1.intensity = pointLight1Intensity * introEased;
+      pointLight2.intensity = pointLight2Intensity * introEased;
+      ambientLight.intensity = ambientBaseIntensity * (0.4 + 0.6 * introEased);
+      waveParticlesMat.opacity = 0.25 + 0.75 * introEased;
+
+      // Camera holds its designated angle but drifts gently toward the cursor
+      const targetCamX = mouseX * 1.1;
+      const targetCamY = 4.8 + mouseY * 0.45;
+      camera.position.x += (targetCamX - camera.position.x) * 0.045;
+      camera.position.y += (targetCamY - camera.position.y) * 0.045;
+      camera.position.z = 20;
+      camera.lookAt(0, -2.2 + mouseY * 0.3, mouseX * 0.4);
 
       // Wave group stays locked in position
       waveGroup.rotation.set(0, 0, 0);
 
       // --- Wave Calculation: Smooth Pure Harmonic Undulation In-Place ---
       const pArr = waveParticlesGeo.attributes.position.array as Float32Array;
+      const waveAmplitude = 0.25 + 0.75 * introEased;
 
       for (let i = 0; i < totalPoints; i++) {
         const i3 = i * 3;
@@ -224,7 +253,7 @@ export function Hero3DBackground() {
         const w2 = Math.cos(x * 0.1 + elapsedTime * 1.1 - z * 0.14) * 0.55;
         const w3 = Math.sin((x + z) * 0.22 + elapsedTime * 1.9) * 0.2;
 
-        pArr[i3 + 1] = baseY + w1 + w2 + w3;
+        pArr[i3 + 1] = baseY + (w1 + w2 + w3) * waveAmplitude;
       }
 
       waveParticlesGeo.attributes.position.needsUpdate = true;
@@ -263,6 +292,7 @@ export function Hero3DBackground() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("pointermove", handlePointerMove);
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
