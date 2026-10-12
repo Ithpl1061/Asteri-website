@@ -286,20 +286,23 @@ function Partnership() {
         </section>
 
         <section ref={statementSectionRef} className="partnership-statement partnership-statement--headline px-6 bg-black text-white min-h-[100vh] flex flex-col items-center justify-center relative overflow-hidden">
-          <h2 className="type-title text-center">
+          <h2 className="type-heading text-center">
             <span ref={statementLine1Ref} className="block">We only partner</span>
             <span ref={statementLine2Ref} className="block">where we can deliver</span>
           </h2>
         </section>
-        <section ref={proofSectionRef} className="partnership-statement partnership-statement--proof bg-black text-white min-h-[75vh] flex items-center justify-center relative overflow-hidden">
-          <p ref={proofTextRef} className="type-statement">Every partnership backs a real, certified implementation capability.</p>
+        <section ref={proofSectionRef} className="partnership-statement partnership-statement--proof bg-black text-white min-h-[75vh] flex items-center justify-center relative overflow-hidden px-6">
+          <p ref={proofTextRef} className="type-statement text-center">
+            Every partnership backs a real,<br />
+            certified implementation capability.
+          </p>
         </section>
 
         <section id="ecosystem" ref={ecosystemSectionRef} className="relative h-[100vh] w-full overflow-hidden bg-black">
           
           {/* Title Layer */}
-          <div className="absolute inset-0 flex items-center justify-center z-0 text-white">
-            <h2 ref={ecosystemTitleRef} className="type-title" style={{ whiteSpace: "nowrap", margin: 0 }}>Our Partner Ecosystem</h2>
+          <div className="absolute inset-0 flex items-center justify-center z-0 text-white px-6">
+            <h2 ref={ecosystemTitleRef} className="type-heading font-bold" style={{ whiteSpace: "nowrap", margin: 0 }}>Our Partner Ecosystem</h2>
           </div>
 
           {/* Panel Layer */}
@@ -324,14 +327,14 @@ function Partnership() {
           </div>
         </section>
 
-        <section ref={benefitsSectionRef} className="partnership-benefits">
-          <p ref={benefit1Ref} className="type-title">Better licensing pricing.</p>
-          <p ref={benefit2Ref} className="type-title">Faster implementation.</p>
-          <p ref={benefit3Ref} className="type-title">Direct vendor escalation paths.</p>
+        <section ref={benefitsSectionRef} className="partnership-benefits px-6">
+          <p ref={benefit1Ref} className="type-heading text-[clamp(2.3rem,4vw,4.5rem)] font-bold text-center max-w-4xl px-4">Better licensing pricing.</p>
+          <p ref={benefit2Ref} className="type-heading text-[clamp(2.3rem,4vw,4.5rem)] font-bold text-center max-w-4xl px-4">Faster implementation.</p>
+          <p ref={benefit3Ref} className="type-heading text-[clamp(2.3rem,4vw,4.5rem)] font-bold text-center max-w-4xl px-4">Direct vendor escalation paths.</p>
         </section>
 
-        <section ref={principlesSectionRef} className="partnership-principles">
-          <h2 ref={principlesTitleRef} className="type-title">Partnership Principles</h2>
+        <section ref={principlesSectionRef} className="partnership-principles px-6">
+          <h2 ref={principlesTitleRef} className="type-heading text-[clamp(2.3rem,4vw,4.5rem)] font-bold uppercase text-center">Partnership Principles</h2>
           <div className="partnership-principle-grid">
             {partnerCards.map((card) => (
               <article key={card.title} className="partnership-principle-card"><h3>{card.title}</h3><p>{card.description}</p></article>
@@ -339,15 +342,15 @@ function Partnership() {
           </div>
         </section>
 
-        <section ref={ctaSectionRef} className="partnership-cta">
+        <section ref={ctaSectionRef} className="partnership-cta px-6">
           <img className="partnership-cta-art" src="/figma/partnership/raw-09.png" alt="" />
-          <div className="partnership-cta-copy">
-            <h2 ref={ctaHeadingRef} className="type-title">Need access to a specific platform?</h2>
-            <p ref={ctaTextRef} className="type-lead font-semibold">Our partnerships give you better pricing and direct escalation paths.</p>
+          <div className="partnership-cta-copy px-4 sm:px-8 flex flex-col items-center justify-center text-center max-w-6xl mx-auto w-full">
+            <h2 ref={ctaHeadingRef} className="text-white text-[clamp(2rem,4.5vw,5.25rem)] font-bold text-center leading-tight">Need access to a specific platform?</h2>
+            <p ref={ctaTextRef} className="type-lead text-[clamp(1.4rem,1.8vw,2rem)] font-semibold text-center mt-4">Our partnerships give you better pricing and direct escalation paths.</p>
             <Link 
               ref={ctaButtonRef}
               to="/contact" 
-              className="mt-10 inline-flex items-center gap-4 rounded-[40px] bg-[#82E926] pl-8 pr-3 py-3 type-button text-black transition-transform hover:scale-105"
+              className="mt-8 inline-flex items-center gap-4 rounded-[40px] bg-[#82E926] pl-8 pr-3 py-3 type-button text-black transition-transform hover:scale-105"
             >
               Talk to Us <Arrow />
             </Link>

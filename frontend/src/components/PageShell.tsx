@@ -33,7 +33,7 @@ export function PageHero({ eyebrow, title, subtitle }: { eyebrow?: string; title
             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse-glow" /> {eyebrow}
           </div>
         )}
-        <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold leading-[1.05] tracking-tight">
+        <h1 className="font-display text-[clamp(2.75rem,6vw,7rem)] font-semibold leading-[1.05] tracking-tight">
           {title}
         </h1>
         {subtitle && (

@@ -354,9 +354,9 @@ function Blog() {
         </section>
 
         <section className="blog-newsletter" data-node-id="2521:150">
-          <div className="newsletter-content">
-            <h2 className="type-title">Get insights delivered</h2>
-            <p>Practitioner-written articles — no fluff, real lessons.</p>
+          <div className="newsletter-content flex flex-col items-center justify-center text-center max-w-7xl mx-auto w-full px-4">
+            <h2 className="type-display sm:whitespace-nowrap">Get insights delivered</h2>
+            <p className="type-lead font-semibold mt-4">Practitioner-written articles — no fluff, real lessons.</p>
             <form className="blog-subscribe-form" onSubmit={(e) => {
               e.preventDefault();
               const email = new FormData(e.currentTarget).get('email');

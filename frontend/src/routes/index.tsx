@@ -4,13 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import { SplitText } from "gsap/SplitText";
 import * as LucideIcons from "lucide-react";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
-import { Hero3DBackground } from "@/components/Hero3DBackground";
+import { GlowOrb } from "@/components/GlowOrb";
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, SplitText);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,6 +67,15 @@ function Home() {
   const heroLine1Ref = useRef<HTMLHeadingElement>(null);
   const heroLine2Ref = useRef<HTMLParagraphElement>(null);
   const heroLine3Ref = useRef<HTMLParagraphElement>(null);
+  const heroDotRef = useRef<HTMLSpanElement>(null);
+  const heroLineRef = useRef<HTMLSpanElement>(null);
+
+  const aboutIntroSectionRef = useRef<HTMLElement>(null);
+  const aboutIntroLineLeftRef = useRef<HTMLSpanElement>(null);
+  const aboutIntroDotRef = useRef<HTMLSpanElement>(null);
+  const aboutConnectorLineRef = useRef<HTMLSpanElement>(null);
+  const aboutConnectorDotRef = useRef<HTMLSpanElement>(null);
+  const aboutHeadingRef = useRef<HTMLHeadingElement>(null);
 
   const aboutRef = useRef<HTMLDivElement>(null);
   const aboutIntroTitleRef = useRef<HTMLHeadingElement>(null);
@@ -122,70 +130,188 @@ function Home() {
   // =================================== END REFS ==========================================
 
   //======================================= HERO ENTRANCE (runs once on load, all breakpoints) ===========
+  // The headline and the green line render statically (the line is fixed and
+  // never animates); only the orb ignites beside the last word.
   useEffect(() => {
-    const lines = [heroLine1Ref.current, heroLine2Ref.current, heroLine3Ref.current].filter(
-      Boolean,
-    ) as HTMLElement[];
-    if (!lines.length) return;
+    const dot = heroDotRef.current;
+    if (!dot) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduceMotion) {
-      gsap.set(lines, { opacity: 1 });
-      return;
-    }
-
-    // Hide the raw text immediately so there's no flash of unsplit text
-    // before fonts are ready and SplitText can measure the glyphs.
-    gsap.set(lines, { opacity: 0 });
-
-    let splits: SplitText[] = [];
-    let tl: gsap.core.Timeline | undefined;
-    let cancelled = false;
-
-    document.fonts.ready.then(() => {
-      if (cancelled) return;
-
-      // type: "chars" + mask: "chars" splits each line into one span per
-      // character and wraps each in its own tiny overflow-hidden mask, so
-      // characters can slide up into view without clipping descenders.
-      splits = lines.map(
-        (line) =>
-          new SplitText(line, {
-            // "words, chars" keeps each word intact (no mid-word line
-            // breaks) while still giving us a per-character span to animate.
-            type: "words, chars",
-            mask: "chars",
-            charsClass: "hero-char",
-            wordsClass: "hero-word",
-          }),
-      );
-
-      gsap.set(lines, { opacity: 1 });
-
-      // Sentence by sentence: each line's characters cascade in together,
-      // and the next sentence only starts once the previous one has landed.
-      tl = gsap.timeline({ delay: 0.15 });
-      splits.forEach((split, i) => {
-        tl!.from(
-          split.chars,
-          {
-            opacity: 0,
-            yPercent: 120,
-            duration: 0.55,
-            ease: "power3.out",
-            stagger: 0.022,
-          },
-          i === 0 ? undefined : "+=0.15",
-        );
-      });
-    });
+    const tl = gsap
+      .timeline({ delay: 0.3 })
+      .fromTo(dot, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(2.2)" });
 
     return () => {
-      cancelled = true;
-      tl?.kill();
-      splits.forEach((split) => split.revert());
+      tl.kill();
     };
+  }, []);
+
+  //======================================= ABOUT CONNECTOR GEOMETRY ====================================
+  // The About section's connector runs from the section top to the centre of
+  // the "ABOUT US" heading, where its orb sits. The heading's position depends
+  // on font size and wrapping, so measure it rather than hard-coding.
+  useEffect(() => {
+    const section = about2Ref.current;
+    const heading = aboutHeadingRef.current;
+    const line = aboutConnectorLineRef.current;
+    const dot = aboutConnectorDotRef.current;
+    if (!section || !heading || !line || !dot) return;
+
+    const measure = () => {
+      const sectionTop = section.getBoundingClientRect().top;
+      const h = heading.getBoundingClientRect();
+      const centre = h.top + h.height / 2 - sectionTop;
+      line.style.height = `${centre}px`;
+      dot.style.top = `${centre}px`;
+    };
+
+    measure();
+    document.fonts?.ready.then(measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(section);
+    ro.observe(heading);
+    return () => ro.disconnect();
+  }, []);
+
+  //======================================= TRAVELLING DOT + HOLDS (desktop) ===========================
+  // Kept in its own effect, created once: the big animation effect below
+  // re-runs when services/industries data arrives, and rebuilding these pins
+  // and the dot then made the hero line/dot visibly flash after a refresh.
+  // Declared before that effect so these pins are created (and refreshed) first.
+  useEffect(() => {
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      const isPinned = true;
+      let resetTraveler: (() => void) | undefined;
+      // =====================================================
+      // SINGLE TRAVELLING DOT (desktop) — follows the existing green lines,
+      // driven 1:1 by scroll, and only ever one visible:
+      //   1. Hero: the "Ambition" dot runs right along the hero line, off-screen.
+      //   2. About intro PINS with the big "ABOUT US" centred on screen. While
+      //      held, the dot appears just before the title, runs left along the
+      //      L to the corner, then down the L.
+      //   3. After the hold it continues down the L into the About section
+      //      and lands on the heading's dot as that section pins.
+      // Each leg's dot lives inside its own section, so it pins/scrolls
+      // exactly with the lines it rides. At the section seam both halves
+      // are clipped by their sections and read as one dot.
+      // =====================================================
+      const heroDot = heroDotRef.current;
+      const introSection = aboutIntroSectionRef.current;
+      const introDot = aboutIntroDotRef.current;
+      const introLineLeft = aboutIntroLineLeftRef.current;
+      const aboutSection = about2Ref.current;
+      const connectorDot = aboutConnectorDotRef.current;
+
+      if (isPinned && heroDot && introSection && introDot && introLineLeft && aboutSection && connectorDot) {
+        const ease = gsap.parseEase("power1.inOut");
+        const HOLD = 1.3; // intro hold length, in viewport heights
+        const ACROSS = 0.4; // share of the hold spent running left along the right line to the L corner
+        const LEG_DROP = 0.5; // drop all the way to the bottom edge of the intro section (titleY + 0.5 * height = height)
+        let p1 = 0; // hero leg
+        let p2 = 0; // intro hold
+        let p3 = 0; // intro release -> About pin
+
+        const place = (el: HTMLElement, x: number, y: number) =>
+          gsap.set(el, { x, y, xPercent: -50, yPercent: -50 });
+
+        const update = () => {
+          // 1) Hero: slide the "Ambition" dot right, past the hero's edge.
+          const heroRect = heroRef.current!.getBoundingClientRect();
+          const dotRect = heroDot.getBoundingClientRect();
+          const currentX = (gsap.getProperty(heroDot, "x") as number) || 0;
+          const restX = dotRect.left + dotRect.width / 2 - currentX;
+          const distance = Math.max(heroRect.right - restX + 60, window.innerWidth - restX + 60);
+          place(heroDot, ease(p1) * distance, 0);
+
+          // 2 + 3) Intro dot, in the intro section's own coordinates.
+          const sec = introSection.getBoundingClientRect();
+          const line = introLineLeft.getBoundingClientRect();
+          const titleY = sec.height / 2;
+          const startX = sec.width; // start from the far right edge of the right-side green line
+          const gutterX = window.innerWidth * 0.0925 - sec.left; // the L's vertical
+          const legEndY = titleY + sec.height * LEG_DROP; // bottom edge of section line
+          // Distance still to travel after the hold: rest of the L, then the
+          // About connector down to the heading.
+          const headingY = parseFloat(connectorDot.style.top) || 0;
+          const restOfLeg = sec.height - legEndY;
+          const travel = (restOfLeg + headingY) * p3;
+
+          let ix = gutterX;
+          let iy = legEndY + travel;
+          if (p3 === 0) {
+            if (p2 < ACROSS) {
+              ix = startX + (gutterX - startX) * ease(p2 / ACROSS);
+              iy = titleY;
+            } else {
+              iy = titleY + (legEndY - titleY) * ((p2 - ACROSS) / (1 - ACROSS));
+            }
+          }
+          place(introDot, ix, iy);
+
+          // About connector dot: rides from the section top to the heading.
+          const aboutY = travel - restOfLeg; // 0 at the seam, headingY on arrival
+          place(connectorDot, 0, Math.min(aboutY, headingY) - headingY);
+
+          // Exactly one dot: overlap only across the seam, where each half
+          // is clipped by its own section.
+          const r = 12;
+          heroDot.style.visibility = p2 === 0 ? "visible" : "hidden";
+          introDot.style.visibility = p2 > 0 && iy <= sec.height + r ? "visible" : "hidden";
+          connectorDot.style.visibility = p2 > 0 && aboutY >= -r ? "visible" : "hidden";
+        };
+
+        const heroLeg = ScrollTrigger.create({
+          trigger: heroRef.current,
+          start: "top top",
+          end: "+=80%",
+          pin: isPinned,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            p1 = self.progress;
+            update();
+          },
+        });
+        const hold = ScrollTrigger.create({
+          trigger: introSection,
+          start: "top top",
+          end: `+=${HOLD * 100}%`,
+          pin: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            p2 = self.progress;
+            update();
+          },
+        });
+        // After the hold the intro scrolls away; the About section pins
+        // exactly one intro-height later.
+        const release = ScrollTrigger.create({
+          trigger: introSection,
+          start: () => hold.end,
+          end: () => hold.end + introSection.offsetHeight,
+          onUpdate: (self) => {
+            p3 = self.progress;
+            update();
+          },
+        });
+        const syncAll = () => {
+          p1 = heroLeg.progress;
+          p2 = hold.progress;
+          p3 = release.progress;
+          update();
+        };
+        ScrollTrigger.addEventListener("refresh", syncAll);
+        syncAll();
+
+        resetTraveler = () => {
+          ScrollTrigger.removeEventListener("refresh", syncAll);
+          for (const el of [heroDot, introDot, connectorDot]) el.style.visibility = "";
+          gsap.set([heroDot, connectorDot], { x: 0, y: 0, xPercent: -50, yPercent: -50 });
+        };
+      }
+      return () => resetTraveler?.();
+    });
+    return () => mm.revert();
   }, []);
 
   //======================================= ALL GSAP ANIMATIONS =========================================
@@ -293,26 +419,25 @@ function Home() {
               onRefresh: updateHeroOrb,
             },
           });
-
-          // Headline gently recedes (fades/scales/blurs) as the hero scrolls
-          // out, tied to the same pinned scroll distance as the orb above.
-          if (heroTextWrapRef.current) {
-            gsap.to(heroTextWrapRef.current, {
-              opacity: 0.12,
-              scale: 0.94,
-              filter: "blur(6px)",
-              ease: "none",
-              scrollTrigger: {
-                trigger: heroRef.current,
-                start: "top top",
-                end: () => `+=${Math.max(getOrbTravel(), window.innerHeight)}`,
-                scrub: true,
-                invalidateOnRefresh: true,
-              },
-            });
-          }
         }
 
+
+
+        // =====================================================
+        // ABOUT INTRO — title + connector lines
+        // =====================================================
+        if (aboutIntroSectionRef.current) {
+          const introTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: aboutIntroSectionRef.current,
+              start: "top 65%",
+              toggleActions: "play none none reverse",
+            },
+          });
+          // Only the title animates; the green lines either side are fixed
+          // (no grow/shrink, so they never blink when scrolling in and out).
+          introTl.from(".about-intro-title", { opacity: 0, y: 40, duration: 0.9, ease: "power3.out" });
+        }
 
 
         // =====================================================
@@ -336,6 +461,8 @@ function Home() {
             },
           });
 
+          // The connector line + heading orb are driven by the travelling orb
+          // below; this timeline only fades them out with the content.
           tl.to(".about-title-main", { opacity: 1, x: 0, duration: 2.2, ease: "power3.out" }, 0.3)
             .to(".about-text", { opacity: 1, x: 0, duration: 2.2, ease: "power3.out" }, 0.6)
             .to(".about-btn", { opacity: 1, x: 0, duration: 2.2, ease: "power3.out" }, 0.9)
@@ -344,6 +471,7 @@ function Home() {
               [".about-title-main", ".about-text", ".about-btn"],
               { opacity: 0, x: -80, duration: 0.8, ease: "power2.in" },
             )
+            .to(".about-connector", { opacity: 0, duration: 0.8, ease: "power2.in" }, "<")
             .to(quoteRef.current, { opacity: 1, duration: 0.8 }, "+=0.1")
             .to(quote1Ref.current, { opacity: 1, y: 0, duration: 1, ease: "power4.out" })
             .to({}, { duration: 2.2 })
@@ -681,26 +809,26 @@ function Home() {
   return (
     <>
       <PageShell>
+
         {/* ============================== HERO =================================== */}
         <section
           ref={heroRef}
-          className="relative min-h-[100svh] overflow-hidden bg-black sm:min-h-[100dvh] lg:min-h-screen"
+          className="relative -mt-24 min-h-[100svh] overflow-hidden bg-black sm:min-h-[100dvh] lg:min-h-screen"
         >
-          {/* 3D Agentic Background Animation */}
-          <Hero3DBackground />
-
           <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl items-center justify-center px-6 sm:min-h-[100dvh] lg:min-h-screen">
             <div
               ref={heroTextWrapRef}
               className="flex flex-col items-center text-center font-display font-bold leading-[1.1] tracking-tight will-change-transform"
             >
-              <h1 ref={heroLine1Ref} className="type-display text-white">
+              <h1 ref={heroLine1Ref} className="type-display text-white pb-1">
                 Engineering{" "}
                 <span
                   style={{
                     color: "#000000",
                     WebkitTextStroke: "clamp(1.5px, 0.2vw, 3px) #82E926",
                     paintOrder: "stroke fill",
+                    display: "inline-block",
+                    paddingBottom: "0.1em",
                   }}
                 >
                   Digital
@@ -710,11 +838,13 @@ function Home() {
 
               <p
                 ref={heroLine2Ref}
-                className="type-display"
+                className="type-display pb-1"
                 style={{
                   color: "#000000",
                   WebkitTextStroke: "clamp(1.5px, 0.2vw, 3px) #82E926",
                   paintOrder: "stroke fill",
+                  display: "inline-block",
+                  paddingBottom: "0.1em",
                 }}
               >
                 That Scale With
@@ -723,6 +853,17 @@ function Home() {
               <div className="text-center">
                 <div className="relative inline-block">
                   <p ref={heroLine3Ref} className="type-display text-white">Ambition</p>
+
+                  {/* Connector: orb beside the last word, line out to the right edge */}
+                  <span
+                    ref={heroLineRef}
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-[55%] -mt-[0.5px] left-[calc(100%+clamp(18px,2.8vw,40px))] h-px w-[100vw] origin-left bg-[#15EC0D]"
+                  />
+                  <GlowOrb
+                    ref={heroDotRef}
+                    className="absolute top-[55%] left-[calc(100%+clamp(18px,2.8vw,40px))] z-10 -translate-x-1/2 -translate-y-1/2"
+                  />
                 </div>
               </div>
             </div>
@@ -731,14 +872,75 @@ function Home() {
 
 
 
+        {/* ============================== ABOUT INTRO =================================== */}
+        {/* Big title with connectors (Figma): on the right a line runs to the
+            edge with an orb on it; on the left an L-line runs out to the
+            gutter and down into the About content below. */}
+        <section
+          ref={aboutIntroSectionRef}
+          className="relative flex min-h-[60svh] items-center overflow-hidden bg-black lg:h-screen lg:min-h-0"
+        >
+          <div className="relative flex w-full items-center">
+            <span aria-hidden="true" className="hidden w-[9.25vw] shrink-0 lg:block" />
+            <span
+              ref={aboutIntroLineLeftRef}
+              aria-hidden="true"
+              className="about-intro-line-left hidden h-[1.5px] flex-1 origin-right bg-[#15EC0D] lg:block"
+            />
+            <h2
+              className="about-intro-title relative z-10 mx-auto shrink-0 bg-black lg:mx-[46px]"
+              style={{
+                color: "#FFF",
+                fontFamily: '"Inter", sans-serif',
+                fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+                fontStyle: "normal",
+                fontWeight: 600,
+                lineHeight: "normal",
+              }}
+            >
+              ABOUT US
+            </h2>
+            <span
+              aria-hidden="true"
+              className="about-intro-line-right hidden h-[1.5px] flex-1 origin-left bg-[#15EC0D] lg:block"
+            />
+          </div>
+
+          {/* The travelling dot while the intro is held (desktop; positioned by GSAP). */}
+          <GlowOrb
+            ref={aboutIntroDotRef}
+            className="absolute left-0 top-0 z-0 hidden lg:block"
+            style={{ visibility: "hidden" }}
+          />
+
+          {/* Vertical leg of the L: from the title's centre line down to the
+              section bottom, continued by the About section's connector. */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-0 left-[9.25vw] top-1/2 -ml-[0.75px] hidden w-[1.5px] bg-[#15EC0D] lg:block"
+          />
+        </section>
+
         {/* ============================== ABOUT CONTENT =================================== */}
         <section
           ref={about2Ref}
           className="relative flex min-h-[100svh] items-center overflow-hidden bg-black px-6 py-20 sm:min-h-[100dvh] sm:px-8 lg:h-screen lg:min-h-0 lg:px-0 lg:py-0"
         >
+          {/* Connector continuing down from the intro's L-line to the heading orb.
+              Its height is measured to the heading's centre (see effect). */}
+          <span
+            ref={aboutConnectorLineRef}
+            aria-hidden="true"
+            className="about-connector pointer-events-none absolute left-[9.25vw] top-0 -ml-[0.75px] hidden w-[1.5px] origin-top bg-[#15EC0D] lg:block"
+          />
+          <GlowOrb
+            ref={aboutConnectorDotRef}
+            className="about-connector absolute left-[9.25vw] z-20 hidden -translate-x-1/2 -translate-y-1/2 lg:block"
+          />
+
           {/* ABOUT BLOCK */}
-          <div className="relative z-10 mx-auto w-full max-w-3xl text-center lg:absolute lg:left-1/2 lg:top-[42%] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:w-[90%] lg:text-center">
-            <h2 className="about-title-main type-title text-white">
+          <div className="relative z-10 mx-auto w-full max-w-3xl text-center lg:absolute lg:left-[16vw] lg:top-[42%] lg:mx-0 lg:w-[73vw] lg:max-w-none lg:-translate-y-1/2 lg:text-left">
+            <h2 ref={aboutHeadingRef} className="about-title-main type-heading text-white">
               ABOUT US
             </h2>
             <p className="about-text mt-6 type-lead text-white/85 md:mt-8">
@@ -852,40 +1054,48 @@ function Home() {
         {/* ============================= INDUSTRIES — PINNED VIEWPORT ============================*/}
         <section
           ref={industriesSectionRef}
-          className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-black px-4 py-12 sm:min-h-[100dvh] sm:px-8 lg:h-screen lg:max-h-screen lg:overflow-hidden lg:px-12 lg:py-16"
+          className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-black py-6 sm:min-h-[100dvh] sm:py-8 lg:h-screen lg:max-h-screen lg:overflow-hidden lg:py-10"
         >
-          <div className="mx-auto w-full max-w-7xl flex-1 flex flex-col justify-between">
+          <div className="w-full px-4 sm:px-8 lg:px-12 flex-1 flex flex-col justify-between mb-4 lg:mb-6">
             <h2
               ref={industriesTitleRef}
-              className="industries-title my-auto flex flex-col gap-[clamp(1.5rem,3vw,3rem)] font-display type-title uppercase tracking-tight text-white"
+              className="industries-title my-auto flex flex-col gap-[clamp(1rem,2.5vw,2.5rem)] uppercase tracking-tight text-white"
+              style={{
+                color: "#FFF",
+                fontFamily: '"Inter", sans-serif',
+                fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+                fontStyle: "normal",
+                fontWeight: 600,
+                lineHeight: "normal",
+              }}
             >
               <div className="industries-left">Industries</div>
               <div className="industries-right ml-auto w-fit">We Serve</div>
             </h2>
+          </div>
 
-            <div
-              ref={industriesGridRef}
-              className="industries-grid grid grid-cols-1 border-2 border-white bg-black sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-auto"
-            >
-              {industries.map((i, idx) => {
-                const IconComp = (LucideIcons as any)[i.iconName] || LucideIcons.HelpCircle;
-                return (
-                  <div
-                    key={i.id}
-                    className={`industry-card flex min-h-[180px] items-center justify-center bg-black px-4 py-6 sm:min-h-[220px] sm:px-6 ${idx < industries.length - 1 ? "border-r border-white/50" : ""
-                      }`}
-                  >
-                    <div className="text-center">
-                      <IconComp className="mx-auto mb-3 sm:mb-4 h-9 w-9 sm:h-10 sm:w-10 text-primary" />
-                      <div className="type-card text-white">
-                        {i.titleLine1}
-                        {i.titleLine2 ? <><br />{i.titleLine2}</> : null}
-                      </div>
+          <div
+            ref={industriesGridRef}
+            className="industries-grid w-full grid grid-cols-1 border-y border-white bg-black sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-auto"
+          >
+            {industries.map((i, idx) => {
+              const IconComp = (LucideIcons as any)[i.iconName] || LucideIcons.HelpCircle;
+              return (
+                <div
+                  key={i.id}
+                  className={`industry-card flex min-h-[163px] items-center justify-center bg-black px-4 py-[23px] sm:min-h-[183px] sm:px-6 ${idx < industries.length - 1 ? "border-b sm:border-b-0 sm:border-r border-white/50" : ""
+                    }`}
+                >
+                  <div className="text-center">
+                    <IconComp className="mx-auto mb-3 sm:mb-4 h-9 w-9 sm:h-10 sm:w-10 text-primary" />
+                    <div className="type-card text-white">
+                      {i.titleLine1}
+                      {i.titleLine2 ? <><br />{i.titleLine2}</> : null}
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
@@ -895,7 +1105,17 @@ function Home() {
           className="quote-section relative flex min-h-[65svh] items-center justify-center overflow-hidden px-6 py-20 sm:min-h-[65dvh] lg:h-screen lg:min-h-0 lg:px-0 lg:py-0"
         >
           <div className="mx-auto max-w-5xl px-6 text-center">
-            <p className="quote-text font-display type-statement tracking-tight">
+            <p
+              className="quote-text tracking-tight text-center"
+              style={{
+                color: "#FFF",
+                fontFamily: '"Inter", sans-serif',
+                fontSize: "clamp(1.5rem, 3.5vw, 3.5rem)",
+                fontStyle: "normal",
+                fontWeight: 600,
+                lineHeight: 1.3,
+              }}
+            >
               Technology only matters
               <br />
               when it delivers clarity
@@ -910,7 +1130,15 @@ function Home() {
         >
           <div
             ref={caseTitleRef}
-            className="case-title relative hidden whitespace-nowrap font-display text-[clamp(4.5rem,10vw,9.5rem)] font-bold uppercase leading-none text-white lg:block"
+            className="case-title relative hidden whitespace-nowrap uppercase text-white lg:block"
+            style={{
+              color: "#FFF",
+              fontFamily: '"Inter", sans-serif',
+              fontSize: "clamp(4.5rem, 25vw, 481px)",
+              fontStyle: "normal",
+              fontWeight: 600,
+              lineHeight: "normal",
+            }}
           >
             CASE
             <div className="case-tag type-card tag-1 absolute left-[3%] top-[70%]">
@@ -1008,7 +1236,7 @@ function Home() {
           <div className="relative z-10 max-w-5xl text-center">
             <h2
               ref={nextTitleRef}
-              className="text-white type-title"
+              className="text-white type-display"
             >
               Let&apos;s Build What&apos;s Next.
             </h2>

@@ -6,6 +6,7 @@ import {
   Mail,
   Phone,
   MapPin,
+  ArrowUp,
 } from "lucide-react";
 
 import { useEffect, useRef } from "react";
@@ -18,6 +19,10 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export function Footer({ disableAnimations = false }: { disableAnimations?: boolean }) {
   const footerRef = useRef(null);
+
+  const scrollToHero = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 //================================== Footer Animation ==================================
     useEffect(() => {
       if (disableAnimations) return;
@@ -222,42 +227,54 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
               <span>India · Global Delivery</span>
             </div>
 
-            <div className="footer-social flex gap-6 pt-4">
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Linkedin className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
-              </a>
+            <div className="footer-social flex items-center justify-between pt-4 gap-4 flex-wrap">
+              <div className="flex gap-6">
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Linkedin className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
+                </a>
 
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Instagram className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
-              </a>
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Instagram className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
+                </a>
 
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Youtube className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
-              </a>
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Youtube className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
+                </a>
+              </div>
+
             </div>
           </div>
         </div>
 
-
-        {/* HUGE ASTERI */}
-        <div className="asteri-footer-huge-logo relative flex justify-center mt-6 pb-6">
+        {/* HUGE ASTERI & BACK TO TOP ICON PLACED DIRECTLY AFTER THE 'I' */}
+        <div className="asteri-footer-huge-logo relative flex items-end justify-center mt-6 pb-6 gap-2 sm:gap-4">
           <img
             src="/Asteri logo for footer.svg"
             alt="Asteri"
-            className="h-[250px] w-auto object-contain select-none pointer-events-none"
+            className="h-[200px] sm:h-[250px] w-auto object-contain select-none pointer-events-none"
           />
+
+          {/* Icon placed precisely right after the 'i' */}
+          <button
+            onClick={scrollToHero}
+            title="Scroll to Hero section"
+            aria-label="Scroll to top hero section"
+            className="group mb-4 sm:mb-6 shrink-0 flex h-11 w-11 sm:h-13 sm:w-13 items-center justify-center rounded-full border border-[#7ED957]/60 bg-black/90 text-white backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 hover:border-[#82E926] hover:bg-[#82E926] hover:text-black hover:shadow-[0_0_25px_#82E926] cursor-pointer"
+          >
+            <ArrowUp className="h-5 w-5 sm:h-6 sm:w-6 text-[#7ED957] transition-transform duration-300 group-hover:-translate-y-1 group-hover:text-black" />
+          </button>
         </div>
         </div>
     </footer>

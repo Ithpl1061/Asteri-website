@@ -690,9 +690,7 @@ function Services() {
                 className="
                   text-white
                   font-bold
-                  text-[41px]
-                  md:text-[63px]
-                  xl:text-[71px]
+                  text-[clamp(2.75rem,6vw,7rem)]
                   leading-[1]
                 "
               >
@@ -714,7 +712,7 @@ function Services() {
                 text-[20px]
                 md:text-[26px]
                 font-semibold
-                font-mono
+                font-sans
                 "
               >
                 Buy with confidence — implementation expertise included.
@@ -1507,12 +1505,7 @@ function Services() {
 
               <h2
                 ref={nextTitleRef}
-                className="
-                  text-white
-                  font-bold
-                  leading-tight
-                  text-[clamp(1.5rem,3vw,2.5rem)]
-                "
+                className="text-white text-[clamp(2rem,4.5vw,5.25rem)] font-bold leading-tight text-center"
               >
                 Not just a license - a real partnership.
               </h2>

@@ -34,13 +34,24 @@ function ActionButton({ children, href, dark = false }: { children: string; href
   );
 }
 
+const DEFAULT_OUTCOMES = [
+  { title: "Faster Processes", description: "Cut time spent on manual, repetitive tasks" },
+  { title: "Reduced Costs", description: "Lower overhead through smarter resourcing" },
+  { title: "Higher Visibility", description: "Real-time data across every team and system" },
+  { title: "Measurable Growth", description: "Outcomes tracked, documented, and proven" },
+];
+
 function Solutions() {
-  const [outcomes, setOutcomes] = useState<any[]>([]);
+  const [outcomes, setOutcomes] = useState<any[]>(DEFAULT_OUTCOMES);
 
   useEffect(() => {
     fetch(apiUrl('/api/solutions-outcomes'))
       .then(res => res.json())
-      .then(data => setOutcomes(data))
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setOutcomes(data);
+        }
+      })
       .catch(err => console.error(err));
   }, []);
 
@@ -52,23 +63,26 @@ function Solutions() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const introSectionRef = useRef<HTMLElement>(null);
+  const introStatementSectionRef = useRef<HTMLElement>(null);
+  const introStatementTextRef = useRef<HTMLParagraphElement>(null);
   const coreSectionRef = useRef<HTMLElement>(null);
-  const playbookSectionRef = useRef<HTMLElement>(null);
-  const outcomesHeadingSectionRef = useRef<HTMLElement>(null);
   const outcomesSubHeadingSectionRef = useRef<HTMLElement>(null);
   const outcomesSectionRef = useRef<HTMLElement>(null);
+  const playbookSectionRef = useRef<HTMLElement>(null);
+  const statementSectionRef = useRef<HTMLElement>(null);
+  const statementTextRef = useRef<HTMLParagraphElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ctaSectionRef = useRef<HTMLElement>(null);
   const notAGenericRef = useRef<HTMLSpanElement>(null);
   const playbookRef = useRef<HTMLSpanElement>(null);
-  const outcomesHeadingRef = useRef<HTMLHeadingElement>(null);
   const outcomesSubHeadingRef = useRef<HTMLHeadingElement>(null);
   const solutiRef = useRef<HTMLDivElement>(null);
   const onRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     const ctx = gsap.context(() => {
       if (introSectionRef.current && solutiRef.current && onRef.current && textRef.current) {
@@ -78,9 +92,9 @@ function Solutions() {
         gsap.set(textRef.current, { x: 150, opacity: 0 });
 
         // Hero entrance animation (mimicking footer style)
-        const heroTitle = containerRef.current.querySelector(".solutions-hero h1");
-        const heroDesc = containerRef.current.querySelector(".solutions-hero p");
-        const heroBtn = containerRef.current.querySelector(".solutions-hero a");
+        const heroTitle = container.querySelector(".solutions-hero h1");
+        const heroDesc = container.querySelector(".solutions-hero p");
+        const heroBtn = container.querySelector(".solutions-hero a");
 
         if (heroTitle && heroDesc && heroBtn) {
           gsap.set(heroTitle, { y: 120, opacity: 0 });
@@ -109,21 +123,31 @@ function Solutions() {
           .to({}, { duration: 1 }); // empty space to let it hold at the end
       }
 
-      // Animate statements sliding in from the right
-      const statements = gsap.utils.toArray<HTMLElement>(".solutions-statement p");
-      statements.forEach((p) => {
-        gsap.from(p, {
+      // Intro Statement slide & pin animation
+      if (introStatementSectionRef.current && introStatementTextRef.current) {
+        gsap.set(introStatementTextRef.current, { x: "100vw", opacity: 0 });
+
+        const tlIntroStatement = gsap.timeline({
           scrollTrigger: {
-            trigger: p,
-            start: "top 85%", 
-            toggleActions: "play none none reverse",
-          },
-          x: 150,
-          opacity: 0,
-          duration: 1,
-          ease: "power2.out"
+            trigger: introStatementSectionRef.current,
+            start: "center center",
+            end: "+=800",
+            scrub: true,
+            pin: true,
+          }
         });
-      });      // Core services animation
+
+        tlIntroStatement
+          .to(introStatementTextRef.current, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 1 });
+      }
+
+      // Core services animation
       if (coreSectionRef.current) {
         const coreCards = gsap.utils.toArray<HTMLElement>(".core-card");
         const container = (coreSectionRef.current.querySelector(".max-w-\\[1600px\\]") as HTMLElement) || coreSectionRef.current;
@@ -179,29 +203,6 @@ function Solutions() {
         });
       }
 
-      // Flip flop animation for outcomes heading
-      if (outcomesHeadingSectionRef.current && outcomesHeadingRef.current) {
-        gsap.set(outcomesHeadingRef.current, { rotationX: 90, y: 50, opacity: 0, transformOrigin: "50% 50%" });
-
-        const tlOutcomesHeading = gsap.timeline({
-          scrollTrigger: {
-            trigger: outcomesHeadingSectionRef.current,
-            start: "center center",
-            end: "+=1000",
-            scrub: true,
-            pin: true,
-          }
-        });
-
-        tlOutcomesHeading.to(outcomesHeadingRef.current, {
-          rotationX: 0,
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out"
-        }).to({}, { duration: 1 });
-      }
-
       // Flip flop animation for outcomes subheading (OUTCOMES)
       if (outcomesSubHeadingSectionRef.current && outcomesSubHeadingRef.current) {
         gsap.set(outcomesSubHeadingRef.current, { rotationX: 90, y: 50, opacity: 0, transformOrigin: "50% 50%" });
@@ -225,20 +226,44 @@ function Solutions() {
         }).to({}, { duration: 1 });
       }
 
-      // Outcomes moving dot animation
+      // Outcomes moving dot animation and synchronized text fade
       if (outcomesSectionRef.current && dotRef.current) {
         const olElement = outcomesSectionRef.current.querySelector("ol");
         if (olElement) {
-          gsap.to(dotRef.current, {
-            scrollTrigger: {
-              trigger: olElement,
-              start: "top center",
-              end: "bottom center",
-              scrub: true,
-            },
-            top: "calc(100% - clamp(65px, 7.5vw, 125px))",
-            ease: "none"
-          });
+          const outcomeItems = Array.from(olElement.querySelectorAll<HTMLLIElement>("li"));
+          const n = outcomeItems.length;
+
+          if (n > 0) {
+            const totalDuration = Math.max(1, n - 1);
+            const outcomesTl = gsap.timeline({
+              scrollTrigger: {
+                trigger: olElement,
+                start: "top center",
+                end: "bottom center",
+                scrub: true,
+              }
+            });
+
+            // Dot moves continuously from top to bottom
+            outcomesTl.to(dotRef.current, {
+              top: "calc(100% - clamp(65px, 7.5vw, 125px))",
+              ease: "none",
+              duration: totalDuration,
+            }, 0);
+
+            // Initial state: First item is active, others are subtly dimmed
+            gsap.set(outcomeItems[0], { opacity: 1 });
+            for (let i = 1; i < n; i++) {
+              gsap.set(outcomeItems[i], { opacity: 0.25 });
+            }
+
+            // Crossfade items as the dot travels from item i to item i+1
+            for (let i = 0; i < n - 1; i++) {
+              const transitionStart = i + 0.35;
+              outcomesTl.to(outcomeItems[i], { opacity: 0.3, ease: "power1.inOut", duration: 0.65 }, transitionStart);
+              outcomesTl.to(outcomeItems[i + 1], { opacity: 1, ease: "power1.inOut", duration: 0.65 }, transitionStart);
+            }
+          }
         }
       }
 
@@ -268,6 +293,30 @@ function Solutions() {
           ease: "power2.out"
         }, 0)
         .to({}, { duration: 1 });
+      }
+
+      // Statement slide & pin animation
+      if (statementSectionRef.current && statementTextRef.current) {
+        gsap.set(statementTextRef.current, { x: "100vw", opacity: 0 });
+
+        const tlStatement = gsap.timeline({
+          scrollTrigger: {
+            trigger: statementSectionRef.current,
+            start: "center center",
+            end: "+=800",
+            scrub: true,
+            pin: true,
+          }
+        });
+
+        tlStatement
+          .to(statementTextRef.current, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 1 });
       }
 
       // CTA stagger animation
@@ -326,8 +375,16 @@ function Solutions() {
           </div>
         </section>
 
-        <section className="solutions-statement">
-          <p className="type-statement">Every solution is shaped by your specific business context and constraints.</p>
+        <section
+          ref={introStatementSectionRef}
+          className="min-h-screen flex items-center justify-center relative w-full overflow-hidden text-center px-6"
+        >
+          <p
+            ref={introStatementTextRef}
+            className="type-statement max-w-[1120px] mx-auto text-white text-center"
+          >
+            Every solution is shaped by your specific business context and constraints.
+          </p>
         </section>
 
         <section ref={coreSectionRef} className="solutions-core">
@@ -336,22 +393,22 @@ function Solutions() {
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 -translate-y-8">
             
             {/* Card 1: Enterprise */}
-            <div className="core-card bg-[#403f3f] p-6 sm:p-10 lg:p-8 xl:p-12 relative overflow-hidden flex flex-col items-start text-left w-full max-w-[900px] shadow-2xl">
-              <div className="w-full mb-8">
+            <div className="core-card rounded-xl bg-[#403f3f] p-6 sm:p-8 lg:p-6 xl:p-8 relative top-[25px] overflow-hidden flex flex-col items-start text-left w-full lg:w-[calc(100%+20px)] max-w-[920px] shadow-2xl">
+              <div className="w-full mb-3 sm:mb-4">
                 <div className="text-white font-bold tracking-tighter" style={{ lineHeight: 0.85 }}>
-                  <div className="text-[4rem] sm:text-[6rem] md:text-[7.5rem] lg:text-[5rem] xl:text-[6.5rem] 2xl:text-[7.5rem]">Enterpr</div>
-                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-6 mt-2">
-                    <span className="text-[4rem] sm:text-[6rem] md:text-[7.5rem] lg:text-[5rem] xl:text-[6.5rem] 2xl:text-[7.5rem]">ise</span>
+                  <div className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] lg:text-[4.25rem] xl:text-[5.5rem] 2xl:text-[6.5rem]">Enterpr</div>
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-6 mt-3 sm:mt-4">
+                    <span className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] lg:text-[4.25rem] xl:text-[5.5rem] 2xl:text-[6.5rem]">ise</span>
                     
-                    <div className="flex flex-col pb-1 sm:pb-3 md:pb-4 lg:pb-2 xl:pb-4">
-                      <h3 className="text-white text-lg sm:text-xl md:text-[1.5rem] lg:text-lg xl:text-xl font-bold mb-1 leading-tight tracking-normal">Digital Transformation</h3>
+                    <div className="flex flex-col pb-1 sm:pb-2 md:pb-2 lg:pb-1 xl:pb-1.5">
+                      <h3 className="text-white text-lg sm:text-xl md:text-[1.4rem] lg:text-lg xl:text-xl font-bold mb-1 leading-tight tracking-[0.015em]">Digital Transformation</h3>
                       <p className="text-[#82e926] text-sm sm:text-base md:text-[1rem] lg:text-sm xl:text-base font-medium leading-tight">Modernize without the<br className="hidden sm:block" /> disruption.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <p className="text-white text-sm sm:text-base leading-relaxed max-w-[800px] mb-10">
+              <p className="text-white text-sm sm:text-base leading-relaxed max-w-[800px] mb-5 sm:mb-6">
                 We help you automate manual processes, retire legacy systems, and rebuild
                 around a digital-first operating model — without bringing your business to a
                 halt mid-transition. Every transformation roadmap is built around your existing
@@ -367,24 +424,24 @@ function Solutions() {
             </div>
 
             {/* Card 2: Cloud Modernization */}
-            <div className="core-card bg-[#403f3f] p-6 sm:p-10 lg:p-8 xl:p-12 relative overflow-hidden flex flex-col items-start text-left w-full max-w-[900px] shadow-2xl">
-              <div className="w-full mb-8">
+            <div className="core-card rounded-xl bg-[#403f3f] p-6 sm:p-8 lg:p-6 xl:p-8 relative top-[25px] overflow-hidden flex flex-col items-start text-left w-full lg:w-[calc(100%+20px)] max-w-[920px] shadow-2xl">
+              <div className="w-full mb-3 sm:mb-4">
                 <div className="text-white font-bold tracking-tighter" style={{ lineHeight: 0.85 }}>
                   
                   {/* First row: Cloud (vertical) + Moderniz */}
                   <div className="flex flex-row items-end">
                     <div className="flex items-center justify-center pr-1 sm:pr-2 mb-2 lg:mb-1 xl:mb-2 z-10">
-                       <span className="text-[0.7rem] sm:text-[1.1rem] md:text-[1.4rem] lg:text-[1rem] xl:text-[1.2rem] 2xl:text-[1.4rem] font-bold tracking-widest" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>Cloud</span>
+                       <span className="text-[0.7rem] sm:text-[1rem] md:text-[1.2rem] lg:text-[0.9rem] xl:text-[1.1rem] 2xl:text-[1.25rem] font-bold tracking-widest" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>Cloud</span>
                     </div>
-                    <div className="text-[4rem] sm:text-[6rem] md:text-[7.5rem] lg:text-[5rem] xl:text-[6.5rem] 2xl:text-[7.5rem]">Moderniz</div>
+                    <div className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] lg:text-[4.25rem] xl:text-[5.5rem] 2xl:text-[6.5rem]">Moderniz</div>
                   </div>
 
                   {/* Second row: ation + Solutions block */}
-                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-6 mt-2">
-                    <span className="text-[4rem] sm:text-[6rem] md:text-[7.5rem] lg:text-[5rem] xl:text-[6.5rem] 2xl:text-[7.5rem]">ation</span>
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-6 mt-3 sm:mt-4">
+                    <span className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] lg:text-[4.25rem] xl:text-[5.5rem] 2xl:text-[6.5rem]">ation</span>
                     
-                    <div className="flex flex-col pb-1 sm:pb-3 md:pb-4 lg:pb-2 xl:pb-4">
-                      <h3 className="text-white text-lg sm:text-xl md:text-[1.5rem] lg:text-lg xl:text-xl font-bold mb-1 leading-tight tracking-normal">Solutions</h3>
+                    <div className="flex flex-col pb-1 sm:pb-2 md:pb-2 lg:pb-1 xl:pb-1.5">
+                      <h3 className="text-white text-lg sm:text-xl md:text-[1.4rem] lg:text-lg xl:text-xl font-bold mb-1 leading-tight tracking-[0.015em]">Solutions</h3>
                       <p className="text-[#82e926] text-sm sm:text-base md:text-[1rem] lg:text-sm xl:text-base font-medium leading-tight max-w-[280px]">Upgrading legacy systems into agile, cloud-based environments.</p>
                     </div>
                   </div>
@@ -392,7 +449,7 @@ function Solutions() {
                 </div>
               </div>
 
-              <p className="text-white text-sm sm:text-base leading-relaxed max-w-[800px] mb-10">
+              <p className="text-white text-sm sm:text-base leading-relaxed max-w-[800px] mb-5 sm:mb-6">
                 We enable seamless migration and modernization, ensuring improved performance, flexibility, and cost efficiency.
               </p>
 
@@ -407,12 +464,17 @@ function Solutions() {
           </div>
         </section>
 
-        <section ref={outcomesHeadingSectionRef} className="solutions-outcomes-heading min-h-[75vh] flex items-center justify-center relative w-full overflow-hidden text-center">
-          <h2 ref={outcomesHeadingRef} style={{ perspective: "1000px" }} className="solutions-outcomes-heading-text type-title text-white uppercase">HOW SOLUTIONS<br />CREATE IMPACT</h2>
-        </section>
-
         <section ref={outcomesSubHeadingSectionRef} className="solutions-outcomes-subheading min-h-[75vh] flex items-center justify-center relative w-full overflow-hidden text-center">
-          <h3 ref={outcomesSubHeadingRef} style={{ perspective: "1000px" }} className="type-title">OUTCOMES</h3>
+          <h3
+            ref={outcomesSubHeadingRef}
+            style={{
+              perspective: "1000px",
+              fontSize: "clamp(3.4375rem, calc(5.2vw + 15px), 7.1875rem)",
+            }}
+            className="type-title"
+          >
+            OUTCOMES
+          </h3>
         </section>
 
         <section ref={outcomesSectionRef} className="solutions-outcomes min-h-[75vh] flex flex-col items-center justify-center relative w-full overflow-hidden">
@@ -429,16 +491,32 @@ function Solutions() {
         </section>
 
         <section ref={playbookSectionRef} className="min-h-[75vh] flex justify-center items-center overflow-hidden w-full relative">
-          <div className="max-w-[1200px] w-full flex flex-col">
-            <h2 className="type-title w-full text-white">
+          <div className="max-w-[1400px] w-full flex flex-col">
+            <h2
+              className="w-full text-white tracking-tight"
+              style={{
+                fontFamily: '"Inter", sans-serif',
+                fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+                fontWeight: 600,
+                lineHeight: "1.15",
+              }}
+            >
               <span ref={notAGenericRef} className="block text-left w-full pl-[5%] md:pl-[10%]">Not A Generic</span>
               <span ref={playbookRef} className="block text-right w-full pr-[5%] md:pr-[10%]">Playbook.</span>
             </h2>
           </div>
         </section>
 
-        <section className="solutions-statement">
-          <p className="type-statement">Every solution is shaped by your specific business context and constraints.</p>
+        <section
+          ref={statementSectionRef}
+          className="min-h-screen flex items-center justify-center relative w-full overflow-hidden text-center px-6"
+        >
+          <p
+            ref={statementTextRef}
+            className="type-statement max-w-[1120px] mx-auto text-white text-center"
+          >
+            Every solution is shaped by your specific business context and constraints.
+          </p>
         </section>
 
         <section ref={ctaSectionRef} className="solutions-cta">

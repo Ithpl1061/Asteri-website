@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { apiUrl } from "@/lib/api";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Search, Users, RotateCw, HeartHandshake } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import "./about-page.css";
+// Geist Semi Bold for the hero sub-line (per Figma)
+import "@fontsource/geist-sans/latin-600.css";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -23,6 +25,15 @@ export const Route = createFileRoute("/about")({
 });
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+// Outline words in the hero headline — same style as the Home hero's green text
+const aboutHeroOutline: CSSProperties = {
+  color: "#000000",
+  WebkitTextStroke: "clamp(1.5px, 0.2vw, 3px) #82E926",
+  paintOrder: "stroke fill",
+  display: "inline-block",
+  paddingBottom: "0.1em",
+};
 
 
 function VisionariesSection({
@@ -166,6 +177,9 @@ function About() {
   const heroCtaRef = useRef<HTMLButtonElement>(null);
   const orbPathRef = useRef<SVGPathElement>(null);
   const orbDotRef = useRef<SVGCircleElement>(null);
+  const orbSvgRef = useRef<SVGSVGElement>(null);
+  const heroBusinessRef = useRef<HTMLSpanElement>(null);
+  const heroSubRef = useRef<HTMLParagraphElement>(null);
   const outcomesHeadingSectionRef = useRef<HTMLElement>(null);
   const outcomesHeadingRef = useRef<HTMLHeadingElement>(null);
   const serveClientsSectionRef = useRef<HTMLElement>(null);
@@ -187,6 +201,106 @@ function About() {
   const techSectionRef = useRef<HTMLElement>(null);
   const techHeadingRef = useRef<HTMLHeadingElement>(null);
   const nextSectionRef = useRef<HTMLElement>(null);
+
+  // ===================== HERO GREEN LINE GEOMETRY (Figma "Orb- HH") =====================
+  // Same route as the Figma About hero, placed around the real text so it never
+  // crosses it: down between the headline lines (over the middle of "Business"),
+  // right past the end of "Business", down below the button, left, up into the
+  // gap between the sub-line and the button, then out to the left edge.
+  // Offsets are the Figma values (designed at a 96px headline), scaled with the
+  // headline size; 10px corner radius as in Figma. Recomputed on resize, and
+  // the dot's motionPath re-reads it on refresh (invalidateOnRefresh).
+  useLayoutEffect(() => {
+    const svg = orbSvgRef.current;
+    const path = orbPathRef.current;
+    const dot = orbDotRef.current;
+    const headline = heroHeadlineRef.current;
+    const business = heroBusinessRef.current;
+    const sub = heroSubRef.current;
+    const cta = heroCtaRef.current;
+    const container = svg?.parentElement;
+    if (!svg || !path || !dot || !headline || !business || !sub || !cta || !container) return;
+
+    const RADIUS = 10;
+    const roundedPath = (pts: { x: number; y: number }[]) => {
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for (let i = 1; i < pts.length - 1; i++) {
+        const [a, b, c] = [pts[i - 1], pts[i], pts[i + 1]];
+        const r = Math.min(RADIUS, Math.hypot(b.x - a.x, b.y - a.y) / 2, Math.hypot(c.x - b.x, c.y - b.y) / 2);
+        const inX = b.x - Math.sign(b.x - a.x) * r;
+        const inY = b.y - Math.sign(b.y - a.y) * r;
+        const outX = b.x + Math.sign(c.x - b.x) * r;
+        const outY = b.y + Math.sign(c.y - b.y) * r;
+        d += ` L ${inX} ${inY} Q ${b.x} ${b.y} ${outX} ${outY}`;
+      }
+      const last = pts[pts.length - 1];
+      return `${d} L ${last.x} ${last.y}`;
+    };
+
+    let frame = 0;
+    const build = () => {
+      const c = container.getBoundingClientRect();
+      if (c.width === 0 || c.height === 0) return;
+      const local = (r: DOMRect) => ({
+        left: r.left - c.left,
+        right: r.right - c.left,
+        top: r.top - c.top,
+        bottom: r.bottom - c.top,
+        width: r.width,
+      });
+      const s = parseFloat(getComputedStyle(headline).fontSize) / 96;
+      const line1 = local(headline.children[0].getBoundingClientRect());
+      const biz = local(business.getBoundingClientRect());
+      const subR = local(sub.getBoundingClientRect());
+      const btn = local(cta.getBoundingClientRect());
+
+      const xDrop = biz.left + biz.width * 0.52;
+      const yTurn = line1.bottom - 13 * s;
+      // The line may run outside the content column (as in Figma); keep it on screen.
+      const xRight = Math.min(biz.right + 28 * s, window.innerWidth - c.left - RADIUS - 2);
+      // Below the button, but never past the hero's visible bottom edge.
+      const yBottom = Math.min(btn.bottom + 49 * s, c.height - 16);
+      const xReturn = btn.right + 204 * s;
+      const yGap = subR.bottom + (btn.top - subR.bottom) * 0.476;
+
+      const d = roundedPath([
+        { x: xDrop, y: 0 },
+        { x: xDrop, y: yTurn },
+        { x: xRight, y: yTurn },
+        { x: xRight, y: yBottom },
+        { x: xReturn, y: yBottom },
+        { x: xReturn, y: yGap },
+        { x: -c.left - 10, y: yGap }, // out past the screen's left edge
+      ]);
+      // Only touch the DOM when the geometry really changed (pinning the hero
+      // can resize the container without changing the path).
+      if (d === path.getAttribute("d")) return;
+      svg.setAttribute("viewBox", `0 0 ${c.width} ${c.height}`);
+      path.setAttribute("d", d);
+      dot.setAttribute("cx", String(xDrop));
+      dot.setAttribute("cy", "0");
+    };
+
+    // No ScrollTrigger.refresh() here: forcing a full refresh from this observer
+    // re-laid out every pin on the page each time pinning resized the hero
+    // (refresh -> pin -> resize -> refresh), which made the hero lag. ScrollTrigger
+    // already refreshes on window resize and once after fonts/images load, and the
+    // dot's motionPath re-reads the path then (invalidateOnRefresh).
+    const rebuild = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(build);
+    };
+
+    build();
+    document.fonts?.ready.then(rebuild);
+    const ro = new ResizeObserver(rebuild);
+    ro.observe(container);
+    ro.observe(headline);
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -227,6 +341,28 @@ function About() {
             gsap.set([heroHeadlineRef.current, heroCtaRef.current], { y: 0, opacity: 1 });
           }
 
+          // Green line orb dot animation with scroll & screenhold (pin)
+          if (orbDotRef.current && orbPathRef.current && heroRef.current) {
+            gsap.to(orbDotRef.current, {
+              motionPath: {
+                path: orbPathRef.current,
+                align: orbPathRef.current,
+                alignOrigin: [0.5, 0.5],
+                autoRotate: false,
+              },
+              ease: "none",
+              scrollTrigger: {
+                trigger: heroRef.current,
+                start: "top top",
+                end: "+=120%",
+                scrub: true,
+                pin: true,
+                anticipatePin: 1,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+
           // Statement section animation (text lines slide in ONE BY ONE from right + pin/hold)
           if (outcomesHeadingSectionRef.current) {
             const statementLines = Array.from(outcomesHeadingSectionRef.current.querySelectorAll<HTMLElement>(".statement-text-item"));
@@ -241,7 +377,7 @@ function About() {
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
-                  }
+                }
               });
 
               statementLines.forEach((line, i) => {
@@ -271,8 +407,8 @@ function About() {
                 end: "+=300%",
                 scrub: 0.5,
                 pin: true,
-                  anticipatePin: 1,
-                  }
+                anticipatePin: 1,
+              }
             });
 
             // Heading from right
@@ -310,7 +446,7 @@ function About() {
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
-                  }
+                }
               });
 
               missionItems.forEach((item, i) => {
@@ -341,7 +477,7 @@ function About() {
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
-                  }
+                }
               });
 
               visionItems.forEach((item, i) => {
@@ -369,8 +505,8 @@ function About() {
                 end: "+=200%",
                 scrub: 0.5,
                 pin: true,
-                  anticipatePin: 1,
-                  }
+                anticipatePin: 1,
+              }
             });
 
             tlApproachHeading
@@ -395,7 +531,7 @@ function About() {
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
-                  }
+                }
               });
 
               cardElements.forEach((card, i) => {
@@ -408,6 +544,12 @@ function About() {
               });
 
               tlApproachCards.to({}, { duration: 1.2 });
+              tlApproachCards.to(cardElements, {
+                opacity: 0,
+                y: -40,
+                duration: 1,
+                ease: "power1.in",
+              });
             }
           }
 
@@ -463,8 +605,8 @@ function About() {
                 end: "+=400%",
                 scrub: 0.5,
                 pin: true,
-                  anticipatePin: 1,
-                  },
+                anticipatePin: 1,
+              },
             });
 
             tlVisionaries
@@ -628,7 +770,7 @@ function About() {
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
-                  }
+                }
               });
 
               cultureCards.forEach((card, i) => {
@@ -655,8 +797,8 @@ function About() {
                 end: "+=200%",
                 scrub: 0.5,
                 pin: true,
-                  anticipatePin: 1,
-                  }
+                anticipatePin: 1,
+              }
             });
 
             tlTechHeading
@@ -683,7 +825,7 @@ function About() {
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
-                  }
+                }
               });
 
               nextItems.forEach((item, i) => {
@@ -733,46 +875,50 @@ function About() {
           <div className="absolute inset-0 grid-bg opacity-50" />
 
           {/* MAIN HERO CONTAINER */}
-          <div className="about-hero relative mx-auto h-[100svh] w-full max-w-[1400px] px-5 sm:px-8 lg:h-screen lg:px-10 flex flex-col items-center justify-center text-center">
+          <div className="about-hero relative mx-auto min-h-[calc(100svh-6rem)] w-full max-w-[1400px] px-6 sm:px-12 lg:px-16 flex flex-col justify-center items-start text-left">
 
             {/* TEXT */}
-            <div className="relative z-20 max-w-full flex flex-col items-center justify-center text-center">
+            <div className="relative z-20 max-w-full flex flex-col items-start text-left">
+              {/* Figma (About hero): Inter Semi Bold 96px / 116px line height;
+                  outline words have a transparent fill with a 2px #82E926 stroke.
+                  Sizes scale with the viewport and hit the Figma values at 1440px. */}
               <h1
                 ref={heroHeadlineRef}
                 data-about-motion
-                className="hero-headline font-display type-display text-white max-w-full md:max-w-[1000px] text-center"
+                className="hero-headline font-sans font-semibold text-white max-w-full text-left"
+                // Same font size as the Home hero headline (.type-display)
+                style={{ fontSize: "clamp(2.75rem, 6vw, 7rem)", lineHeight: 116 / 96, letterSpacing: 0 }}
               >
-                We Design{" "}
-                <span
-                  style={{
-                    color: "#000000",
-                    WebkitTextStroke: "3px #82E926",
-                    paintOrder: "stroke fill",
-                  }}
-                >
-                  Digital
+                <span className="block lg:whitespace-nowrap">
+                  Technology <span style={aboutHeroOutline}>That</span>
                 </span>
-                <br />
-                Systems That Work{" "}
-                <span
-                  className="relative z-30 inline-block px-1"
-                  style={{
-                    color: "#000000",
-                    WebkitTextStroke: "3px #82E926",
-                    paintOrder: "stroke fill",
-                  }}
-                >
-                  And Scale.
+                <span className="block lg:whitespace-nowrap">
+                  <span style={aboutHeroOutline}>Works</span> For Your{" "}
+                  <span ref={heroBusinessRef} style={aboutHeroOutline}>Business</span>
                 </span>
               </h1>
+
+              {/* Geist Semi Bold 37px, white, normal line height */}
+              <p
+                ref={heroSubRef}
+                className="mt-[clamp(16px,2.4vw,34px)] text-white"
+                style={{
+                  fontFamily: '"Geist Sans", "Inter", sans-serif',
+                  fontWeight: 600,
+                  fontSize: "clamp(1rem, 2.708vw, 37px)",
+                  lineHeight: "normal",
+                }}
+              >
+                Pune-based, globally delivered, certified since 2020.
+              </p>
 
               {/* Button */}
               <button
                 ref={heroCtaRef}
                 data-about-motion
                 className="
-                  mt-8
-                  sm:mt-10
+                  mt-16
+                  sm:mt-20
                   flex
                   items-center
                   justify-center
@@ -799,13 +945,11 @@ function About() {
               </button>
             </div>
 
-            {/* SVG PATH (COMMENTED OUT FOR NOW) */}
-            {/*
+            {/* SVG PATH */}
             <svg
-              width="1400"
-              height="950"
-              viewBox="0 0 1350 950"
-              className="absolute inset-0 w-full h-full"
+              ref={orbSvgRef}
+              preserveAspectRatio="none"
+              className="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
             >
               <defs>
                 <linearGradient id="pathGradient" x1="0%" y1="0%">
@@ -824,18 +968,18 @@ function About() {
               <path
                 ref={orbPathRef}
                 d="
-                  M 1080 0
-                  L 1080 280
-                  Q 1080 320 1120 320
-                  L 1360 320
-                  Q 1400 320 1400 360
-                  L 1400 760
-                  Q 1400 800 1360 800
-                  L 760 800
-                  Q 720 800 720 760
-                  L 720 560
-                  Q 720 520 680 520
-                  L 0 520
+                  M 1040 0
+                  L 1040 240
+                  Q 1040 280 1080 280
+                  L 1240 280
+                  Q 1280 280 1280 320
+                  L 1280 480
+                  Q 1280 520 1240 520
+                  L 740 520
+                  Q 700 520 700 560
+                  L 700 640
+                  Q 700 680 660 680
+                  L -200 680
                 "
                 fill="none"
                 stroke="url(#pathGradient)"
@@ -845,13 +989,12 @@ function About() {
 
               <circle
                 ref={orbDotRef}
-                cx="180"
+                cx="1040"
                 cy="0"
-                r="18"
+                r="14"
                 fill="#39FF14"
               />
             </svg>
-            */}
           </div>
         </section>
         {/* ================= HERO ENDS ================= */}
@@ -870,13 +1013,14 @@ function About() {
           ref={serveClientsSectionRef}
           className="relative h-screen w-full bg-black flex flex-col justify-center overflow-hidden"
         >
-          {/* TOP HEADING - CENTERED (SLIDES IN FROM RIGHT) */}
-          <div className="w-full text-center px-6">
+          {/* TOP HEADING (SLIDES IN FROM RIGHT) */}
+          <div className="w-full pl-[30vw] pr-0">
             <h2
               ref={serveClientsHeadingRef}
-              className="type-title text-white text-center"
+              className="type-title text-white flex items-center gap-4 sm:gap-6 w-full"
             >
-              We Serve Clients
+              <span className="shrink-0">We Serve Clients</span>
+              <span className="h-[1.5px] flex-1 bg-white" />
             </h2>
           </div>
 
@@ -953,7 +1097,16 @@ function About() {
         >
           <h2
             ref={approachHeadingRef}
-            className="text-[clamp(2.25rem,5vw,4.5rem)] font-bold text-white uppercase tracking-tight text-center"
+            className="uppercase tracking-tight"
+            style={{
+              color: "#FFF",
+              textAlign: "center",
+              fontFamily: '"Inter", sans-serif',
+              fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+              fontStyle: "normal",
+              fontWeight: 600,
+              lineHeight: "normal",
+            }}
           >
             OUR APPROACH
           </h2>
@@ -966,38 +1119,94 @@ function About() {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-[1400px] w-full mx-auto">
             {/* Card 1: Discovery */}
-            <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
-              <Search className="w-14 h-14 text-[#82E926] mb-6" />
-              <div>
-                <h3 className="text-white type-card font-bold mb-2">Discovery</h3>
-                <p className="text-zinc-400 type-body">Understand the challenge and goals.</p>
+            <div className="approach-card-item flip-card h-[340px] sm:h-[380px] w-full">
+              <div className="flip-inner">
+                {/* FRONT */}
+                <div className="flip-front relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <Search className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Discovery</h3>
+                    <p className="text-black font-semibold type-body">Understand the challenge and goals.</p>
+                  </div>
+                </div>
+
+                {/* BACK */}
+                <div className="flip-back relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <Search className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Discovery</h3>
+                    <p className="text-black font-semibold type-body">Understand the challenge and goals.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Card 2: Team Assembly */}
-            <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
-              <Users className="w-14 h-14 text-[#82E926] mb-6" />
-              <div>
-                <h3 className="text-white type-card font-bold mb-2">Team Assembly</h3>
-                <p className="text-zinc-400 type-body">Exact specialists for the job.</p>
+            <div className="approach-card-item flip-card h-[340px] sm:h-[380px] w-full">
+              <div className="flip-inner">
+                {/* FRONT */}
+                <div className="flip-front relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <Users className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Team Assembly</h3>
+                    <p className="text-black font-semibold type-body">Exact specialists for the job.</p>
+                  </div>
+                </div>
+
+                {/* BACK */}
+                <div className="flip-back relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <Users className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Team Assembly</h3>
+                    <p className="text-black font-semibold type-body">Exact specialists for the job.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Card 3: Agile Delivery */}
-            <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
-              <RotateCw className="w-14 h-14 text-[#82E926] mb-6" />
-              <div>
-                <h3 className="text-white type-card font-bold mb-2">Agile Delivery</h3>
-                <p className="text-zinc-400 type-body">Iterative sprints, continuous feedback.</p>
+            <div className="approach-card-item flip-card h-[340px] sm:h-[380px] w-full">
+              <div className="flip-inner">
+                {/* FRONT */}
+                <div className="flip-front relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <RotateCw className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Agile Delivery</h3>
+                    <p className="text-black font-semibold type-body">Iterative sprints, continuous feedback.</p>
+                  </div>
+                </div>
+
+                {/* BACK */}
+                <div className="flip-back relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <RotateCw className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Agile Delivery</h3>
+                    <p className="text-black font-semibold type-body">Iterative sprints, continuous feedback.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Card 4: Support & Scale */}
-            <div className="approach-card-item flex flex-col items-start text-left bg-zinc-900/80 border border-zinc-800 p-6 sm:p-8 rounded-2xl h-[340px] sm:h-[380px] justify-between shadow-2xl">
-              <HeartHandshake className="w-14 h-14 text-[#82E926] mb-6" />
-              <div>
-                <h3 className="text-white type-card font-bold mb-2">Support &amp; Scale</h3>
-                <p className="text-zinc-400 type-body">Managed support post-delivery.</p>
+            <div className="approach-card-item flip-card h-[340px] sm:h-[380px] w-full">
+              <div className="flip-inner">
+                {/* FRONT */}
+                <div className="flip-front relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <HeartHandshake className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Support &amp; Scale</h3>
+                    <p className="text-black font-semibold type-body">Managed support post-delivery.</p>
+                  </div>
+                </div>
+
+                {/* BACK */}
+                <div className="flip-back relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
+                  <HeartHandshake className="w-14 h-14 text-[#82E926]" />
+                  <div>
+                    <h3 className="text-black type-card font-extrabold mb-2">Support &amp; Scale</h3>
+                    <p className="text-black font-semibold type-body">Managed support post-delivery.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1031,7 +1240,7 @@ function About() {
                     <h3 className="text-white type-card font-bold text-left">
                       Innovation
                     </h3>
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       1
                     </span>
                   </div>
@@ -1051,7 +1260,7 @@ function About() {
                       </p>
                     </div>
 
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/20 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/20 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       1
                     </span>
                   </div>
@@ -1066,7 +1275,7 @@ function About() {
                     <h3 className="text-white type-card font-bold text-left">
                       Integrity
                     </h3>
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       2
                     </span>
                   </div>
@@ -1086,7 +1295,7 @@ function About() {
                       </p>
                     </div>
 
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/20 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/20 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       2
                     </span>
                   </div>
@@ -1101,7 +1310,7 @@ function About() {
                     <h3 className="text-white type-card font-bold text-left">
                       Client-First
                     </h3>
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       3
                     </span>
                   </div>
@@ -1121,7 +1330,7 @@ function About() {
                       </p>
                     </div>
 
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/20 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/20 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       3
                     </span>
                   </div>
@@ -1136,7 +1345,7 @@ function About() {
                     <h3 className="text-white type-card font-bold text-left">
                       Agility
                     </h3>
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/40 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       4
                     </span>
                   </div>
@@ -1156,7 +1365,7 @@ function About() {
                       </p>
                     </div>
 
-                    <span className="text-[130px] sm:text-[170px] font-bold text-white/20 leading-none absolute -bottom-3 -right-2 select-none pointer-events-none">
+                    <span className="text-[260px] sm:text-[340px] font-bold text-white/20 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       4
                     </span>
                   </div>
@@ -1168,8 +1377,19 @@ function About() {
 
         {/* ============= TECHNOLOGY MATTERS SECTION ============= */}
         <section ref={techSectionRef} className="relative h-screen w-full bg-black flex items-center justify-center px-6 sm:px-10 overflow-hidden">
-          <div className="w-full max-w-[1100px] mx-auto text-center">
-            <h2 ref={techHeadingRef} className="type-statement text-center text-white">
+          <div className="w-full max-w-[1200px] mx-auto text-center">
+            <h2
+              ref={techHeadingRef}
+              className="text-center text-white tracking-tight"
+              style={{
+                color: "#FFF",
+                fontFamily: '"Inter", sans-serif',
+                fontSize: "clamp(2rem, 5.2vw, 4.875rem)",
+                fontStyle: "normal",
+                fontWeight: 600,
+                lineHeight: "1.15",
+              }}
+            >
               <span className="block">Technology Only Matters</span>
               <span className="block">When It Delivers Clarity.</span>
             </h2>
@@ -1179,8 +1399,8 @@ function About() {
         {/* ============= DESIGNED FOR WHAT'S NEXT SECTION ============= */}
         <section ref={nextSectionRef} className="relative h-screen w-full bg-black flex flex-col items-center justify-center px-5 overflow-hidden">
           {/* CONTENT */}
-          <div className="relative z-10 text-center max-w-4xl mx-auto flex flex-col items-center justify-center">
-            <h2 className="next-text-item text-white type-title text-center">
+          <div className="relative z-10 text-center max-w-7xl w-full mx-auto flex flex-col items-center justify-center px-4">
+            <h2 className="next-text-item text-white type-display tracking-tight text-center sm:whitespace-nowrap">
               Designed For What’s Next.
             </h2>
             <p className="next-text-item mt-8 text-white type-lead font-semibold text-center">

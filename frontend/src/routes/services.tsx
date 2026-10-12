@@ -54,8 +54,6 @@ function Services() {
   const esRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const coreSectionRef = useRef<HTMLElement>(null);
-  const workHeadingSectionRef = useRef<HTMLElement>(null);
-  const workHeadingRef = useRef<HTMLHeadingElement>(null);
   const workSubHeadingSectionRef = useRef<HTMLElement>(null);
   const workSubHeadingRef = useRef<HTMLHeadingElement>(null);
   const workListSectionRef = useRef<HTMLElement>(null);
@@ -143,28 +141,6 @@ function Services() {
             coreTl.to(card, { x: -250, opacity: 0, duration: 0.8, ease: "power2.in" });
           });
         }
-      }
-
-      if (workHeadingSectionRef.current && workHeadingRef.current) {
-        gsap.set(workHeadingRef.current, { rotationX: 90, y: 50, opacity: 0, transformOrigin: "50% 50%" });
-
-        const tlWorkHeading = gsap.timeline({
-          scrollTrigger: {
-            trigger: workHeadingSectionRef.current,
-            start: "center center",
-            end: "+=800",
-            scrub: true,
-            pin: true,
-          }
-        });
-
-        tlWorkHeading.to(workHeadingRef.current, {
-          rotationX: 0,
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out"
-        }).to({}, { duration: 1 });
       }
 
       if (workSubHeadingSectionRef.current && workSubHeadingRef.current) {
@@ -342,7 +318,6 @@ function Services() {
         </section>
 
         <section className="figma-services__work figma-services__work--mobile">
-          <h2 className="type-title">HOW WE WORK</h2>
           <h3 className="type-title">OUR PROCESS</h3>
           <ol>
             <li><strong className="type-heading">Understand</strong><i /><p className="type-lead font-semibold">We begin by learning how your organization operates — technically and operationally.</p></li>
@@ -369,9 +344,35 @@ function Services() {
 
       <section ref={introSectionRef} className="intro-absolute flex items-center justify-center">
         <div className="flex flex-col items-start w-fit mx-auto text-white">
-          <div ref={servicRef} className="servic-part text-[5rem] sm:text-[7.5rem] md:text-[9rem] lg:text-[11rem] font-bold leading-[0.85] tracking-tighter -ml-1">servic</div>
+          <div
+            ref={servicRef}
+            className="servic-part tracking-tighter -ml-1"
+            style={{
+              color: "#FFF",
+              fontFamily: '"Inter", sans-serif',
+              fontSize: "clamp(5rem, 20.8vw, 308px)",
+              fontStyle: "normal",
+              fontWeight: 700,
+              lineHeight: "73.394%",
+            }}
+          >
+            servic
+          </div>
           <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 mt-2 md:mt-3">
-            <div ref={esRef} className="es-part text-[5rem] sm:text-[7.5rem] md:text-[9rem] lg:text-[11rem] font-bold leading-[0.85] tracking-tighter -ml-1">es</div>
+            <div
+              ref={esRef}
+              className="es-part tracking-tighter -ml-1"
+              style={{
+                color: "#FFF",
+                fontFamily: '"Inter", sans-serif',
+                fontSize: "clamp(5rem, 20.8vw, 308px)",
+                fontStyle: "normal",
+                fontWeight: 700,
+                lineHeight: "73.394%",
+              }}
+            >
+              es
+            </div>
             <div ref={textRef} className="text-part flex flex-col pt-2 md:pt-3 mt-[4%] text-left">
               <p className="type-body text-white/90 max-w-[320px] m-0">
                 We design and deliver technology systems that<br />
@@ -399,12 +400,23 @@ function Services() {
         </article>
       </section>
 
-      <section ref={workHeadingSectionRef} className="figma-services__work-heading--desktop w-full flex justify-center min-h-[75vh] items-center overflow-hidden">
-        <h2 ref={workHeadingRef} style={{ perspective: "1000px" }} className="type-title uppercase">HOW WE WORK</h2>
-      </section>
-      
       <section ref={workSubHeadingSectionRef} className="figma-services__work-subheading--desktop w-full flex justify-center min-h-[75vh] items-center overflow-hidden">
-        <h3 ref={workSubHeadingRef} style={{ perspective: "1000px" }} className="type-title uppercase">OUR PROCESS</h3>
+        <h3
+          ref={workSubHeadingRef}
+          className="uppercase tracking-tight"
+          style={{
+            color: "#FFF",
+            textAlign: "center",
+            fontFamily: '"Inter", sans-serif',
+            fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+            fontStyle: "normal",
+            fontWeight: 600,
+            lineHeight: "normal",
+            perspective: "1000px",
+          }}
+        >
+          OUR PROCESS
+        </h3>
       </section>
 
       <section ref={workListSectionRef} className="figma-services__work-list--desktop">
@@ -437,8 +449,8 @@ function Services() {
       </section>
 
       <section ref={ctaSectionRef} className="figma-services__cta--desktop w-full flex flex-col justify-center min-h-[75vh] items-center">
-        <div className="flex flex-col items-center justify-center text-center w-full max-w-[1200px] mx-auto">
-          <h2 className="type-title">Let’s design the systems</h2>
+        <div className="flex flex-col items-center justify-center text-center w-full max-w-7xl mx-auto px-4">
+          <h2 className="type-display sm:whitespace-nowrap">Let’s design the systems</h2>
           <p className="type-lead font-semibold">behind your next phase of growth.</p>
           <div className="flex justify-center items-center w-full">
             <Button href="/contact">Start a conversation</Button>

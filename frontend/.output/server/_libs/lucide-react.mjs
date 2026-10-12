@@ -50124,4 +50124,4 @@ var lucide_react_exports = /* @__PURE__ */ __exportAll({
 	icons: () => icons_exports
 });
 //#endregion
-export { ArrowDown as C, ArrowRight as S, Instagram as _, TrendingUp as a, CircleQuestionMark as b, Settings as c, Phone as d, Menu as f, Linkedin as g, Mail as h, Users as i, Search as l, MapPin as m, Youtube as n, Timer as o, Megaphone as p, X as r, ShieldCheck as s, lucide_react_exports as t, RotateCw as u, HeartHandshake as v, ArrowUpRight as x, Flower as y };
+export { ArrowRight as C, ArrowUpRight as S, Instagram as _, TrendingUp as a, CircleQuestionMark as b, Settings as c, Phone as d, Menu as f, Linkedin as g, Mail as h, Users as i, Search as l, MapPin as m, Youtube as n, Timer as o, Megaphone as p, X as r, ShieldCheck as s, lucide_react_exports as t, RotateCw as u, HeartHandshake as v, ArrowDown as w, ArrowUp as x, Flower as y };

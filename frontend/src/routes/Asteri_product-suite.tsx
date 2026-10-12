@@ -92,7 +92,7 @@ function AsteriProductSuite() {
     <PageShell>
       <section className="bg-black px-6 pb-20 pt-24 sm:pb-28 sm:pt-32">
         <div className="mx-auto max-w-[1360px]">
-          <h1 className="max-w-6xl text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.035em] text-white">
+          <h1 className="max-w-6xl text-[clamp(2.75rem,6vw,7rem)] font-bold leading-[0.95] tracking-[-0.035em] text-white">
             Built by <span className="text-transparent [-webkit-text-stroke:2px_#8AF500]">Asteri.</span>
             <br />
             Built for the <span className="text-transparent [-webkit-text-stroke:2px_#8AF500]">Enterprise.</span>

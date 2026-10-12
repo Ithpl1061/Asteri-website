@@ -1441,7 +1441,7 @@ function Services() {
 
               <h2
                 ref={nextTitleRef}
-                className="type-title text-white"
+                className="type-display text-white sm:whitespace-nowrap"
               >
                 Don't see your sector?
               </h2>
