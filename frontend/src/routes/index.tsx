@@ -1,11 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { apiUrl } from "@/lib/api";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import * as LucideIcons from "lucide-react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { GlowOrb } from "@/components/GlowOrb";
 
@@ -57,6 +57,44 @@ export const Route = createFileRoute("/")({
  * ============================================================================
  */
 
+// "What we do" rows on the home page (kept here so the Services page / API data stay untouched)
+const WHAT_WE_DO = [
+  {
+    sequenceNumber: "01",
+    title: "AI Consulting & Automation with LLM",
+    description:
+      "We help you plan where AI fits, then build LLM-powered solutions and intelligent automation for claims, documents and workflows.",
+  },
+  {
+    sequenceNumber: "02",
+    title: "Salesforce & SAP Consulting",
+    description:
+      "Certified experts handle implementation, customization, integration and 24/7 support.",
+  },
+  {
+    sequenceNumber: "03",
+    title: "Software Licensing & Asset Management",
+    description:
+      "Authorized reseller of SAP, Oracle and leading OEM software, plus tracking of licenses and IT assets for compliance and cost control.",
+  },
+  {
+    sequenceNumber: "04",
+    title: "DPDP Compliance & Data Security",
+    description:
+      "We help you meet India's DPDP Act requirements and protect sensitive data through assessments, controls and ongoing monitoring.",
+  },
+  {
+    sequenceNumber: "05",
+    title: "Custom Software Development",
+    description: "Secure, scalable web and mobile applications built around your business needs.",
+  },
+  {
+    sequenceNumber: "06",
+    title: "Data Analytics & Managed IT Services",
+    description: "Data insights, IT support and flexible resource staffing, on demand.",
+  },
+];
+
 function Home() {
   // ========================================= REFS =================================================
   const heroRef = useRef<HTMLDivElement>(null);
@@ -104,17 +142,29 @@ function Home() {
   const caseTitleRef = useRef<HTMLDivElement>(null);
 
   const testimonialsRef = useRef<HTMLDivElement>(null);
-
   const nextRef = useRef<HTMLElement>(null);
   const nextTitleRef = useRef<HTMLHeadingElement>(null);
   const nextTextRef = useRef<HTMLParagraphElement>(null);
   const nextBtnRef = useRef<HTMLButtonElement>(null);
+
+  const certifiedSectionRef = useRef<HTMLElement>(null);
+  const certifiedWeRef = useRef<HTMLSpanElement>(null);
+  const certifiedReRef = useRef<HTMLSpanElement>(null);
+  const certifiedCertifiRef = useRef<HTMLDivElement>(null);
+  const certifiedEdRef = useRef<HTMLDivElement>(null);
+  const certifiedCopyRef = useRef<HTMLParagraphElement>(null);
+
+  const partnerSectionRef = useRef<HTMLElement>(null);
+  const resellerSectionRef = useRef<HTMLElement>(null);
+  const partnerCardRef = useRef<HTMLDivElement>(null);
+  const collaborationsSectionRef = useRef<HTMLElement>(null);
 
 
   const heroOutlineStroke = "clamp(1px, 0.55vw, 3px)";
 
   const [services, setServices] = useState<any[]>([]);
   const [industries, setIndustries] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
 
   useEffect(() => {
     fetch(apiUrl('/api/services'))
@@ -125,6 +175,11 @@ function Home() {
     fetch(apiUrl('/api/industries'))
       .then(res => res.json())
       .then(data => setIndustries(data))
+      .catch(err => console.error(err));
+
+    fetch(apiUrl('/api/partners'))
+      .then(res => res.json())
+      .then(data => setPartners(data))
       .catch(err => console.error(err));
   }, []);
   // =================================== END REFS ==========================================
@@ -388,6 +443,12 @@ function Home() {
               nextTitleRef.current,
               nextTextRef.current,
               nextBtnRef.current,
+              certifiedWeRef.current,
+              certifiedReRef.current,
+              certifiedCertifiRef.current,
+              certifiedEdRef.current,
+              certifiedCopyRef.current,
+              partnerCardRef.current,
             ],
             { opacity: 1, x: 0, y: 0, clearProps: "transform" },
           );
@@ -517,7 +578,7 @@ function Home() {
         // =====================================================
         gsap.set(".what-content", { opacity: 0 });
         gsap.set(".what-card", { opacity: 0, scale: 0.95 });
-        gsap.set(".service-row", { opacity: 0, x: isCompact ? 0 : 350 });
+        gsap.set(".service-row", { opacity: 0, x: isCompact ? 0 : 350, y: 0, force3D: true, willChange: "transform, opacity" });
 
         if (isPinned) {
           const whatTl = gsap.timeline({
@@ -525,7 +586,7 @@ function Home() {
               trigger: whatRef.current,
               start: "top top",
               end: "+=5200",
-              scrub: 1,
+              scrub: 0.3,
               pin: true,
               anticipatePin: 1,
             },
@@ -544,7 +605,7 @@ function Home() {
             .to(".what-card", { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }, 0.2)
             .to(
               ".service-row",
-              { opacity: 1, x: 0, stagger: 0.35, duration: 0.6, ease: "power3.out" },
+              { opacity: 1, x: 0, y: 0, stagger: 0.35, duration: 0.6, ease: "none" },
               0.25,
             )
             .to({}, { duration: 0.8 });
@@ -666,22 +727,184 @@ function Home() {
             { x: window.innerWidth },
             { x: travel, duration: 1.3, ease: "none" },
           );
+          // Case-study tags are static: they ride along with the title, no fade/scale.
+        }
 
-          [1, 2, 3, 4, 5, 6].forEach((num, index) => {
-            caseTl.fromTo(
-              `.tag-${num}`,
-              { opacity: 0, scale: 0.8 },
-              { opacity: 1, scale: 1 },
-              0.2 + index * 0.12,
+        // =====================================================
+        // WE'RE CERTIFIED — sequential fade-in reveal
+        // =====================================================
+        if (certifiedSectionRef.current) {
+          gsap.set(
+            [
+              certifiedWeRef.current,
+              certifiedReRef.current,
+              certifiedCertifiRef.current,
+              certifiedEdRef.current,
+              certifiedCopyRef.current,
+            ],
+            { opacity: 0, y: isCompact ? 15 : 30 }
+          );
+
+          if (isPinned) {
+            const certifiedTl = gsap.timeline({
+              scrollTrigger: {
+                trigger: certifiedSectionRef.current,
+                start: "top top",
+                end: "+=3200",
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1,
+              },
+            });
+
+            certifiedTl
+              .to(certifiedWeRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
+              .to({}, { duration: 0.6 })
+              .to(certifiedReRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
+              .to({}, { duration: 0.6 })
+              .to(certifiedCertifiRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
+              .to({}, { duration: 0.6 })
+              .to(certifiedEdRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
+              .to({}, { duration: 0.6 })
+              .to(certifiedCopyRef.current, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" })
+              .to({}, { duration: 2 });
+          } else {
+            const mobileCertifiedTl = gsap.timeline({
+              scrollTrigger: {
+                trigger: certifiedSectionRef.current,
+                start: "top 75%",
+                toggleActions: "play none none reverse",
+              },
+            });
+
+            mobileCertifiedTl
+              .to(certifiedWeRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" })
+              .to(certifiedReRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "+=0.1")
+              .to(certifiedCertifiRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "+=0.1")
+              .to(certifiedEdRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "+=0.1")
+              .to(certifiedCopyRef.current, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "+=0.15");
+          }
+        }
+
+        // =====================================================
+        // RESELLER CARDS — pinned; cards slide in from the right one by one
+        // (created before Platforms so pin spacing follows page order)
+        // =====================================================
+        if (isPinned && resellerSectionRef.current) {
+          const RESELLER_COUNT = 5;
+          gsap.set(".reseller-card", { x: "110vw" });
+          const resellerTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: resellerSectionRef.current,
+              start: "top top",
+              end: `+=${RESELLER_COUNT * 900}`,
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+            },
+          });
+          for (let i = 1; i <= RESELLER_COUNT; i++) {
+            // each card enters from the right while the previous one leaves to the left
+            resellerTl.to(`.reseller-card:nth-child(${i})`, { x: 0, duration: 1, ease: "power2.inOut" }, (i - 1) * 1.4);
+            if (i > 1) {
+              resellerTl.to(`.reseller-card:nth-child(${i - 1})`, { x: "-110vw", duration: 1, ease: "power2.inOut" }, (i - 1) * 1.4);
+            }
+          }
+          resellerTl.to({}, { duration: 0.4 }); // short hold on the last card
+        }
+
+        // =====================================================
+        // PLATFORMS & PARTNERS — slide in from right (from services page)
+        // =====================================================
+        if (partnerSectionRef.current && partnerCardRef.current) {
+          gsap.set(partnerCardRef.current, { x: isCompact ? 100 : "100vw", opacity: 0 });
+
+          if (isPinned) {
+            const tlPartner = gsap.timeline({
+              scrollTrigger: {
+                trigger: partnerSectionRef.current,
+                start: "top top",
+                end: "+=2400",
+                scrub: true,
+                pin: true,
+                anticipatePin: 1,
+              },
+            });
+
+            tlPartner
+              .to(partnerCardRef.current, {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out",
+              })
+              .to({}, { duration: 3 });
+          } else {
+            const mobileTlPartner = gsap.timeline({
+              scrollTrigger: {
+                trigger: partnerSectionRef.current,
+                start: "top 75%",
+                toggleActions: "play none none reverse",
+              },
+            });
+
+            mobileTlPartner.to(partnerCardRef.current, {
+              x: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.out",
+            });
+          }
+        }
+
+        // =====================================================
+        // VALUABLE COLLABORATIONS — screen hold / pin
+        // =====================================================
+        if (collaborationsSectionRef.current) {
+          gsap.fromTo(
+            ".collab-heading",
+            { y: 70, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: collaborationsSectionRef.current,
+                start: "top 85%",
+                end: "top 35%",
+                scrub: 1,
+              },
+            },
+          );
+          const collabRows = gsap.utils.toArray<HTMLElement>(".collab-col");
+          // Every row sits on the same centre line: the row's own offset is cancelled with yPercent.
+          const ROW_CENTRES = [0.189, 0.392, 0.59, 0.792];
+          collabRows.forEach((row, i) => gsap.set(row, { yPercent: (0.5 - ROW_CENTRES[i]) * 100 }));
+          const collabTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: collaborationsSectionRef.current,
+              start: isPinned ? "top top" : "top 70%",
+              end: isPinned ? "+=3200" : "top 10%",
+              scrub: 1,
+              pin: isPinned,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+          // One row at a time: slides in from the right, holds, then leaves to the left as the next one arrives.
+          collabRows.forEach((row, i) => {
+            const t = i * 2.6;
+            collabTl.fromTo(
+              row,
+              { x: () => window.innerWidth, opacity: 0 },
+              { x: 0, opacity: 1, duration: 1, ease: "power2.out" },
+              t,
             );
+            if (i < collabRows.length - 1) {
+              collabTl.to(row, { x: () => -window.innerWidth, opacity: 0, duration: 1, ease: "power2.in" }, t + 1.6);
+            }
           });
-        } else {
-          gsap.from(".case-tag", {
-            opacity: 0,
-            y: 20,
-            stagger: 0.1,
-            scrollTrigger: { trigger: caseRef.current, start: "top 60%" },
-          });
+          collabTl.to({}, { duration: 1 });
         }
 
         // =====================================================
@@ -821,7 +1044,7 @@ function Home() {
               className="flex flex-col items-center text-center font-display font-bold leading-[1.1] tracking-tight will-change-transform"
             >
               <h1 ref={heroLine1Ref} className="type-display text-white pb-1">
-                Engineering{" "}
+                Certified{" "}
                 <span
                   style={{
                     color: "#000000",
@@ -831,9 +1054,9 @@ function Home() {
                     paddingBottom: "0.1em",
                   }}
                 >
-                  Digital
+                  IT
                 </span>{" "}
-                Systems
+                Solutions &amp;
               </h1>
 
               <p
@@ -847,12 +1070,12 @@ function Home() {
                   paddingBottom: "0.1em",
                 }}
               >
-                That Scale With
+                Salesforce Partner
               </p>
 
               <div className="text-center">
                 <div className="relative inline-block">
-                  <p ref={heroLine3Ref} className="type-display text-white">Ambition</p>
+                  <p ref={heroLine3Ref} className="type-display text-white">in Pune</p>
 
                   {/* Connector: orb beside the last word, line out to the right edge */}
                   <span
@@ -947,9 +1170,9 @@ function Home() {
               We are a consulting-first technology firm helping organizations modernize, unify, and
               scale their digital ecosystems; where business strategy meets real-world execution.
             </p>
-            <button className="about-btn mt-8 inline-flex items-center gap-3 rounded-full border-2 border-[#8AF500] bg-[#D9D9D9] px-5 py-3 pr-3 backdrop-blur-md sm:gap-4 sm:px-6">
+            <button className="about-btn cta-pill mt-8">
               <span className="type-button text-black">Get In Touch</span>
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white flex items-center justify-center">
+              <div className="cta-pill-icon">
                 <ArrowUpRight size={28} className="text-black" strokeWidth={2.3} />
               </div>
             </button>
@@ -1022,10 +1245,10 @@ function Home() {
               </div>
 
               <ul className="flex w-full flex-col lg:max-h-none lg:overflow-visible">
-                {services.map((s) => (
+                {WHAT_WE_DO.map((s) => (
                   <li
                     key={s.sequenceNumber}
-                    className="service-row group border-b border-white/8 py-2.5 transition-all duration-300 hover:translate-x-2 sm:py-3 lg:py-3.5"
+                    className="service-row group border-b border-white/8 py-2.5 transition-[translate] duration-300 hover:translate-x-2 sm:py-3 lg:py-3.5"
                   >
                     <div className="flex items-center gap-3 sm:gap-5">
                       <div className="w-[45px] sm:w-[60px] shrink-0">
@@ -1034,9 +1257,17 @@ function Home() {
                         </span>
                         <div className="service-line mt-1 h-px w-8 bg-white" />
                       </div>
-                      <span className="min-w-0 font-display text-sm font-semibold tracking-tight sm:text-base md:text-lg">
-                        {s.title}
-                      </span>
+                      <div className="min-w-0">
+                        <span className="block font-display text-sm font-semibold tracking-tight sm:text-base md:text-lg">
+                          {s.title}
+                        </span>
+                        {/* Description is revealed on hover/focus (always visible below lg, where there is no hover) */}
+                        <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-300 ease-out group-hover:grid-rows-[1fr] group-hover:opacity-100 group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100 max-lg:grid-rows-[1fr] max-lg:opacity-100">
+                          <p className="min-h-0 overflow-hidden max-w-[46rem] font-sans text-xs font-normal leading-snug text-muted-foreground sm:text-sm">
+                            <span className="mt-1 block">{s.description}</span>
+                          </p>
+                        </div>
+                      </div>
                       <a
                         href="/services"
                         className="ml-auto flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all duration-300 hover:bg-primary hover:text-black hover:rotate-45 hover:scale-110"
@@ -1141,29 +1372,29 @@ function Home() {
             }}
           >
             CASE
-            <div className="case-tag type-card tag-1 absolute left-[3%] top-[70%]">
+            <div className="case-tag type-card tag-1 absolute left-[-4%] top-[57%]">
               Sales &amp; Service
               <br />
               Cloud Implementation
             </div>
-            <div className="case-tag type-card tag-2 absolute left-[12%] top-[10%]">
+            <div className="case-tag type-card tag-2 absolute left-[8%] top-[2%]">
               Warehouse
               <br />
               Management
             </div>
             STUDIES
-            <div className="case-tag type-card tag-3 absolute left-[32%] top-[75%]">SAP AMC</div>
-            <div className="case-tag type-card tag-4 absolute left-[47%] top-[29%]">
+            <div className="case-tag type-card tag-3 absolute left-[28%] top-[62%]">SAP AMC</div>
+            <div className="case-tag type-card tag-4 absolute left-[41%] top-[36%]">
               Vehicle Management
               <br />
               System
             </div>
-            <div className="case-tag type-card tag-5 absolute left-[57%] top-[71%]">
+            <div className="case-tag type-card tag-5 absolute left-[62%] top-[54%]">
               Medical Claim
               <br />
               Processing-Automation
             </div>
-            <div className="case-tag type-card tag-6 absolute left-[85%] top-[25%]">
+            <div className="case-tag type-card tag-6 absolute left-[84%] top-[13%]">
               Augmented Reality-Based
               <br />
               Hospital Navigation App
@@ -1198,6 +1429,168 @@ function Home() {
               Augmented Reality-Based
               <br />
               Hospital Navigation App
+            </div>
+          </div>
+        </section>
+
+        {/*============================= WE'RE CERTIFIED ======================*/}
+        <section
+          ref={certifiedSectionRef}
+          className="certified-section relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6 py-16 lg:h-screen lg:py-0"
+        >
+          <div
+            className="relative w-fit font-sans font-bold text-white"
+            style={
+              {
+                "--fs": "clamp(72px, min(20.76vw, 299px, 32vh), 299px)",
+                fontSize: "var(--fs)",
+                lineHeight: 0.833,
+              } as CSSProperties
+            }
+          >
+            <div>
+              <span ref={certifiedWeRef} className="inline-block will-change-transform">we</span><span ref={certifiedReRef} className="inline-block will-change-transform">’re</span>
+            </div>
+            <div ref={certifiedCertifiRef} className="will-change-transform">certifi</div>
+            <div ref={certifiedEdRef} className="will-change-transform">ed</div>
+            <p
+              ref={certifiedCopyRef}
+              className="certified-copy mt-6 max-w-[34rem] font-sans text-base font-semibold text-white will-change-transform lg:absolute lg:mt-0 lg:max-w-none"
+            >
+              We Work With Globally Recognized Technologies And Certified Solutions To Deliver
+              Secure, Compliant, And Future-Ready Systems.
+            </p>
+          </div>
+        </section>
+
+        {/*============================= RESELLER / PARTNER CARDS =============*/}
+        <section
+          ref={resellerSectionRef}
+          className="reseller-section relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 py-16 sm:px-8 lg:h-screen lg:min-h-0 lg:px-[3.33vw] lg:py-0"
+        >
+          {/* Desktop: cards stacked in one big frame, shown one at a time. Mobile: simple column. */}
+          <ul className="m-0 grid w-full max-w-[640px] list-none grid-cols-1 gap-4 p-0 lg:relative lg:block lg:max-w-none lg:w-[calc(min(92vw,82vh*1.714)-20px)] lg:aspect-[1875/1094]">
+            {[
+              { src: "/figma/home/reseller-cards/sap.png", alt: "SAP Authorized Reseller" },
+              { src: "/figma/home/reseller-cards/anydesk.png", alt: "AnyDesk Reseller" },
+              { src: "/figma/home/reseller-cards/salesforce.png", alt: "Salesforce Partner" },
+              { src: "/figma/home/reseller-cards/manageengine.png", alt: "ManageEngine Reseller" },
+              { src: "/figma/home/reseller-cards/zoho.png", alt: "Zoho Reseller" },
+            ].map((c) => (
+              <li
+                key={c.alt}
+                className="reseller-card aspect-[1875/1094] overflow-hidden rounded-[20px] bg-white lg:absolute lg:inset-0 lg:aspect-auto"
+              >
+                <img src={c.src} alt={c.alt} loading="lazy" className="block h-full w-full object-cover" />
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* breathing room between the reseller cards and Platforms & Partners */}
+        <div aria-hidden="true" className="h-[14vh] bg-black lg:h-[18vh]" />
+
+        {/*============================= PLATFORMS & PARTNERS ================*/}
+        <section
+          ref={partnerSectionRef}
+          className="platforms-section relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-4 sm:px-8 lg:h-screen lg:min-h-0 lg:px-[3.33vw] lg:py-0"
+        >
+          <div className="relative mx-auto flex w-full max-w-[1400px] flex-col items-center translate-y-[1%]">
+            {/* Header: Centered title with green pill next arrow on the right */}
+            <div className="relative flex w-full items-center justify-center pb-5 lg:pb-6">
+              <h2
+                className="type-title text-center text-white !text-[clamp(3rem,calc(2.8vw+20px),4.5rem)] font-bold uppercase tracking-tight lg:whitespace-nowrap mb-0"
+                style={{ fontSize: "calc(clamp(1.75rem, 2.8vw, 3.25rem) + 20px)" }}
+              >
+                PLATFORMS &amp; PARTNERS
+              </h2>
+              <Link
+                to="/Partnership"
+                aria-label="View all platforms and partners"
+                className="!absolute !right-0 !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105"
+              >
+                <span className="grid h-12 w-16 place-items-center text-[#8AF500] lg:h-14 lg:w-20">
+                  <ArrowLeft size={34} strokeWidth={2} />
+                </span>
+                <span className="grid h-12 w-16 place-items-center bg-[#F3F3F3] text-[#8AF500] lg:h-14 lg:w-20">
+                  <ArrowRight size={34} strokeWidth={2} />
+                </span>
+              </Link>
+            </div>
+
+            {/* Cards container: Single unified rounded container with card height reduced by 4% */}
+            <div
+              ref={partnerCardRef}
+              className="relative w-full max-w-[1400px] overflow-hidden rounded-[20px] bg-black will-change-transform grid grid-cols-2 md:grid-cols-4 gap-[2px]"
+              style={{
+                gridAutoRows: "225px",
+              }}
+            >
+              {[
+                { src: "/Salesforce.png", alt: "Salesforce", w: "58%" },
+                { src: "/ManageEngine logo.png", alt: "ManageEngine", w: "91%" },
+                { src: "/zoho logo.png", alt: "Zoho", w: "56%" },
+                { src: "/aws logo.png", alt: "AWS", w: "56%" },
+                { src: "/Shipsy_Logo 1.png", alt: "Shipsy", w: "84.5%" },
+                { src: "/savex.png", alt: "Savex Technologies", w: "67%" },
+                { src: "/figma/home/partners-logo2.png", alt: "Partner", w: "78%" },
+                { src: "/sap logo.png", alt: "SAP", w: "62%" },
+              ].map((p, idx) => (
+                <figure
+                  key={p.alt || idx}
+                  className="m-0 flex items-center justify-center bg-[#d9d9d9] w-full h-full p-4"
+                  style={{ margin: 0, background: "#d9d9d9" }}
+                >
+                  <img
+                    src={p.src}
+                    alt={p.alt}
+                    loading="lazy"
+                    className="max-h-[58%] max-w-[72%] object-contain"
+                    style={{ width: p.w }}
+                  />
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Breathing room between the partner cards and the collaborations section */}
+        <div className="h-[16vh] w-full bg-black" aria-hidden="true" />
+
+        {/*============================= VALUABLE COLLABORATIONS ==============*/}
+        <section
+          ref={collaborationsSectionRef}
+          className="collaborations-section relative flex min-h-screen flex-col justify-center overflow-hidden bg-black px-6 py-12 sm:px-8 lg:h-screen lg:min-h-0 lg:px-0 lg:py-0"
+        >
+          <div className="relative w-full -translate-y-[3%]">
+            <div className="relative mx-auto flex w-full max-w-[1400px] flex-col justify-center lg:px-[3.92vw]">
+              <h2 className="collab-heading font-sans font-semibold uppercase text-white text-[clamp(2.2rem,4.4vw,64px)] leading-[1.14]">
+                Valuable
+                <br />
+                Collaborations
+              </h2>
+            </div>
+
+            {/* Logo grid — one row at a time slides in from the right, then leaves for the next */}
+            <div className="relative mt-4 sm:mt-6 w-full overflow-hidden">
+              <div
+                className="relative mx-auto"
+                style={{ "--collab-w": "min(100vw, 2400px)", width: "var(--collab-w)", height: "calc(var(--collab-w) * 0.24)" } as CSSProperties}
+              >
+                <div className="absolute left-0 top-1/2 w-full -translate-y-1/2" style={{ aspectRatio: "2 / 1" }}>
+                  {[[0,29],[29,50.4],[50.4,67.3],[67.3,100]].map(([from, to], i) => (
+                    <div key={`collab-col-${i}`} className="collab-col absolute inset-0" style={{ opacity: 0 }}>
+                      <img
+                        src="/figma/home/collaborations-logos.png"
+                        alt={i === 0 ? "Our collaborators: Tata Communications, Humanata, Compulink, Steel1, intellimation.ai, Apexpertise, Roche, Themis Medicare, Symbiosis International, POSCO, Amdocs, Xoriant, CitiusTech, Indian Army 512 Army Base Workshop, GA Steel Tech and Netafim" : ""}
+                        loading="eager"
+                        className="pointer-events-none h-full w-full max-w-none select-none"
+                        style={{ clipPath: `inset(${from}% 0 ${100 - to}% 0)` }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1249,10 +1642,10 @@ function Home() {
 
             <button
               ref={nextBtnRef}
-              className="mt-8 inline-flex items-center gap-3 rounded-full border-2 border-[#8AF500] bg-[#D9D9D9] px-5 py-3 pr-3 backdrop-blur-md sm:gap-4 sm:px-6"
+              className="cta-pill mt-8"
             >
               <span className="type-button text-black">Get In Touch</span>
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white flex items-center justify-center">
+              <div className="cta-pill-icon">
                 <ArrowUpRight size={28} className="text-black" strokeWidth={2.3} />
               </div>
             </button>

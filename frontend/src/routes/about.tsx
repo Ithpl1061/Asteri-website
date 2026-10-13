@@ -192,6 +192,8 @@ function About() {
   const approachHeadingSectionRef = useRef<HTMLElement>(null);
   const approachHeadingRef = useRef<HTMLHeadingElement>(null);
   const approachCardsSectionRef = useRef<HTMLElement>(null);
+  const visionariesHeadingSectionRef = useRef<HTMLElement>(null);
+  const visionariesHeadingRef = useRef<HTMLHeadingElement>(null);
   const approachCardsContentRef = useRef<HTMLDivElement>(null);
   const visionariesSectionRef = useRef<HTMLElement>(null);
   const visionariesCircleRef = useRef<HTMLDivElement>(null);
@@ -200,6 +202,8 @@ function About() {
   const cultureSectionRef = useRef<HTMLElement>(null);
   const techSectionRef = useRef<HTMLElement>(null);
   const techHeadingRef = useRef<HTMLHeadingElement>(null);
+  const techLine1Ref = useRef<HTMLSpanElement>(null);
+  const techLine2Ref = useRef<HTMLSpanElement>(null);
   const nextSectionRef = useRef<HTMLElement>(null);
 
   // ===================== HERO GREEN LINE GEOMETRY (Figma "Orb- HH") =====================
@@ -553,6 +557,31 @@ function About() {
             }
           }
 
+          // "The Visionaries" heading (slide in from right + pin/hold)
+          if (visionariesHeadingSectionRef.current && visionariesHeadingRef.current) {
+            gsap.set(visionariesHeadingRef.current, { x: "100vw", opacity: 0 });
+
+            const tlVisionariesHeading = gsap.timeline({
+              scrollTrigger: {
+                trigger: visionariesHeadingSectionRef.current,
+                start: "top top",
+                end: "+=200%",
+                scrub: 0.5,
+                pin: true,
+                anticipatePin: 1,
+              }
+            });
+
+            tlVisionariesHeading
+              .to(visionariesHeadingRef.current, {
+                x: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power1.out",
+              })
+              .to({}, { duration: 1.2 });
+          }
+
           // Visionaries section animation (Avinash -> Anuraj -> Aishwarya)
           if (
             visionaries.length > 0 &&
@@ -786,9 +815,10 @@ function About() {
             }
           }
 
-          // Technology Matters animation (slide in from right + pin/hold)
-          if (techSectionRef.current && techHeadingRef.current) {
-            gsap.set(techHeadingRef.current, { x: "100vw", opacity: 0 });
+          // Technology Matters animation (left right animation: line 1 from left, line 2 from right + pin/hold)
+          if (techSectionRef.current && techLine1Ref.current && techLine2Ref.current) {
+            gsap.set(techLine1Ref.current, { x: "-100vw", opacity: 0 });
+            gsap.set(techLine2Ref.current, { x: "100vw", opacity: 0 });
 
             const tlTechHeading = gsap.timeline({
               scrollTrigger: {
@@ -802,12 +832,18 @@ function About() {
             });
 
             tlTechHeading
-              .to(techHeadingRef.current, {
+              .to(techLine1Ref.current, {
                 x: 0,
                 opacity: 1,
                 duration: 1.2,
                 ease: "power1.out",
-              })
+              }, 0)
+              .to(techLine2Ref.current, {
+                x: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power1.out",
+              }, 0)
               .to({}, { duration: 1.2 });
           }
 
@@ -916,30 +952,12 @@ function About() {
               <button
                 ref={heroCtaRef}
                 data-about-motion
-                className="
-                  mt-16
-                  sm:mt-20
-                  flex
-                  items-center
-                  justify-center
-                  gap-3
-                  px-6
-                  py-3
-                  rounded-full
-                  border-2
-                  border-[#8AF500]
-                  bg-[#82E926]
-                  backdrop-blur-md
-                  transition-transform
-                  duration-300
-                  ease-out
-                  hover:scale-105
-                "
+                className="cta-pill mt-16 sm:mt-20 transition-transform duration-300 ease-out hover:scale-105"
               >
                 <span className="text-black type-button">
                   Get in touch
                 </span>
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <div className="cta-pill-icon">
                   <ArrowUpRight size={20} className="text-black" strokeWidth={2.5} />
                 </div>
               </button>
@@ -1212,6 +1230,28 @@ function About() {
           </div>
         </section>
 
+        {/* ============= THE VISIONARIES HEADING SECTION ============= */}
+        <section
+          ref={visionariesHeadingSectionRef}
+          className="relative h-screen min-h-screen w-full bg-black flex items-center justify-center text-center px-6 overflow-hidden"
+        >
+          <h2
+            ref={visionariesHeadingRef}
+            className="uppercase tracking-tight"
+            style={{
+              color: "#FFF",
+              textAlign: "center",
+              fontFamily: '"Inter", sans-serif',
+              fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+              fontStyle: "normal",
+              fontWeight: 600,
+              lineHeight: "normal",
+            }}
+          >
+            THE VISIONARIES
+          </h2>
+        </section>
+
         {/* ============= VISIONARIES SECTION ============= */}
         <VisionariesSection
           visionaries={visionaries}
@@ -1390,8 +1430,8 @@ function About() {
                 lineHeight: "1.15",
               }}
             >
-              <span className="block">Technology Only Matters</span>
-              <span className="block">When It Delivers Clarity.</span>
+              <span ref={techLine1Ref} className="block whitespace-normal sm:whitespace-nowrap">Technology Only Matters</span>
+              <span ref={techLine2Ref} className="block whitespace-normal sm:whitespace-nowrap">When It Delivers Clarity.</span>
             </h2>
           </div>
         </section>
@@ -1409,11 +1449,11 @@ function About() {
               We’ll design what comes next.
             </p>
 
-            <button className="next-text-item mt-10 mx-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-[#8AF500] bg-[#D9D9D9] text-black font-bold hover:scale-105 transition-transform">
+            <button className="next-text-item cta-pill mt-10 mx-auto font-bold hover:scale-105 transition-transform">
               <span className="text-black type-button text-center">
                 Talk To Us
               </span>
-              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+              <div className="cta-pill-icon">
                 <ArrowUpRight size={24} className="text-black" strokeWidth={2.5} />
               </div>
             </button>

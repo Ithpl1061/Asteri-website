@@ -4,7 +4,6 @@ import { PageShell } from "@/components/PageShell";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
-import { Flower } from "lucide-react";
 import "./blog.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -87,6 +86,7 @@ function RecentCard({ category, title, image, position, categoryAfter }: RecentP
 
 function Blog() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [subscribed, setSubscribed] = useState(false);
   const [featuredPosts, setFeaturedPosts] = useState<any[]>([]);
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
 
@@ -265,32 +265,13 @@ function Blog() {
     <PageShell>
       <div className="blog-page" ref={containerRef}>
         <section className="blog-hero" data-node-id="2521:304">
-          <h1 className="type-display group relative inline-flex flex-col items-center justify-center cursor-default">
-            
-            <div className="flex items-center justify-center z-10">
-              {/* Left side moving left */}
-              <div className="flex items-baseline transition-transform duration-700 ease-out group-hover:-translate-x-14">
-                <span className="blog-outline">Expert</span>&nbsp;Thin
-              </div>
-              
-              {/* Flower placed exactly at the split point */}
-              <div className="relative w-0 h-full">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] flex items-center justify-center z-20 pointer-events-none opacity-0 scale-50 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-100">
-                  <Flower size={80} strokeWidth={1.5} color="#82E926" />
-                </div>
-              </div>
-
-              {/* Right side moving right */}
-              <div className="transition-transform duration-700 ease-out group-hover:translate-x-14">
-                king
-              </div>
+          <h1 className="type-display relative inline-flex flex-col items-center justify-center cursor-default">
+            <div className="z-10">
+              <span className="blog-outline">Expert</span> Thinking
             </div>
-
-            {/* Bottom line remains static */}
             <div className="z-10">
               on Technology <span className="blog-outline">That Matters</span>
             </div>
-            
           </h1>
           <p className="type-lead font-semibold">Insights from our certified architects and strategists.</p>
         </section>
@@ -331,11 +312,24 @@ function Blog() {
           </div>
         </section>
 
-        <section className="blog-recent-heading min-h-[75vh] flex items-center justify-center relative overflow-hidden w-full">
-          <h2 className="type-title">Recent Posts</h2>
+        <section className="blog-recent-heading min-h-screen h-screen flex items-center justify-center relative overflow-hidden w-full">
+          <h2
+            className="tracking-tight"
+            style={{
+              color: "#FFF",
+              textAlign: "center",
+              fontFamily: '"Inter", sans-serif',
+              fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+              fontStyle: "normal",
+              fontWeight: 600,
+              lineHeight: "normal",
+            }}
+          >
+            Recent Posts
+          </h2>
         </section>
 
-        <section className="blog-recent-cards min-h-[75vh] flex flex-col items-center justify-center relative overflow-hidden w-full">
+        <section className="blog-recent-cards min-h-screen h-screen flex flex-col items-center justify-center relative overflow-hidden w-full">
           <div className="recent-layout">
             {recentPosts.map((post, index) => (
               <RecentCard 
@@ -366,13 +360,25 @@ function Blog() {
                 body: JSON.stringify({ email })
               })
               .then(() => {
-                alert('Subscribed successfully!');
                 (e.target as HTMLFormElement).reset();
+                setSubscribed(true);
+                window.setTimeout(() => setSubscribed(false), 4500);
               })
               .catch(console.error);
             }}>
               <input type="email" name="email" placeholder="Enter Your Email" aria-label="Email address" required />
               <button type="submit">Subscribe</button>
+              {subscribed && (
+                <div className="subscribe-success" role="status" aria-live="polite">
+                  {Array.from({ length: 14 }).map((_, i) => (
+                    <i key={i} className="subscribe-spark" style={{ ["--a" as string]: `${i * (360 / 14)}deg`, ["--d" as string]: `${i % 3 === 0 ? 120 : i % 3 === 1 ? 90 : 65}px`, animationDelay: `${(i % 5) * 60}ms` }} />
+                  ))}
+                  <span className="subscribe-success-text">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l2.2 6.3L20.5 10l-6.3 1.7L12 18l-2.2-6.3L3.5 10l6.3-1.7L12 2z" fill="#82e926" /></svg>
+                    You&apos;re subscribed!
+                  </span>
+                </div>
+              )}
             </form>
           </div>
         </section>

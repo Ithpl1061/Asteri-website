@@ -13,7 +13,7 @@ export const GlowOrb = forwardRef<HTMLSpanElement, { className?: string; style?:
         className={`pointer-events-none block h-4 w-4 rounded-full bg-[#15EC0D] sm:h-6 sm:w-6 ${className}`}
         style={{
           boxShadow:
-            "0 0 3px #09D32A, 0 0 6px #09D32A, 0 0 21px #09D32A, 0 0 41px rgba(9,211,42,0.75), 0 0 71px rgba(9,211,42,0.5), 0 0 124px rgba(9,211,42,0.35)",
+            "0 0 4px #15EC0D, 0 0 9px #09D32A, 0 0 21px #09D32A, 0 0 34px rgba(9,211,42,0.9), 0 0 54px rgba(9,211,42,0.7), 0 0 80px rgba(9,211,42,0.5), 0 0 124px rgba(9,211,42,0.35)",
           ...style,
         }}
       />

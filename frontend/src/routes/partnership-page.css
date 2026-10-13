@@ -62,3 +62,10 @@
   .partnership-cta p { margin-top:24px; }
   .partnership-contact-button { margin-top:30px; min-height:54px; }
 }
+
+/* Statement headings: +20px (desktop) */
+@media (min-width: 769px) {
+  .partnership-statement--headline h2 { font-size: calc(clamp(2rem, 3.6vw, 4.25rem) + 20px); }
+  .partnership-statement--proof p { font-size: calc(clamp(1.1875rem, calc(3.2vw - 5px), 3.4375rem) + 20px); }
+}
+

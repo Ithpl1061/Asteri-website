@@ -108,6 +108,7 @@
     display: grid;
     grid-template-columns: 475px 56px 1fr;
     min-height: 341px;
+    will-change: opacity;
   }
   .figma-services__work-list--desktop strong {
     font-size: 48px;
@@ -413,3 +414,20 @@
   }
 }
 
+
+/* Hero: left-aligned, matching the Solutions page */
+@media (min-width: 769px) {
+  .figma-services__hero { text-align: left; }
+  .figma-services__hero > p { text-align: left; }
+  .figma-services__hero .figma-service-button { left: 0; transform: none; }
+}
+@media (min-width: 1479px) {
+  .figma-services__hero { left: calc(clamp(25px, 8.6vw, 127px) + 7.5px - (100vw - 1479px) / 2); }
+}
+@media (min-width: 1479px) {
+  .figma-services__canvas { overflow: visible; }
+}
+@media (min-width: 769px) and (max-width: 1478px) {
+  /* canvas is scaled by 100vw/1479px, so 127px here lands at ~8.6vw on screen, same as Solutions */
+  .figma-services__hero { left: 134.5px; }
+}

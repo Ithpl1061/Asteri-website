@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import "./services-page.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -165,19 +166,44 @@ function Services() {
         }).to({}, { duration: 1 });
       }
 
+      // Process list moving dot animation and synchronized text fade (same as solutions page)
       if (workListSectionRef.current && dotRef.current) {
         const olElement = workListSectionRef.current.querySelector("ol");
         if (olElement) {
-          gsap.to(dotRef.current, {
-            scrollTrigger: {
-              trigger: olElement,
-              start: "top center",
-              end: "bottom center",
-              scrub: true,
-            },
-            top: "1047px",
-            ease: "none"
-          });
+          const workItems = Array.from(olElement.querySelectorAll<HTMLLIElement>("li"));
+          const n = workItems.length;
+
+          if (n > 0) {
+            const totalDuration = Math.max(1, n - 1);
+            const workTl = gsap.timeline({
+              scrollTrigger: {
+                trigger: olElement,
+                start: "top center",
+                end: "bottom center",
+                scrub: true,
+              }
+            });
+
+            // Dot moves continuously from top to bottom
+            workTl.to(dotRef.current, {
+              top: "1047px",
+              ease: "none",
+              duration: totalDuration,
+            }, 0);
+
+            // Initial state: First item is active, others are subtly dimmed
+            gsap.set(workItems[0], { opacity: 1 });
+            for (let i = 1; i < n; i++) {
+              gsap.set(workItems[i], { opacity: 0.25 });
+            }
+
+            // Crossfade items as the dot travels from item i to item i+1
+            for (let i = 0; i < n - 1; i++) {
+              const transitionStart = i + 0.35;
+              workTl.to(workItems[i], { opacity: 0.25, ease: "power1.inOut", duration: 0.65 }, transitionStart);
+              workTl.to(workItems[i + 1], { opacity: 1, ease: "power1.inOut", duration: 0.65 }, transitionStart);
+            }
+          }
         }
       }
 
@@ -331,7 +357,10 @@ function Services() {
         <section className="figma-services__partner-grid figma-services__partner-grid--canvas">
           <div className="relative flex items-center justify-center w-full">
             <h2 className="type-title !text-[clamp(2.5rem,5vw,5.6rem)] lg:whitespace-nowrap mb-0 text-center">PLATFORMS &amp; PARTNERS</h2>
-            <span className="figma-services__grid-next !absolute !right-[36px] !top-1/2 !-translate-y-1/2">→</span>
+            <Link to="/Partnership" aria-label="View all platforms and partners" className="!absolute !right-[36px] !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105">
+              <span className="grid h-12 w-16 place-items-center text-[#8AF500] lg:h-14 lg:w-20"><ArrowLeft size={34} strokeWidth={2} /></span>
+              <span className="grid h-12 w-16 place-items-center bg-[#F3F3F3] text-[#8AF500] lg:h-14 lg:w-20"><ArrowRight size={34} strokeWidth={2} /></span>
+            </Link>
           </div>
           <div className="figma-services__partner-card">{partners.map((p) => <figure key={p.name}><img src={p.logoUrl} alt={p.name} /></figure>)}</div>
         </section>
@@ -432,7 +461,10 @@ function Services() {
       <section ref={partnerSectionRef} className="figma-services__partner-grid figma-services__partner-grid--desktop">
         <div className="relative flex items-center justify-center w-full">
           <h2 className="type-title !text-[clamp(2.5rem,5vw,5.6rem)] lg:whitespace-nowrap mb-0 text-center">PLATFORMS &amp; PARTNERS</h2>
-          <span className="figma-services__grid-next !absolute !right-[36px] !top-1/2 !-translate-y-1/2">→</span>
+          <Link to="/Partnership" aria-label="View all platforms and partners" className="!absolute !right-[36px] !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105">
+              <span className="grid h-12 w-16 place-items-center text-[#8AF500] lg:h-14 lg:w-20"><ArrowLeft size={34} strokeWidth={2} /></span>
+              <span className="grid h-12 w-16 place-items-center bg-[#F3F3F3] text-[#8AF500] lg:h-14 lg:w-20"><ArrowRight size={34} strokeWidth={2} /></span>
+            </Link>
         </div>
         <div ref={partnerCardRef} className="figma-services__partner-card">{partners.map((p) => <figure key={p.name}><img src={p.logoUrl} alt={p.name} /></figure>)}</div>
       </section>

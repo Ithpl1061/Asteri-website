@@ -228,9 +228,9 @@ function Services() {
           <p className="hero-anim mt-10 type-lead font-semibold font-semibold text-gray-300">
             Connecting customer data, processes, and teams.
           </p>
-          <button className="hero-anim mt-12 flex items-center gap-3 pl-6 pr-3 py-3 rounded-full border-2 border-[#8AF500] bg-[#82E926] hover:bg-[#97f842] transition-colors">
+          <button className="hero-anim cta-pill mt-12">
             <span className="text-black type-button font-bold">Explore More</span>
-            <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center">
+            <div className="cta-pill-icon">
               <ArrowUpRight size={34} className="text-black" strokeWidth={2.5} />
             </div>
           </button>
@@ -349,9 +349,9 @@ function Services() {
             <h2 className="cta-anim will-change-transform type-title font-bold leading-none mb-6">
               Let’s build a CRM that scales
             </h2>
-            <button className="cta-anim will-change-transform flex items-center gap-3 pl-6 pr-3 py-3 rounded-full border-2 border-[#8AF500] bg-[#D9D9D9] hover:bg-white transition-colors">
+            <button className="cta-anim cta-pill will-change-transform">
               <span className="text-black type-button font-bold">Start a conversation</span>
-              <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center">
+              <div className="cta-pill-icon">
                 <ArrowUpRight size={34} className="text-black" strokeWidth={2.5} />
               </div>
             </button>

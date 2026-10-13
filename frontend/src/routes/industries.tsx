@@ -73,14 +73,15 @@ function Services() {
       const industriesTitleRef = useRef(null);
 
       const caseStudySectionRef = useRef(null);
-      const caseStudyTextRef = useRef(null);
+      const caseStudyLine1Ref = useRef(null);
+      const caseStudyLine2Ref = useRef(null);
       const caseStudyBtnRef = useRef(null);
 
       const nextRef = useRef<HTMLElement>(null);
       const nextTitleRef = useRef<HTMLHeadingElement>(null);
       const nextTextRef = useRef<HTMLParagraphElement>(null);
       const nextBtnRef = useRef<HTMLButtonElement>(null);
-      const fintechHeadingSectionRef = useRef(null);
+      const fintechSectionRef = useRef(null);
       const fintechCardsSectionRef = useRef(null);
       const fintechTitleRef = useRef(null);
       const fintechCarouselRef = useRef(null);
@@ -217,7 +218,7 @@ function Services() {
       }, []);
 
       useEffect(() => {
-        if (!fintechHeadingSectionRef.current || !fintechTitleRef.current || !fintechCarouselRef.current || !fintechCard1Ref.current || !fintechCard2Ref.current || !fintechCard3Ref.current || !fintechCard4Ref.current) return;
+        if (!fintechCardsSectionRef.current || !fintechTitleRef.current || !fintechCarouselRef.current || !fintechCard1Ref.current || !fintechCard2Ref.current || !fintechCard3Ref.current || !fintechCard4Ref.current) return;
 
         const ctx = gsap.context(() => {
           gsap.set(fintechTitleRef.current, {
@@ -241,15 +242,15 @@ function Services() {
 
           const tl = gsap.timeline({
             scrollTrigger: {
-              trigger: fintechHeadingSectionRef.current,
+              trigger: fintechCardsSectionRef.current,
               start: "center center",
-              end: "+=1500",
+              end: "+=3500",
               scrub: true,
               pin: true,
             },
           });
 
-          // Animate title
+          // Animate title first
           tl.to(fintechTitleRef.current, {
             y: 0,
             xPercent: -50,
@@ -257,20 +258,9 @@ function Services() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 0.5 });
-
-          const tlCards = gsap.timeline({
-            scrollTrigger: {
-              trigger: fintechCardsSectionRef.current,
-              start: "center center",
-              end: "+=2000",
-              scrub: true,
-              pin: true,
-            },
-          });
-
+          .to({}, { duration: 0.5 })
           // Animate cards sequentially
-          tlCards.to(fintechCarouselRef.current, {
+          .to(fintechCarouselRef.current, {
             x: 0,
             opacity: 1,
             duration: 1,
@@ -305,19 +295,28 @@ function Services() {
             ease: "power2.out",
           })
           .to({}, { duration: 1.5 });
-        });
+        }, fintechCardsSectionRef);
 
         return () => ctx.revert();
       }, []);
 
       useEffect(() => {
-        if (!caseStudySectionRef.current || !caseStudyTextRef.current || !caseStudyBtnRef.current) return;
+        if (!caseStudySectionRef.current || !caseStudyLine1Ref.current || !caseStudyLine2Ref.current) return;
 
         const ctx = gsap.context(() => {
-          gsap.set([caseStudyTextRef.current, caseStudyBtnRef.current], {
+          gsap.set(caseStudyLine1Ref.current, {
+            x: "-100vw",
+            opacity: 0,
+          });
+          gsap.set(caseStudyLine2Ref.current, {
             x: "100vw",
             opacity: 0,
           });
+          if (caseStudyBtnRef.current) {
+            gsap.set(caseStudyBtnRef.current, {
+              opacity: 0,
+            });
+          }
 
           const tl = gsap.timeline({
             scrollTrigger: {
@@ -329,20 +328,28 @@ function Services() {
             },
           });
 
-          tl.to(caseStudyTextRef.current, {
+          tl.to(caseStudyLine1Ref.current, {
             x: 0,
             opacity: 1,
             duration: 1,
             ease: "power2.out",
-          })
-          .to({}, { duration: 0.5 })
-          .to(caseStudyBtnRef.current, {
+          }, 0)
+          .to(caseStudyLine2Ref.current, {
             x: 0,
             opacity: 1,
             duration: 1,
             ease: "power2.out",
-          })
-          .to({}, { duration: 1 });
+          }, 0);
+
+          if (caseStudyBtnRef.current) {
+            tl.to(caseStudyBtnRef.current, {
+              opacity: 1,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          }
+
+          tl.to({}, { duration: 1 });
         }, caseStudySectionRef);
 
         return () => ctx.revert();
@@ -859,7 +866,7 @@ function Services() {
 
             <section
               ref={complexitySectionRef}
-              className="bg-black flex items-center justify-center px-6 min-h-[75vh] overflow-hidden w-full relative"
+              className="bg-black flex items-center justify-center px-6 min-h-screen h-screen overflow-hidden w-full relative text-center"
             >
               <div className="flex items-center justify-center">
 
@@ -872,10 +879,13 @@ function Services() {
                   <h2
                     className="
                       text-white
-                      text-[clamp(2.25rem,5vw,4.5rem)]
                       font-bold
                       leading-[1.05]
+                      text-center
                     "
+                    style={{
+                      fontSize: "clamp(calc(2.25rem + 10px), calc(5vw + 10px), calc(4.5rem + 10px))",
+                    }}
                   >
                     Generic solutions
                     <br />
@@ -960,13 +970,13 @@ function Services() {
                   "
                 >
                   <h2
-                    className="
-                      text-white
-                      text-[clamp(2.25rem,5vw,4.5rem)]
-                      font-bold
-                      tracking-tight
-                      whitespace-nowrap
-                    "
+                    className="uppercase tracking-tight whitespace-nowrap text-white font-semibold text-center"
+                    style={{
+                      fontFamily: '"Inter", sans-serif',
+                      fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+                      fontStyle: "normal",
+                      lineHeight: "normal",
+                    }}
                   >
                     INDUSTRIES
                   </h2>
@@ -1301,14 +1311,9 @@ function Services() {
               </div>
             </section>
             )}
-            <section ref={fintechHeadingSectionRef} className="bg-black min-h-[100vh] flex flex-col items-center justify-center relative w-full overflow-hidden pt-12 gap-0">
-              <div className="industries-banking-layout flex-none -translate-y-16" style={{ height: "220px", margin: 0 }}>
+            <section ref={fintechCardsSectionRef} className="bg-black min-h-[100vh] flex flex-col items-center justify-center relative w-full overflow-hidden">
+              <div className="industries-banking-layout flex-none">
                 <h2 ref={fintechTitleRef}>{details[0]?.name}</h2>
-              </div>
-            </section>
-
-            <section ref={fintechCardsSectionRef} className="bg-black min-h-[100vh] flex flex-col items-center justify-center relative w-full overflow-hidden pt-12 gap-0">
-              <div className="industries-banking-layout flex-none" style={{ margin: 0 }}>
                 <img
                   ref={fintechCarouselRef}
                   className="industries-carousel"
@@ -1370,7 +1375,6 @@ function Services() {
                 {/* TEXT */}
 
                 <div
-                  ref={caseStudyTextRef}
                   className="
                     text-center
                     w-full
@@ -1380,9 +1384,12 @@ function Services() {
                   <h2
                     className="type-title text-white max-w-[1400px] mx-auto"
                   >
-                    Our impact lives inside
-                    <br />
-                    the systems in use.
+                    <span ref={caseStudyLine1Ref} className="block">
+                      Our impact lives inside
+                    </span>
+                    <span ref={caseStudyLine2Ref} className="block">
+                      the systems in use.
+                    </span>
                   </h2>
                 </div>
 

@@ -81,7 +81,72 @@ export function Navbar({ disableAnimations = false }: { disableAnimations?: bool
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [showNav, setShowNav] = useState(true);
-  // const navRef = useRef<HTMLDivElement>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
+
+  // GSAP Fade-In animation when menu opens
+  useEffect(() => {
+    if (!open || !menuPanelRef.current) return;
+
+    // Panel fade-in + subtle slide
+    gsap.fromTo(
+      menuPanelRef.current,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+    );
+
+    // Staggered items entrance
+    const items = menuPanelRef.current.querySelectorAll(".navbar-menu-item");
+    if (items.length) {
+      gsap.fromTo(
+        items,
+        { opacity: 0, y: 35 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          stagger: 0.05,
+          ease: "power2.out",
+          delay: 0.04,
+        }
+      );
+    }
+  }, [open]);
+
+  const handleToggle = () => {
+    if (open) {
+      if (menuPanelRef.current) {
+        gsap.to(menuPanelRef.current, {
+          opacity: 0,
+          y: -15,
+          duration: 0.22,
+          ease: "power2.in",
+          onComplete: () => {
+            setOpen(false);
+          },
+        });
+      } else {
+        setOpen(false);
+      }
+    } else {
+      setOpen(true);
+    }
+  };
+
+  const handleClose = () => {
+    if (menuPanelRef.current) {
+      gsap.to(menuPanelRef.current, {
+        opacity: 0,
+        y: -15,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: () => {
+          setOpen(false);
+        },
+      });
+    } else {
+      setOpen(false);
+    }
+  };
 
 useEffect(() => {
   if (disableAnimations) {
@@ -264,7 +329,7 @@ useEffect(() => {
 
           <button
             aria-label="Menu"
-            onClick={() => setOpen((v) => !v)}
+            onClick={handleToggle}
             className={`
               flex
               h-10
@@ -290,149 +355,139 @@ useEffect(() => {
       {/* MENU PANEL */}
       {open && (
         <div
+          ref={menuPanelRef}
           className="
+            navbar-menu-panel
             absolute
             top-24
             z-[110]
             w-full
             max-w-[1500px]
-            min-h-[60vh]
-            h-auto
-            max-h-[calc(100dvh-7.5rem)]
             overflow-y-auto
             overflow-x-hidden
             overscroll-contain
             touch-pan-y
             bg-black
-            p-4
-            sm:p-6
+            px-4
+            sm:px-6
+            py-0
             backdrop-blur-2xl
-            shadow-[0_0_50px_rgba(0,0,0,0.45)]
+            shadow-[0_0_50px_rgba(0,0,0,0.6)]
             scrollbar-thin
             scrollbar-thumb-white/20
             scrollbar-track-transparent
+            snap-y
+            snap-mandatory
+            scroll-smooth
+            will-change-transform
           "
-
+          style={{
+            height: "calc(100dvh - 7.5rem)",
+          }}
         >
-          {/* <div className="mb-4 border-b border-white/10 pb-3">
-            <p className="text-xs uppercase tracking-[0.35em] text-white">
-              Navigation
-            </p>
-          </div> */}
-
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col w-full">
             {links.map((l) => (
               <div
-              key={l.to}
-              onMouseEnter={() => setHovered(l.label)}
-              onMouseLeave={() => setHovered(null)}
-              className="border-b border-white/5"
-            >
-
-              {/* Menu Row */}
-              <Link
-                to={l.to}
-                onClick={() => setOpen(false)}
-                className={`
-                  flex
-                  items-center
-                  justify-between
-                  rounded-xl
-                  px-4
-                  py-3
-                  ${disableAnimations ? "" : "transition-all duration-300"}
-
-                  ${
-                    pathname === l.to
-                      ? "text-primary "//border border-primary/40
-                      : "text-white hover:bg-primary/10 hover:text-white"
-                  }
-                `}
+                key={l.to}
+                onMouseEnter={() => setHovered(l.label)}
+                onMouseLeave={() => setHovered(null)}
+                className="navbar-menu-item snap-start flex flex-col justify-center border-b border-white/10 shrink-0 will-change-transform"
+                style={{
+                  height: "calc((100dvh - 7.5rem) / 4)",
+                  minHeight: "calc((100dvh - 7.5rem) / 4)",
+                  maxHeight: "calc((100dvh - 7.5rem) / 4)",
+                }}
               >
-
-              <span
-                className="
-                  text-[29px]
-                  sm:text-[35px]
-                  md:text-[41px]
-                  font-semibold
-                  uppercase
-                  tracking-tight
-                  leading-none
-                "
-              >
-                {l.label}
-              </span>
-
-                <div
+                {/* Menu Row */}
+                <Link
+                  to={l.to}
+                  onClick={handleClose}
                   className={`
+                    group
                     flex
+                    h-full
+                    w-full
                     items-center
-                    justify-center
-                    w-10
-                    sm:w-12
-                    h-10
-                    rounded-full
-                    border
-                    border-primary
+                    justify-between
+                    rounded-2xl
+                    px-4
+                    sm:px-6
+                    md:px-8
+                    py-2
                     ${disableAnimations ? "" : "transition-all duration-300"}
+
+                    ${
+                      pathname === l.to
+                        ? "text-primary hover:bg-primary/10"
+                        : "text-white hover:bg-primary/10 hover:text-white"
+                    }
                   `}
                 >
-                  <ArrowRight
-                    size={30}
-                    className="text-primary"
-                    strokeWidth={1.0}
-                  />
-                </div>
-
-              </Link>
-
-              {/* Submenu */}
-              {hovered === l.label && l.children.length > 0 && (
-
-                <div
-                  className="
-                    flex
-                    flex-col
-                    items-start
-                    gap-2
-                    pl-8
-                    pb-4
-                    pt-2
-                    text-left
-                  "
-                >
-
-                  {l.children.map((child) => (
-
-                  <Link
-                    key={child.label}
-                    to={child.to}
-                    onClick={() => setOpen(false)}
-                    className={`
-                      text-[29px]
-                      sm:text-[35px]
-                      md:text-[41px]
-                      font-semibold
+                  <span
+                    className="
+                      text-[32px]
+                      sm:text-[40px]
+                      md:text-[48px]
+                      lg:text-[56px]
+                      font-bold
+                      uppercase
                       tracking-tight
-                      leading-tight
-                      text-white/90
-                      ${disableAnimations ? "" : "hover:text-primary transition-all duration-300"}
+                      leading-none
+                    "
+                  >
+                    {l.label}
+                  </span>
+
+                  <div
+                    className={`
+                      flex
+                      items-center
+                      justify-center
+                      w-11
+                      h-11
+                      sm:w-14
+                      sm:h-14
+                      md:w-16
+                      md:h-16
+                      rounded-full
+                      border
+                      border-primary
+                      ${disableAnimations ? "" : "transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/20"}
                     `}
                   >
-                    {child.label}
-                  </Link>
+                    <ArrowRight
+                      className="text-primary w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9"
+                      strokeWidth={1.2}
+                    />
+                  </div>
+                </Link>
 
-                  ))}
-
-                </div>
-
-              )}
-
-            </div>
+                {/* Submenu */}
+                {hovered === l.label && l.children.length > 0 && (
+                  <div className="flex flex-col items-start gap-2 pl-8 pb-4 pt-2 text-left">
+                    {l.children.map((child) => (
+                      <Link
+                        key={child.label}
+                        to={child.to}
+                        onClick={handleClose}
+                        className={`
+                          text-[24px]
+                          sm:text-[30px]
+                          font-semibold
+                          tracking-tight
+                          leading-tight
+                          text-white/90
+                          ${disableAnimations ? "" : "hover:text-primary transition-all duration-300"}
+                        `}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
-              
         </div>
       )}
     </header>

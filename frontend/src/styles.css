@@ -277,33 +277,33 @@
 
 /* Initial positions */
 .tag-1 {
-  left: 28%;
-  top: 60%;
+  left: -4%;
+  top: 57%;
 }
 
 .tag-2 {
-  left: 52%;
-  top: 35%;
+  left: 8%;
+  top: 2%;
 }
 
 .tag-3 {
-  left: 60%;
-  top: 72%;
+  left: 28%;
+  top: 62%;
 }
 
 .tag-4 {
-  left: 80%;
-  top: 52%;
+  left: 41%;
+  top: 36%;
 }
 
 .tag-5 {
-  left: 65%;
-  top: 80%;
+  left: 62%;
+  top: 54%;
 }
 
 .tag-6 {
-  left: 78%;
-  top: 30%;
+  left: 84%;
+  top: 13%;
 }
 
 .case-title {
@@ -313,16 +313,17 @@
 
 .case-tag {
   position: absolute;
-  padding: 18px 28px;
-  border-radius: 24px;
+  padding: 22px 36px;
+  border-radius: 30px;
   background: rgba(70, 70, 70, 0.75);
   backdrop-filter: blur(10px);
   color: white;
-  font-size: 15px;
+  font-size: 21px;
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
   text-transform: none;
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {
@@ -632,3 +633,87 @@ a[class*="rounded-full"][class*="bg-"]:hover {
   transform: scale(1.04) translateY(-2px);
   box-shadow: 0 0 25px rgba(130, 233, 38, 0.6);
 }
+
+/* "We're certified" section — sizes derive from --fs (299px at the 1440 Figma frame) */
+@media (min-width: 1024px) {
+  .certified-copy {
+    font-size: calc(var(--fs) * 0.1137);
+    line-height: 1.294;
+    width: calc(var(--fs) * 1.7);
+    left: calc(var(--fs) * 1.247);
+    top: calc(var(--fs) * 1.736);
+  }
+}
+
+@keyframes navbarMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes navbarItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Shared neon-green pill CTA ("Get In Touch" style) — one size/colour everywhere */
+.cta-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+  border: 2px solid #8af500;
+  border-radius: 9999px;
+  background: #82e926;
+  color: #000;
+}
+.cta-pill:hover {
+  background: #97f842;
+}
+.cta-pill-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 31px;
+  height: 31px;
+  border-radius: 9999px;
+  background: #fff;
+}
+.cta-pill-icon svg {
+  width: 62%;
+  height: 62%;
+  color: #000;
+}
+@media (min-width: 640px) {
+  .cta-pill {
+    gap: 1rem;
+    padding-left: 1.5rem;
+  }
+  .cta-pill-icon {
+    width: 39px;
+    height: 39px;
+  }
+}
+
+/* "What it enables" cards — flip on hover/focus */
+.enable-card { perspective: 1200px; }
+.enable-inner { position: relative; width: 100%; height: 100%; min-height: inherit; transition: transform 0.8s ease; transform-style: preserve-3d; }
+.enable-card:hover .enable-inner,
+.enable-card:focus-within .enable-inner { transform: rotateY(180deg); }
+.enable-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.enable-back { transform: rotateY(180deg); background: #8af500; }
+@media (prefers-reduced-motion: reduce) { .enable-inner { transition: none; } }

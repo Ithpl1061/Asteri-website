@@ -721,7 +721,7 @@ function Services() {
             {/*Button*/}
               <button
                 className="
-                  mt-24
+                  mt-[calc(6rem-3vh)]
                   flex
                   items-center
                   gap-3
@@ -782,7 +782,7 @@ function Services() {
                 className="
                   text-white
                   font-bold
-                  text-[clamp(2.25rem,5vw,4.5rem)]
+                  text-[calc(clamp(2.25rem,5vw,4.5rem)+20px)]
                   leading-[1.05]
                 "
               >
@@ -1346,18 +1346,9 @@ function Services() {
             >
             {/* CARD 1 */}
 
-            <div
-              ref={enablesCard1Ref}
-              className="
-                min-h-[310px]
-                rounded-[24px]
-                bg-white
-                p-6
-                flex
-                flex-col
-                justify-between
-              "
-            >
+            <div ref={enablesCard1Ref} className="enable-card min-h-[310px]">
+              <div className="enable-inner">
+                <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
               <Settings
                 size={64}
                 strokeWidth={3}
@@ -1379,21 +1370,18 @@ function Services() {
                 Operations
               </h3>
             </div>
+                <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Smarter Operations</h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">Automate routine work and unify processes so your teams spend time on what matters.</p>
+                </div>
+              </div>
+            </div>
 
             {/* CARD 2 */}
 
-            <div
-              ref={enablesCard2Ref}
-              className="
-                min-h-[310px]
-                rounded-[24px]
-                bg-white
-                p-6
-                flex
-                flex-col
-                justify-between
-              "
-            >
+            <div ref={enablesCard2Ref} className="enable-card min-h-[310px]">
+              <div className="enable-inner">
+                <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
               <Timer
                 size={64}
                 strokeWidth={3}
@@ -1415,21 +1403,18 @@ function Services() {
                 Decisions
               </h3>
             </div>
+                <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Faster Decisions</h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">Real-time data and dashboards turn information into action in minutes, not days.</p>
+                </div>
+              </div>
+            </div>
 
             {/* CARD 3 */}
 
-            <div
-              ref={enablesCard3Ref}
-              className="
-                min-h-[310px]
-                rounded-[24px]
-                bg-white
-                p-6
-                flex
-                flex-col
-                justify-between
-              "
-            >
+            <div ref={enablesCard3Ref} className="enable-card min-h-[310px]">
+              <div className="enable-inner">
+                <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
               <ShieldCheck
                 size={64}
                 strokeWidth={3}
@@ -1451,21 +1436,18 @@ function Services() {
                 Security
               </h3>
             </div>
+                <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Stronger Security</h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">Role-based access, audit trails and compliance built into every workflow.</p>
+                </div>
+              </div>
+            </div>
 
             {/* CARD 4 */}
 
-            <div
-              ref={enablesCard4Ref}
-              className="
-                min-h-[310px]
-                rounded-[24px]
-                bg-white
-                p-6
-                flex
-                flex-col
-                justify-between
-              "
-            >
+            <div ref={enablesCard4Ref} className="enable-card min-h-[310px]">
+              <div className="enable-inner">
+                <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
               <HeartHandshake
                 size={64}
                 strokeWidth={3}
@@ -1486,6 +1468,12 @@ function Services() {
                 <br />
                 Collaboration
               </h3>
+            </div>
+                <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Better Collaboration</h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">One shared workspace keeps teams, partners and customers on the same page.</p>
+                </div>
+              </div>
             </div>
           </div>
           </div>

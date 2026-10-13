@@ -302,7 +302,7 @@ function Partnership() {
           
           {/* Title Layer */}
           <div className="absolute inset-0 flex items-center justify-center z-0 text-white px-6">
-            <h2 ref={ecosystemTitleRef} className="type-heading font-bold" style={{ whiteSpace: "nowrap", margin: 0 }}>Our Partner Ecosystem</h2>
+            <h2 ref={ecosystemTitleRef} className="type-heading" style={{ whiteSpace: "nowrap", margin: 0, fontSize: "calc(clamp(2.25rem, 8.88vw, 128px) - 15px)", fontWeight: 600, lineHeight: 1.05 }}>Our Partner Ecosystem</h2>
           </div>
 
           {/* Panel Layer */}

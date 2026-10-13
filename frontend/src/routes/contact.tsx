@@ -3,7 +3,7 @@ import { apiUrl } from "@/lib/api";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./contact.css";
@@ -41,6 +41,7 @@ function ContactHero() {
 
 function ContactInformation() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -107,12 +108,25 @@ function ContactInformation() {
       })
       .then(res => res.json())
       .then(() => {
-        alert('Message sent successfully!');
         (event.target as HTMLFormElement).reset();
+        setSent(true);
+        window.setTimeout(() => setSent(false), 4500);
       })
       .catch(console.error);
     }}>
-      <div><label>Your Name<input name="name" required /></label><label>Email Address<input name="email" type="email" required /></label><label>Message<textarea name="message" required /></label></div>
+      <div><label>Your Name<input name="name" required /></label><label>Email Address<input name="email" type="email" required /></label><label>Message<textarea name="message" required /></label>
+        {sent && (
+          <div className="contact-success" role="status" aria-live="polite">
+            {Array.from({ length: 16 }).map((_, i) => (
+              <i key={i} className="contact-spark" style={{ ["--a" as string]: `${i * (360 / 16)}deg`, ["--d" as string]: `${i % 3 === 0 ? 220 : i % 3 === 1 ? 170 : 120}px`, animationDelay: `${(i % 5) * 60}ms` }} />
+            ))}
+            <span className="contact-success-text">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l2.2 6.3L20.5 10l-6.3 1.7L12 18l-2.2-6.3L3.5 10l6.3-1.7L12 2z" fill="#82e926" /></svg>
+              Message sent!
+            </span>
+          </div>
+        )}
+      </div>
       <button type="submit">Send Message</button>
     </form>
   </section>;
