@@ -83,9 +83,9 @@
 .solutions-outcomes ol { position: relative; width: min(1280px, 100%); margin: 0 auto; padding: 0; list-style: none; }
 .solutions-outcomes ol::before { position: absolute; top: clamp(40px, 6vw, 80px); bottom: clamp(40px, 6vw, 80px); left: 50%; width: 2px; background: rgba(130, 233, 38, .4); content: ""; }
 .solutions-outcomes li { position: relative; display: grid; grid-template-columns: 1fr 42px 1fr; align-items: center; min-height: clamp(100px, 12vw, 180px); text-align: left; margin-bottom: 3px; will-change: opacity; }
-.solutions-outcomes strong { justify-self: end; padding-right: calc(clamp(16px, 3vw, 48px) + 3px); color: #fff;   }
+.solutions-outcomes strong { justify-self: end; padding-right: calc(clamp(24px, 5vw, 96px) + 3px); color: #fff;   }
 .outcomes-moving-dot { position: absolute; top: clamp(40px, 6vw, 80px); left: 50%; transform: translateX(-50%); z-index: 2; width: clamp(15px, 2vw, 24px); height: clamp(15px, 2vw, 24px); border-radius: 50%; background: var(--solution-green); box-shadow: 0 0 28px var(--solution-green); }
-.solutions-outcomes li p { max-width: 640px; margin: 0; padding-left: calc(clamp(16px, 3vw, 48px) + 3px); color: #fff;    }
+.solutions-outcomes li p { max-width: 640px; margin: 0; padding-left: calc(clamp(24px, 5vw, 96px) + 3px); color: #fff;    }
 
 .solutions-cta { position: relative; min-height: min(450px, 90svh); display: grid; place-items: center; overflow: hidden; padding: 60px 24px; text-align: center; }
 .solutions-cta__glow { position: absolute; width: min(1050px, 92vw); height: min(580px, 70vw); border-radius: 45%; background: rgba(101,255,0,.20); filter: blur(115px); }
@@ -119,4 +119,53 @@
   .solutions-outcomes li p { padding-left: 13px;  }
   .outcomes-moving-dot { left: 46%; width: 14px; height: 14px; }
   .solutions-cta { min-height: 350px; }
+}
+
+
+/* ==========================================================================
+   SOLUTIONS - phones (<= 700px)
+   Same scenes, order, colours and animations as desktop. Only spacing and sizes
+   change so nothing is clipped and there are no empty screens between scenes.
+   ========================================================================== */
+@media (max-width: 700px) {
+  /* hero title: the longest word ("Transformation") must fit narrow phones */
+  .solutions-hero h1 { font-size: clamp(2.25rem, 11.6vw, 2.75rem); }
+
+  /* ---- tighter vertical rhythm: no tall empty sections ---- */
+  .solutions-intro { min-height: 70svh !important; padding-top: 3rem; padding-bottom: 3rem; }
+  .solutions-statement-block { min-height: 45svh !important; }
+  .solutions-outcomes-subheading { min-height: 34svh !important; }
+  .solutions-outcomes { min-height: 0 !important; padding: 1.75rem 16px 2.5rem; }
+  .solutions-playbook { min-height: 34svh !important; }
+
+  /* ---- Core services: one card on screen at a time, like desktop ----
+     Both cards share one grid cell, so the slide-in / slide-out hands over in place. */
+  .solutions-core { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-top: 4.5rem; padding-bottom: 1rem; }
+  .solutions-core > h2 { margin-bottom: 1rem; font-size: clamp(1.9rem, 8.6vw, 2.5rem); }
+  .solutions-core > div { width: 100%; --tw-translate-y: 0px; transform: none; }
+  /* big split card titles ("Enterpr/ise", "Moderniz/ation") scaled to fit the card */
+  .solutions-core .core-card [class*="text-[3.5rem]"] { font-size: clamp(2.5rem, 12vw, 3.2rem); }
+  .solutions-core .core-card { grid-area: 1 / 1; align-self: start; width: 100% !important; top: 0 !important; max-width: none; padding: 1.1rem 1.1rem 1.2rem; }
+  .solutions-core .core-card > p { margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.45; }
+
+  /* ---- Outcomes list: headings fit their column and are right-aligned next to the line ---- */
+  .solutions-outcomes li strong {
+    font-size: clamp(1.05rem, 5.4vw, 1.45rem);
+    line-height: 1.1;
+    text-align: right;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  .solutions-outcomes li p { font-size: 0.9rem; line-height: 1.35; }
+  .solutions-outcomes li { min-height: 5.75rem; }
+}
+
+/* Solutions - short phones: keep both Core Services cards fully on screen */
+@media (max-width: 700px) and (max-height: 640px) {
+  .solutions-core { padding-top: 4rem; }
+  .solutions-core > h2 { font-size: 1.6rem; margin-bottom: 0.6rem; }
+  .solutions-core .core-card { padding: 0.9rem 1rem 1rem; }
+  .solutions-core .core-card [class*="text-[3.5rem]"] { font-size: 2.2rem; }
+  .solutions-core .core-card > p { font-size: 0.78rem; line-height: 1.35; margin-bottom: 0.7rem; }
+  .solutions-core .core-card h3 { font-size: 1rem; }
 }

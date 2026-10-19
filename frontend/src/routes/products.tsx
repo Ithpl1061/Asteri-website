@@ -366,7 +366,7 @@ function Services() {
                 scrollTrigger: {
                   trigger: simpleQuoteSectionRef.current,
                   start: "center center",
-                  end: "+=1500",
+                  end: "+=840",
                   scrub: 1,
                   pin: true,
                 },
@@ -386,7 +386,7 @@ function Services() {
                 0
               );
 
-              tl.to({}, { duration: 1.5 }); // Hold screen
+              tl.to({}, { duration: 0.4 }); // Hold screen
             }, simpleQuoteSectionRef);
 
             return () => ctx.revert();
@@ -407,7 +407,7 @@ function Services() {
                 scrollTrigger: {
                   trigger: builtSectionRef.current,
                   start: "top top",
-                  end: "+=3500",
+                  end: "+=3055",
                   scrub: 1,
                   pin: true,
                 },
@@ -421,7 +421,7 @@ function Services() {
               })
 
               // PAUSE / HOLD
-              .to({}, { duration: 1.5 })
+              .to({}, { duration: 0.8 })
 
               // GO UP / EXIT
               .to(builtTextRef.current, {
@@ -441,6 +441,15 @@ function Services() {
               gsap.set(cardsWrapperRef.current, { yPercent: -50 });
               gsap.set(productMainCardRef.current, { y: 400, opacity: 0 });
 
+              // Distance between two product cards = card width + gap. On desktop this is
+              // 400 + 32 = 432px (unchanged); on phones the cards are narrower, so measure it.
+              const cardStep = () => {
+                const row = cardsWrapperRef.current as HTMLElement | null;
+                const first = row?.firstElementChild as HTMLElement | null;
+                if (!row || !first) return 432;
+                return first.offsetWidth + (parseFloat(getComputedStyle(row).columnGap) || 0);
+              };
+
               gsap.set(dot1Ref.current, {
                 backgroundColor: "#8AF500",
               });
@@ -454,8 +463,9 @@ function Services() {
                   trigger: productCardSectionRef.current,
                   start: "top top",
                   end: "+=5000",
-                  scrub: true,
+                  scrub: window.innerWidth <= 767 ? 0.5 : true,
                   pin: true,
+                  invalidateOnRefresh: true,
                   onUpdate: (self) => {
                     const p = self.progress;
                     if (p < 0.2) {
@@ -490,7 +500,7 @@ function Services() {
 
               // 2ND CARD
               tl.to(cardsWrapperRef.current, {
-                x: -432,
+                x: () => -cardStep() * 1,
                 duration: 2,
               });
 
@@ -501,7 +511,7 @@ function Services() {
 
               // 3RD CARD
               tl.to(cardsWrapperRef.current, {
-                x: -864,
+                x: () => -cardStep() * 2,
                 duration: 2,
               });
 
@@ -512,7 +522,7 @@ function Services() {
 
               // 4TH CARD
               tl.to(cardsWrapperRef.current, {
-                x: -1296,
+                x: () => -cardStep() * 3,
                 duration: 2,
               });
 
@@ -523,7 +533,7 @@ function Services() {
 
               // 5TH CARD
               tl.to(cardsWrapperRef.current, {
-                x: -1728,
+                x: () => -cardStep() * 4,
                 duration: 2,
               });
 
@@ -576,7 +586,7 @@ function Services() {
                 scrollTrigger: {
                   trigger: enablesSectionRef.current,
                   start: "top top",
-                  end: "+=4000",
+                  end: "+=3320",
                   scrub: true,
                   pin: true,
                 },
@@ -596,7 +606,7 @@ function Services() {
               tl.to(enablesCard4Ref.current, { x: 0, opacity: 1, duration: 1 });
 
               // 3. Hold at the end
-              tl.to({}, { duration: 1.5 });
+              tl.to({}, { duration: 0.4 });
 
             }, enablesSectionRef);
 
@@ -620,7 +630,7 @@ function Services() {
                 scrollTrigger: {
                   trigger: nextRef.current,
                   start: "top top",
-                  end: "+=3000",
+                  end: "+=2400",
                   scrub: true,
                   pin: true,
                 },
@@ -657,7 +667,7 @@ function Services() {
               });
 
               // HOLD
-              tl.to({}, { duration: 1.5 });
+              tl.to({}, { duration: 0.4 });
 
             }, nextRef);
 
@@ -768,7 +778,7 @@ function Services() {
         {/* =================== SECTION : 2 Every system should  ========================== */}  
         <section
           ref={simpleQuoteSectionRef}
-          className="bg-black flex items-center justify-center px-6 py-32 overflow-hidden"
+          className="products-quote bg-black flex items-center justify-center px-6 py-32 overflow-hidden"
         >
           <div className="flex items-center justify-center">
 
@@ -796,7 +806,7 @@ function Services() {
         {/* =================== SECTION : 3 Ours are built ============================ */}
         <section
           ref={builtSectionRef}
-          className="bg-black h-screen flex items-center justify-center px-6 overflow-hidden"
+          className="products-built bg-black h-screen flex items-center justify-center px-6 overflow-hidden"
         >
           <div className="flex items-center justify-center">
 
@@ -827,12 +837,13 @@ function Services() {
     {/*============================= SECTION : 5 CRM & CLOUD PLATFORM ============================*/}
         <section
           ref={productCardSectionRef}
-          className="bg-black h-screen flex flex-col items-center justify-center"
+          className="products-crm-sec bg-black h-screen flex flex-col items-center justify-center"
         >
           <div className="w-full mx-auto overflow-hidden">
             <div
               ref={productMainCardRef}
               className="
+                products-main-card
                 w-full
                 min-h-[700px]
                 bg-[#EAEAEA]
@@ -920,6 +931,7 @@ function Services() {
             {/* CardsWrapper */}
                 <div
                   className="
+                    products-cards-panel
                     relative
                     mt-16
                     h-[620px]
@@ -939,6 +951,7 @@ function Services() {
                   <div
                     ref={cardsWrapperRef}
                     className="
+                      products-cards-row
                       absolute
                       left-[8%]
                       top-[47%]
@@ -955,7 +968,7 @@ function Services() {
 
                 <div
                   className="
-                    shrink-0
+                    products-card shrink-0
                     w-[400px]
                     h-[520px]
                     rounded-[35px]
@@ -1018,7 +1031,7 @@ function Services() {
 
                 <div
                   className="
-                    shrink-0
+                    products-card shrink-0
                     w-[400px]
                     h-[520px]
                     rounded-[35px]
@@ -1081,7 +1094,7 @@ function Services() {
                 {/* 3: 1dox.ai */}
                 <div
                   className="
-                    shrink-0
+                    products-card shrink-0
                     w-[400px]
                     h-[520px]
                     rounded-[35px]
@@ -1142,7 +1155,7 @@ function Services() {
                 {/* 4: ManageEngine */}
                 <div
                   className="
-                    shrink-0
+                    products-card shrink-0
                     w-[400px]
                     h-[520px]
                     rounded-[35px]
@@ -1203,7 +1216,7 @@ function Services() {
                 {/* 5: PL/SQL */}
                 <div
                   className="
-                    shrink-0
+                    products-card shrink-0
                     w-[400px]
                     h-[520px]
                     rounded-[35px]
@@ -1266,6 +1279,7 @@ function Services() {
 
               <div
                 className="
+                  products-dots
                   absolute
                   bottom-12
                   left-1/2
@@ -1307,7 +1321,7 @@ function Services() {
     {/*============================= SECTION : 6 WHAT IT ENABLES ============================*/}
         <section
           ref={enablesSectionRef}
-          className="bg-black px-6 h-screen flex flex-col justify-center overflow-hidden"
+          className="products-enables bg-black px-6 h-screen flex flex-col justify-center overflow-hidden"
         >
           <div className="mx-auto w-full max-w-[1360px]">
 
@@ -1316,6 +1330,7 @@ function Services() {
             <div
               ref={enablesTitleRef}
               className="
+                products-enables-title
                 mb-16
               "
             >
@@ -1337,6 +1352,7 @@ function Services() {
 
             <div
               className="
+                products-enables-grid
                 grid
                 grid-cols-1
                 gap-6
@@ -1481,9 +1497,9 @@ function Services() {
   {/*=======================SECTION : 7 Let’s solve what’s next =================*/}
        <section
           ref={nextRef}
-          className="relative h-screen bg-black flex items-center justify-center overflow-hidden px-6"
+          className="products-next relative h-screen bg-black flex items-center justify-center overflow-hidden px-6"
         >
-          <div className="relative flex min-h-[650px] w-full max-w-[1360px] items-center justify-center overflow-hidden rounded-[40px] bg-[#0B1205] py-28">
+          <div className="products-next-card relative flex min-h-[650px] w-full max-w-[1360px] items-center justify-center overflow-hidden rounded-[40px] bg-[#0B1205] py-28">
 
 
 

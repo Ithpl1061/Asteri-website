@@ -1,6 +1,10 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function PageShell({
   children,
@@ -9,6 +13,22 @@ export function PageShell({
   children: ReactNode;
   disableAnimations?: boolean;
 }) {
+  // Phones/tablets: take over touch scrolling so the pinned scroll-scenes stay locked to
+  // the finger. This stops the browser's address-bar show/hide from shifting pinned
+  // screens and shortens the native fling so one hard swipe cannot fly through the page.
+  // Desktop (mouse/wheel) is never touched.
+  useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth >= 1024 || !ScrollTrigger.isTouch) return;
+    ScrollTrigger.normalizeScroll({
+      type: "touch",
+      allowNestedScroll: true,
+      momentum: (self: { velocityY: number }) => Math.min(1.7, Math.abs(self.velocityY) / 3000),
+    });
+    return () => {
+      ScrollTrigger.normalizeScroll(false);
+    };
+  }, []);
+
   return (
     <div className={`relative min-h-screen overflow-x-hidden${disableAnimations ? " industries-static-page" : ""}`}>
       <Navbar disableAnimations={disableAnimations} />

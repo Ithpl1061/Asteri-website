@@ -55,13 +55,14 @@ function VisionariesSection({
       className="relative h-screen w-full bg-black"
     >
       <div className="flex h-screen items-center overflow-hidden">
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-2 items-center gap-16 lg:gap-20 px-8 lg:px-12">
+        <div className="visionaries-grid mx-auto grid w-full max-w-7xl grid-cols-2 items-center gap-16 lg:gap-20 px-8 lg:px-12">
           {/* Visual area */}
-          <div className="relative h-[560px]">
+          <div className="visionaries-visual relative h-[560px]">
             <div className="absolute inset-0">
               <div
                 ref={circleRef}
                 className="
+                  visionaries-circle
                   absolute
                   left-10
                   top-8
@@ -84,6 +85,7 @@ function VisionariesSection({
                   src={person.imageUrl}
                   alt={person.name}
                   className="
+                    visionaries-photo
                     absolute
                     top-4
                     left-10
@@ -104,7 +106,7 @@ function VisionariesSection({
           </div>
 
           {/* Content area */}
-          <div className="relative h-[560px]">
+          <div className="visionaries-content relative h-[560px]">
             {visionaries.map((person, index) => (
               <div
                 key={person.name}
@@ -251,6 +253,7 @@ function About() {
         top: r.top - c.top,
         bottom: r.bottom - c.top,
         width: r.width,
+        height: r.height,
       });
       const s = parseFloat(getComputedStyle(headline).fontSize) / 96;
       const line1 = local(headline.children[0].getBoundingClientRect());
@@ -258,10 +261,35 @@ function About() {
       const subR = local(sub.getBoundingClientRect());
       const btn = local(cta.getBoundingClientRect());
 
-      const xDrop = biz.left + biz.width * 0.52;
+      // On phones the headline wraps, so "Business" sits on a later line and the desktop
+      // drop (above "Business") would cut through the first lines. Detect that and
+      // re-aim the drop into the free space beside those lines (same shape as desktop).
+      const lineH = parseFloat(getComputedStyle(headline).fontSize) * (116 / 96);
+      const line2H = headline.children[1].getBoundingClientRect().height;
+      const wrapped = line1.height > lineH * 1.5 || line2H > lineH * 1.5;
       const yTurn = line1.bottom - 13 * s;
       // The line may run outside the content column (as in Figma); keep it on screen.
-      const xRight = Math.min(biz.right + 28 * s, window.innerWidth - c.left - RADIUS - 2);
+      const xRight = wrapped
+        ? c.width - line1.left / 2 // mirror of the left gutter: clear of every line of text
+        : Math.min(biz.right + 28 * s, window.innerWidth - c.left - RADIUS - 2);
+      // Same shape as desktop: the line drops through the empty space to the right of the
+      // short first lines ("Technology" / "That"), turns under them, and runs to the side.
+      let maxRight1 = 0;
+      if (wrapped) {
+        const walker = document.createTreeWalker(headline.children[0], NodeFilter.SHOW_TEXT);
+        const range = document.createRange();
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+          if (!n.textContent?.trim()) continue;
+          range.selectNodeContents(n);
+          for (const r of Array.from(range.getClientRects())) maxRight1 = Math.max(maxRight1, r.right - c.left);
+        }
+      }
+      const freeW = xRight - maxRight1;
+      const xDrop = wrapped
+        ? freeW >= 30
+          ? (maxRight1 + xRight) / 2
+          : Math.max(6, line1.left / 2)
+        : biz.left + biz.width * 0.52;
       // Below the button, but never past the hero's visible bottom edge.
       const yBottom = Math.min(btn.bottom + 49 * s, c.height - 16);
       const xReturn = btn.right + 204 * s;
@@ -282,6 +310,8 @@ function About() {
       svg.setAttribute("viewBox", `0 0 ${c.width} ${c.height}`);
       path.setAttribute("d", d);
       dot.setAttribute("cx", String(xDrop));
+      // On phones the dot rides inside the narrow side gutter, so it must be smaller than it.
+      dot.setAttribute("r", wrapped ? String(Math.min(14, Math.max(5, (freeW >= 30 ? freeW / 2 : xDrop) - 4))) : "14");
       dot.setAttribute("cy", "0");
     };
 
@@ -377,7 +407,7 @@ function About() {
                 scrollTrigger: {
                   trigger: outcomesHeadingSectionRef.current,
                   start: "top top",
-                  end: "+=250%",
+                  end: "+=203%",
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
@@ -393,7 +423,7 @@ function About() {
                 }, i * 0.95);
               });
 
-              tlStatement.to({}, { duration: 1.2 });
+              tlStatement.to({}, { duration: 0.4 });
             }
           }
 
@@ -408,7 +438,7 @@ function About() {
               scrollTrigger: {
                 trigger: serveClientsSectionRef.current,
                 start: "top top",
-                end: "+=300%",
+                end: "+=257%",
                 scrub: 0.5,
                 pin: true,
                 anticipatePin: 1,
@@ -433,7 +463,7 @@ function About() {
               }, ">-0.4");
             });
 
-            tlServe.to({}, { duration: 1.2 });
+            tlServe.to({}, { duration: 0.4 });
           }
 
           // Mission animation (elements slide in ONE BY ONE from right + pin/hold)
@@ -446,7 +476,7 @@ function About() {
                 scrollTrigger: {
                   trigger: missionSectionRef.current,
                   start: "top top",
-                  end: "+=250%",
+                  end: "+=203%",
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
@@ -463,7 +493,7 @@ function About() {
                 }, i * 0.95);
               });
 
-              tlMission.to({}, { duration: 1.2 });
+              tlMission.to({}, { duration: 0.4 });
             }
           }
 
@@ -477,7 +507,7 @@ function About() {
                 scrollTrigger: {
                   trigger: visionSectionRef.current,
                   start: "top top",
-                  end: "+=250%",
+                  end: "+=203%",
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
@@ -494,7 +524,7 @@ function About() {
                 }, i * 0.95);
               });
 
-              tlVision.to({}, { duration: 1.2 });
+              tlVision.to({}, { duration: 0.4 });
             }
           }
 
@@ -506,7 +536,7 @@ function About() {
               scrollTrigger: {
                 trigger: approachHeadingSectionRef.current,
                 start: "top top",
-                end: "+=200%",
+                end: "+=133%",
                 scrub: 0.5,
                 pin: true,
                 anticipatePin: 1,
@@ -520,7 +550,7 @@ function About() {
                 duration: 1.2,
                 ease: "power1.out",
               })
-              .to({}, { duration: 1.2 });
+              .to({}, { duration: 0.4 });
           }          // Our Approach Cards animation (cards slide in ONE BY ONE from right + pin/hold)
           if (approachCardsSectionRef.current) {
             const cardElements = Array.from(approachCardsSectionRef.current.querySelectorAll<HTMLElement>(".approach-card-item"));
@@ -565,7 +595,7 @@ function About() {
               scrollTrigger: {
                 trigger: visionariesHeadingSectionRef.current,
                 start: "top top",
-                end: "+=200%",
+                end: "+=133%",
                 scrub: 0.5,
                 pin: true,
                 anticipatePin: 1,
@@ -579,7 +609,7 @@ function About() {
                 duration: 1.2,
                 ease: "power1.out",
               })
-              .to({}, { duration: 1.2 });
+              .to({}, { duration: 0.4 });
           }
 
           // Visionaries section animation (Avinash -> Anuraj -> Aishwarya)
@@ -631,7 +661,7 @@ function About() {
               scrollTrigger: {
                 trigger: visionariesSectionRef.current,
                 start: "top top",
-                end: "+=400%",
+                end: "+=337%",
                 scrub: 0.5,
                 pin: true,
                 anticipatePin: 1,
@@ -782,7 +812,7 @@ function About() {
               )
 
               // Card 3 (Aishwarya Abnave) hold duration on screen after animation completes
-              .to(images[2], { opacity: 1, duration: 2 });
+              .to(images[2], { opacity: 1, duration: 0.6 });
           }
 
           // Culture & Values animation (cards slide in ONE BY ONE from right + pin/hold)
@@ -795,7 +825,7 @@ function About() {
                 scrollTrigger: {
                   trigger: cultureSectionRef.current,
                   start: "top top",
-                  end: "+=300%",
+                  end: "+=254%",
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
@@ -811,7 +841,7 @@ function About() {
                 }, i * 0.95);
               });
 
-              tlCulture.to({}, { duration: 1.2 });
+              tlCulture.to({}, { duration: 0.4 });
             }
           }
 
@@ -824,7 +854,7 @@ function About() {
               scrollTrigger: {
                 trigger: techSectionRef.current,
                 start: "top top",
-                end: "+=200%",
+                end: "+=260%",
                 scrub: 0.5,
                 pin: true,
                 anticipatePin: 1,
@@ -844,7 +874,7 @@ function About() {
                 duration: 1.2,
                 ease: "power1.out",
               }, 0)
-              .to({}, { duration: 1.2 });
+              .to({}, { duration: 0.5 });
           }
 
           // Designed For What's Next animation (text & button slide in ONE BY ONE from right + pin/hold)
@@ -857,7 +887,7 @@ function About() {
                 scrollTrigger: {
                   trigger: nextSectionRef.current,
                   start: "top top",
-                  end: "+=250%",
+                  end: "+=203%",
                   scrub: 0.5,
                   pin: true,
                   anticipatePin: 1,
@@ -873,7 +903,7 @@ function About() {
                 }, i * 0.95);
               });
 
-              tlNext.to({}, { duration: 1.2 });
+              tlNext.to({}, { duration: 0.4 });
             }
           }
 
@@ -1035,7 +1065,7 @@ function About() {
           <div className="w-full pl-[30vw] pr-0">
             <h2
               ref={serveClientsHeadingRef}
-              className="type-title text-white flex items-center gap-4 sm:gap-6 w-full"
+              className="serve-heading type-title text-white flex items-center gap-4 sm:gap-6 w-full"
             >
               <span className="shrink-0">We Serve Clients</span>
               <span className="h-[1.5px] flex-1 bg-white" />
@@ -1135,7 +1165,7 @@ function About() {
           ref={approachCardsSectionRef}
           className="relative h-screen w-full bg-black flex flex-col justify-center items-center px-6 sm:px-12 overflow-hidden"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-[1400px] w-full mx-auto">
+          <div className="approach-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-[1400px] w-full mx-auto">
             {/* Card 1: Discovery */}
             <div className="approach-card-item flip-card h-[340px] sm:h-[380px] w-full">
               <div className="flip-inner">
@@ -1266,12 +1296,12 @@ function About() {
           ref={cultureSectionRef}
           className="relative h-screen w-full bg-black flex flex-col justify-center items-center overflow-hidden py-8 sm:py-10"
         >
-          <div className="max-w-[1400px] w-full mx-auto px-6 sm:px-10 flex flex-col justify-center">
+          <div className="culture-wrap max-w-[1400px] w-full mx-auto px-6 sm:px-10 flex flex-col justify-center">
             <h2 className="text-[clamp(2.25rem,5vw,4.5rem)] font-bold text-white tracking-tight text-center mb-6 sm:mb-10 uppercase">
               CULTURE &amp; VALUES
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+            <div className="culture-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
               {/* CARD 1 */}
               <div className="culture-card-item flip-card h-[360px] sm:h-[400px] w-full">
                 <div className="flip-inner">

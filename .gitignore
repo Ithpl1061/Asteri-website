@@ -24,3 +24,6 @@ edits.json
 *.jpeg
 *.svg
 !frontend/public/
+playwright-report/
+test-results/
+blob-report/

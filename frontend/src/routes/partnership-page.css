@@ -69,3 +69,68 @@
   .partnership-statement--proof p { font-size: calc(clamp(1.1875rem, calc(3.2vw - 5px), 3.4375rem) + 20px); }
 }
 
+
+
+/* ==========================================================================
+   PARTNERSHIP - phones / small tablets (<= 900px)
+   Same scenes, order, colours and animations as desktop. The earlier <=900px rules
+   turned the pinned Partner Ecosystem panel and the Principles cards into a tall
+   normal-flow layout that could not fit the one pinned screen; these keep each scene
+   inside a single screen. Desktop (> 900px) is untouched.
+   ========================================================================== */
+@media (max-width: 900px) {
+  /* no tall empty screens between scenes */
+  .partnership-statement--headline { height: auto; min-height: 50svh; }
+  .partnership-statement--proof { height: auto; min-height: 45svh; }
+  .partnership-benefits { min-height: 75svh; }
+
+  /* the pinned screen must be the VISIBLE height (svh): 100vh is taller than the screen when the
+     browser toolbars are showing, which cut the bottom of the card off on real phones */
+  .partnership-page #ecosystem { height: 100svh; }
+
+  /* ---- Our Partner Ecosystem: title, then a white panel that slides up and swaps partners ---- */
+  .partnership-ecosystem-title {
+    white-space: normal !important;
+    text-align: center;
+    font-size: clamp(2rem, 9.5vw, 2.8rem) !important;
+    line-height: 1.1 !important;
+  }
+
+  .partnership-partner-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    margin-top: 0;
+  }
+  .partnership-partner-intro { min-height: 0; padding: 5.25rem 1.25rem 1.25rem; justify-content: flex-start; }
+  .partnership-partner-intro > p { margin-top: 0.75rem; }
+  .partnership-outline-button { position: static; margin-top: 1.25rem; padding: 8px 18px; }
+  .partnership-outline-button .partnership-arrow { height: 32px; width: 32px; }
+
+  .partnership-partner-slider { overflow: hidden; padding: 0; white-space: normal; border-radius: 28px 28px 0 0; }
+  /* the card fills the grey panel like the desktop card does (big logo, readable text) */
+  .partnership-partner-card {
+    width: calc(100% - 2.5rem);
+    max-width: 400px;
+    height: calc(100% - 3.5rem);
+    min-height: 260px;
+    padding: 1.6rem 1.4rem;
+    border-radius: 32px;
+    transform: none;
+  }
+  .partnership-partner-card img { height: clamp(64px, 11svh, 100px); max-width: 180px; margin-bottom: 0.25rem; }
+  .partnership-partner-card p { font-size: 1.05rem; line-height: 1.35; margin-top: 1rem; }
+
+  /* ---- Partnership Principles: three cards fit under the heading on one screen ---- */
+  .partnership-principles { min-height: 100svh; padding: 4.5rem 1rem 1.5rem; }
+  .partnership-principles > h2 { white-space: normal; }
+  .partnership-principle-grid { gap: 0.75rem; margin: 1.25rem 0 0; }
+  .partnership-principle-card { min-height: 0; padding: 1.1rem 1.25rem 1.25rem; border-radius: 26px; }
+  .partnership-principle-card p { margin-top: 1rem; font-size: 0.95rem; line-height: 1.25; }
+
+  /* ---- Closing CTA ---- */
+  .partnership-cta { height: 80svh; min-height: 420px; }
+  .partnership-cta-copy { inset: auto; }
+}

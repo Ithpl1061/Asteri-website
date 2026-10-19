@@ -13,7 +13,9 @@
   #root {
     width: 100%;
     max-width: 100%;
+    overflow-x: hidden;
     overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
   }
 
   body {
@@ -150,8 +152,35 @@
     opacity: 1 !important;
   }
 
+  /* Valuable Customers logos: cancel section padding and slightly increase logo size */
+  .collaborations-section .collab-logos-container {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    width: 100vw;
+  }
+
+  .collaborations-section .collab-logos-wrapper {
+    height: calc(var(--collab-w) * 0.28) !important;
+  }
+
+  .collaborations-section .collab-logo-img {
+    transform: scale(1.1);
+    transform-origin: center center;
+  }
+
   .footer-word {
     margin-top: 5rem;
     padding-bottom: 2rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .collaborations-section .collab-logos-container {
+    margin-left: -2rem;
+    margin-right: -2rem;
+  }
+
+  .collaborations-section .collab-logo-img {
+    transform: scale(1.18);
   }
 }

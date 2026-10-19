@@ -87,7 +87,7 @@ function Partnership() {
           scrollTrigger: {
             trigger: statementSectionRef.current,
             start: "top top",
-            end: "+=2000",
+            end: "+=1650",
             scrub: 1,
             pin: true,
           },
@@ -98,15 +98,15 @@ function Partnership() {
           .to(statementLine1Ref.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" })
           .to({}, { duration: 0.5 })
           .to(statementLine2Ref.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" })
-          .to({}, { duration: 1 });
+          .to({}, { duration: 0.3 });
       }
 
       if (proofSectionRef.current && proofTextRef.current) {
         gsap.set(proofTextRef.current, { x: "100vw", opacity: 0 });
         const tl2 = gsap.timeline({
-          scrollTrigger: { trigger: proofSectionRef.current, start: "top top", end: "+=1500", scrub: 1, pin: true },
+          scrollTrigger: { trigger: proofSectionRef.current, start: "top top", end: "+=840", scrub: 1, pin: true },
         });
-        tl2.to(proofTextRef.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" }).to({}, { duration: 1.5 });
+        tl2.to(proofTextRef.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" }).to({}, { duration: 0.4 });
       }
 
       if (ecosystemSectionRef.current && ecosystemTitleRef.current && ecosystemPanelRef.current && ecosystemCardsWrapperRef.current) {
@@ -135,7 +135,7 @@ function Partnership() {
           scrollTrigger: {
             trigger: ecosystemSectionRef.current,
             start: "top top",
-            end: "+=3500",
+            end: "+=2100",
             scrub: 1,
             pin: true,
             onUpdate: (self) => {
@@ -144,7 +144,7 @@ function Partnership() {
               const card1Name = ecosystem[1]?.partnerName || "ZIONIT";
               const card1Sub = ecosystem[1]?.subtitle || "Enabling Streamlined Software Solutions";
 
-              if (self.progress < 0.53) {
+              if (self.progress < 0.64) {
                 setPartnerName(card0Name);
                 setPartnerSubtitle(card0Sub);
               } else {
@@ -156,13 +156,13 @@ function Partnership() {
         });
 
         tl3
-          .to({}, { duration: 1.5 }) // Hold title screen
+          .to({}, { duration: 0.5 }) // Hold title screen
           .to(ecosystemPanelRef.current, { y: 0, duration: 1.5, ease: "power2.inOut" }) // Slide panel up like a curtain
           .to(ecosystemTitleRef.current, { opacity: 0, duration: 0.8, ease: "power2.out" }, "<0.5") // Title fades out as panel covers it
           .to({}, { duration: 0.5 }) // Hold panel before sliding cards
           .to(ecosystemCard1Ref.current, { x: "-100vw", duration: 1, ease: "power2.inOut" }) // Salesforce slides out entirely
           .to(ecosystemCard2Ref.current, { x: 0, duration: 1, ease: "power2.inOut" }, "<") // ZionIT slides in entirely (synchronously)
-          .to({}, { duration: 2 }); // Hold at the end
+          .to({}, { duration: 0.4 }); // Hold at the end
       }
 
       if (benefitsSectionRef.current && benefit1Ref.current && benefit2Ref.current && benefit3Ref.current) {
@@ -175,7 +175,7 @@ function Partnership() {
           scrollTrigger: {
             trigger: benefitsSectionRef.current,
             start: "top top",
-            end: "+=3000",
+            end: "+=2620",
             scrub: 1,
             pin: true,
           },
@@ -188,7 +188,7 @@ function Partnership() {
           .to(benefit2Ref.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" })
           .to({}, { duration: 0.5 })
           .to(benefit3Ref.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" })
-          .to({}, { duration: 1 });
+          .to({}, { duration: 0.3 });
       }
 
       if (principlesSectionRef.current && principlesTitleRef.current) {
@@ -201,7 +201,7 @@ function Partnership() {
           scrollTrigger: {
             trigger: principlesSectionRef.current,
             start: "top top",
-            end: "+=3500",
+            end: "+=3110",
             scrub: 1,
             pin: true,
           },
@@ -218,7 +218,7 @@ function Partnership() {
             .to({}, { duration: 0.2 });
         });
 
-        tl5.to({}, { duration: 1 });
+        tl5.to({}, { duration: 0.3 });
       }
 
       if (ctaSectionRef.current && ctaHeadingRef.current && ctaTextRef.current && ctaButtonRef.current) {
@@ -231,7 +231,7 @@ function Partnership() {
           scrollTrigger: {
             trigger: ctaSectionRef.current,
             start: "top top",
-            end: "+=2500",
+            end: "+=2180",
             scrub: 1,
             pin: true,
           },
@@ -244,7 +244,7 @@ function Partnership() {
           .to(ctaTextRef.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" })
           .to({}, { duration: 0.5 })
           .to(ctaButtonRef.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" })
-          .to({}, { duration: 1 });
+          .to({}, { duration: 0.3 });
       }
     });
 
@@ -302,7 +302,7 @@ function Partnership() {
           
           {/* Title Layer */}
           <div className="absolute inset-0 flex items-center justify-center z-0 text-white px-6">
-            <h2 ref={ecosystemTitleRef} className="type-heading" style={{ whiteSpace: "nowrap", margin: 0, fontSize: "calc(clamp(2.25rem, 8.88vw, 128px) - 15px)", fontWeight: 600, lineHeight: 1.05 }}>Our Partner Ecosystem</h2>
+            <h2 ref={ecosystemTitleRef} className="partnership-ecosystem-title type-heading" style={{ whiteSpace: "nowrap", margin: 0, fontSize: "calc(clamp(2.25rem, 8.88vw, 128px) - 15px)", fontWeight: 600, lineHeight: 1.05 }}>Our Partner Ecosystem</h2>
           </div>
 
           {/* Panel Layer */}

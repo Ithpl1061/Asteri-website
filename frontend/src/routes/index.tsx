@@ -155,7 +155,6 @@ function Home() {
   const certifiedCopyRef = useRef<HTMLParagraphElement>(null);
 
   const partnerSectionRef = useRef<HTMLElement>(null);
-  const resellerSectionRef = useRef<HTMLElement>(null);
   const partnerCardRef = useRef<HTMLDivElement>(null);
   const collaborationsSectionRef = useRef<HTMLElement>(null);
 
@@ -235,7 +234,7 @@ function Home() {
   // Declared before that effect so these pins are created (and refreshed) first.
   useEffect(() => {
     const mm = gsap.matchMedia();
-    mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
       const isPinned = true;
       let resetTraveler: (() => void) | undefined;
       // =====================================================
@@ -260,7 +259,8 @@ function Home() {
 
       if (isPinned && heroDot && introSection && introDot && introLineLeft && aboutSection && connectorDot) {
         const ease = gsap.parseEase("power1.inOut");
-        const HOLD = 1.3; // intro hold length, in viewport heights
+        const PHONE = window.innerWidth < 1024; // longer runway on touch widths
+        const HOLD = PHONE ? 1.7 : 1.3; // intro hold length, in viewport heights
         const ACROSS = 0.4; // share of the hold spent running left along the right line to the L corner
         const LEG_DROP = 0.5; // drop all the way to the bottom edge of the intro section (titleY + 0.5 * height = height)
         let p1 = 0; // hero leg
@@ -319,7 +319,7 @@ function Home() {
         const heroLeg = ScrollTrigger.create({
           trigger: heroRef.current,
           start: "top top",
-          end: "+=80%",
+          end: PHONE ? "+=100%" : "+=80%",
           pin: isPinned,
           anticipatePin: 1,
           onUpdate: (self) => {
@@ -386,13 +386,23 @@ function Home() {
         reduceMotion: "(prefers-reduced-motion: reduce)",
       },
       (context) => {
-        const { isDesktop, isTablet, isMobile } = context.conditions as {
+        const { isDesktop: isDesktopMq, isMobile } = context.conditions as {
           isDesktop: boolean;
           isTablet: boolean;
           isMobile: boolean;
         };
-        const isPinned = isDesktop;
-        const isCompact = isMobile || isTablet;
+        // Phones and tablets run the same pinned "hold screen" scenes as desktop
+        // (scaled down by CSS), so every width gets the same animations.
+        const isDesktop = true;
+        const isPinned = true;
+        const isCompact = false;
+        // Desktop keeps its eased catch-up; touch widths use a soft ~0.65s catch-up
+        // so micro-stutter from touchmove events is smoothed out without feeling laggy.
+        const scrubFor = (v: number | boolean) =>
+          isDesktopMq ? v : typeof v === "number" ? Math.min(v, 0.65) : 0.65;
+        // A phone flick covers far more distance than a wheel notch, so on touch widths
+        // each pinned scene gets a longer scroll runway (same animation, slower per px).
+        const pinEnd = (px: number) => `+=${isDesktopMq ? px : Math.round(px * 1.15)}`;
 
         // Keep each orb tied to the rendered SVG path instead of animating an
         // independent x/y offset. This also keeps it accurate when a path is
@@ -515,8 +525,8 @@ function Home() {
             scrollTrigger: {
               trigger: about2Ref.current,
               start: "top top",
-              end: "+=6000",
-              scrub: 1.5,
+              end: pinEnd(6000),
+              scrub: scrubFor(1.5),
               pin: true,
               anticipatePin: 1,
             },
@@ -585,8 +595,8 @@ function Home() {
             scrollTrigger: {
               trigger: whatRef.current,
               start: "top top",
-              end: "+=5200",
-              scrub: 0.3,
+              end: pinEnd(4400),
+              scrub: scrubFor(0.3),
               pin: true,
               anticipatePin: 1,
             },
@@ -608,7 +618,7 @@ function Home() {
               { opacity: 1, x: 0, y: 0, stagger: 0.35, duration: 0.6, ease: "none" },
               0.25,
             )
-            .to({}, { duration: 0.8 });
+            .to({}, { duration: 0.15 });
         } else {
           gsap.to(".what-big-title", {
             scale: 0.55,
@@ -646,8 +656,8 @@ function Home() {
             scrollTrigger: {
               trigger: industriesSectionRef.current,
               start: "top top",
-              end: "+=1800",
-              scrub: 1,
+              end: pinEnd(1800),
+              scrub: scrubFor(1),
               pin: true,
               anticipatePin: 1,
             },
@@ -694,15 +704,15 @@ function Home() {
           .timeline({
             scrollTrigger: {
               trigger: quoteSectionRef.current,
-              start: "top top",
-              end: "+=4200",
+              start: isDesktop ? "top top" : "top 85%",
+              end: isDesktop ? pinEnd(2520) : "bottom 15%",
               pin: isDesktop,
-              scrub: 1,
+              scrub: scrubFor(1),
               anticipatePin: 1,
             },
           })
           .to(".quote-text", { y: 0, opacity: 1, duration: 1, ease: "power2.out" })
-          .to({}, { duration: 3 })
+          .to({}, { duration: 1 })
           .to(".quote-text", { y: -200, opacity: 0, duration: 1, ease: "power2.in" });
 
         // =====================================================
@@ -715,8 +725,8 @@ function Home() {
             scrollTrigger: {
               trigger: caseRef.current,
               start: "top top",
-              end: "+=3600",
-              scrub: 1.5,
+              end: pinEnd(3600),
+              scrub: scrubFor(1.5),
               pin: true,
               anticipatePin: 1,
             },
@@ -750,8 +760,8 @@ function Home() {
               scrollTrigger: {
                 trigger: certifiedSectionRef.current,
                 start: "top top",
-                end: "+=3200",
-                scrub: 1,
+                end: pinEnd(2760),
+                scrub: scrubFor(1),
                 pin: true,
                 anticipatePin: 1,
               },
@@ -767,7 +777,7 @@ function Home() {
               .to(certifiedEdRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
               .to({}, { duration: 0.6 })
               .to(certifiedCopyRef.current, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" })
-              .to({}, { duration: 2 });
+              .to({}, { duration: 0.6 });
           } else {
             const mobileCertifiedTl = gsap.timeline({
               scrollTrigger: {
@@ -786,32 +796,6 @@ function Home() {
           }
         }
 
-        // =====================================================
-        // RESELLER CARDS — pinned; cards slide in from the right one by one
-        // (created before Platforms so pin spacing follows page order)
-        // =====================================================
-        if (isPinned && resellerSectionRef.current) {
-          const RESELLER_COUNT = 5;
-          gsap.set(".reseller-card", { x: "110vw" });
-          const resellerTl = gsap.timeline({
-            scrollTrigger: {
-              trigger: resellerSectionRef.current,
-              start: "top top",
-              end: `+=${RESELLER_COUNT * 900}`,
-              scrub: 1,
-              pin: true,
-              anticipatePin: 1,
-            },
-          });
-          for (let i = 1; i <= RESELLER_COUNT; i++) {
-            // each card enters from the right while the previous one leaves to the left
-            resellerTl.to(`.reseller-card:nth-child(${i})`, { x: 0, duration: 1, ease: "power2.inOut" }, (i - 1) * 1.4);
-            if (i > 1) {
-              resellerTl.to(`.reseller-card:nth-child(${i - 1})`, { x: "-110vw", duration: 1, ease: "power2.inOut" }, (i - 1) * 1.4);
-            }
-          }
-          resellerTl.to({}, { duration: 0.4 }); // short hold on the last card
-        }
 
         // =====================================================
         // PLATFORMS & PARTNERS — slide in from right (from services page)
@@ -824,7 +808,7 @@ function Home() {
               scrollTrigger: {
                 trigger: partnerSectionRef.current,
                 start: "top top",
-                end: "+=2400",
+                end: pinEnd(1140),
                 scrub: true,
                 pin: true,
                 anticipatePin: 1,
@@ -838,7 +822,7 @@ function Home() {
                 duration: 0.8,
                 ease: "power2.out",
               })
-              .to({}, { duration: 3 });
+              .to({}, { duration: 1 });
           } else {
             const mobileTlPartner = gsap.timeline({
               scrollTrigger: {
@@ -872,7 +856,7 @@ function Home() {
                 trigger: collaborationsSectionRef.current,
                 start: "top 85%",
                 end: "top 35%",
-                scrub: 1,
+                scrub: scrubFor(1),
               },
             },
           );
@@ -884,8 +868,8 @@ function Home() {
             scrollTrigger: {
               trigger: collaborationsSectionRef.current,
               start: isPinned ? "top top" : "top 70%",
-              end: isPinned ? "+=3200" : "top 10%",
-              scrub: 1,
+              end: isPinned ? pinEnd(3200) : "top 10%",
+              scrub: scrubFor(1),
               pin: isPinned,
               anticipatePin: 1,
               invalidateOnRefresh: true,
@@ -916,9 +900,9 @@ function Home() {
         const testimonialTl = gsap.timeline({
           scrollTrigger: {
             trigger: testimonialsRef.current,
-            start: "top top",
-            end: "+=1400",
-            scrub: 1,
+            start: isPinned ? "top top" : "top 85%",
+            end: isPinned ? pinEnd(1400) : "top 35%",
+            scrub: scrubFor(1),
             pin: isPinned,
             anticipatePin: 1,
           },
@@ -947,9 +931,9 @@ function Home() {
         const nextTl = gsap.timeline({
           scrollTrigger: {
             trigger: nextRef.current,
-            start: "top top",
-            end: "+=4800",
-            scrub: 1,
+            start: isPinned ? "top top" : "top 85%",
+            end: isPinned ? pinEnd(3264) : "top 20%",
+            scrub: scrubFor(1),
             pin: isPinned,
             anticipatePin: 1,
           },
@@ -957,11 +941,11 @@ function Home() {
 
         nextTl
           .to(nextTitleRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" })
-          .to({}, { duration: 1.5 })
+          .to({}, { duration: 0.8 })
           .to(nextTextRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" })
-          .to({}, { duration: 1.5 })
+          .to({}, { duration: 0.8 })
           .to(nextBtnRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" })
-          .to({}, { duration: 1.5 });
+          .to({}, { duration: 0.5 });
 
         // =====================================================
         // FOOTER (unchanged logic, just cleaned up)
@@ -976,7 +960,7 @@ function Home() {
             trigger: ".footer-section",
             start: "top 80%",
             end: "+=50",
-            scrub: 1,
+            scrub: scrubFor(1),
           },
         });
         footerTl
@@ -987,8 +971,17 @@ function Home() {
           .to(".footer-social", { x: 0, opacity: 1 }, 0.6)
           .to(".asteri-footer-huge-logo", { y: 0, duration: 1.5 }, 0);
 
+        // Phones/tablets: the pins above are (re)built after the page data arrives, so
+        // recalculate every trigger once they all exist (otherwise the last pinned
+        // screens can end up with no scroll distance until something else refreshes).
+        let mobileRefresh = 0;
+        if (window.innerWidth < 1024) {
+          mobileRefresh = window.setTimeout(() => ScrollTrigger.refresh(), 250);
+        }
+
         // Return a cleanup for this matchMedia context
         return () => {
+          window.clearTimeout(mobileRefresh);
           // gsap.matchMedia() handles killing its own triggers on revert
         };
       },
@@ -1101,17 +1094,17 @@ function Home() {
             gutter and down into the About content below. */}
         <section
           ref={aboutIntroSectionRef}
-          className="relative flex min-h-[60svh] items-center overflow-hidden bg-black lg:h-screen lg:min-h-0"
+          className="relative flex min-h-[100svh] items-center overflow-hidden bg-black lg:h-screen lg:min-h-0"
         >
           <div className="relative flex w-full items-center">
-            <span aria-hidden="true" className="hidden w-[9.25vw] shrink-0 lg:block" />
+            <span aria-hidden="true" className="block w-[9.25vw] shrink-0 lg:block" />
             <span
               ref={aboutIntroLineLeftRef}
               aria-hidden="true"
-              className="about-intro-line-left hidden h-[1.5px] flex-1 origin-right bg-[#15EC0D] lg:block"
+              className="about-intro-line-left block h-[1.5px] flex-1 origin-right bg-[#15EC0D] lg:block"
             />
             <h2
-              className="about-intro-title relative z-10 mx-auto shrink-0 bg-black lg:mx-[46px]"
+              className="about-intro-title relative z-10 mx-[18px] shrink-0 bg-black lg:mx-[46px]"
               style={{
                 color: "#FFF",
                 fontFamily: '"Inter", sans-serif',
@@ -1125,14 +1118,14 @@ function Home() {
             </h2>
             <span
               aria-hidden="true"
-              className="about-intro-line-right hidden h-[1.5px] flex-1 origin-left bg-[#15EC0D] lg:block"
+              className="about-intro-line-right block h-[1.5px] flex-1 origin-left bg-[#15EC0D] lg:block"
             />
           </div>
 
           {/* The travelling dot while the intro is held (desktop; positioned by GSAP). */}
           <GlowOrb
             ref={aboutIntroDotRef}
-            className="absolute left-0 top-0 z-0 hidden lg:block"
+            className="absolute left-0 top-0 z-0 block lg:block"
             style={{ visibility: "hidden" }}
           />
 
@@ -1140,7 +1133,7 @@ function Home() {
               section bottom, continued by the About section's connector. */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-0 left-[9.25vw] top-1/2 -ml-[0.75px] hidden w-[1.5px] bg-[#15EC0D] lg:block"
+            className="pointer-events-none absolute bottom-0 left-[9.25vw] top-1/2 -ml-[0.75px] block w-[1.5px] bg-[#15EC0D] lg:block"
           />
         </section>
 
@@ -1154,11 +1147,11 @@ function Home() {
           <span
             ref={aboutConnectorLineRef}
             aria-hidden="true"
-            className="about-connector pointer-events-none absolute left-[9.25vw] top-0 -ml-[0.75px] hidden w-[1.5px] origin-top bg-[#15EC0D] lg:block"
+            className="about-connector pointer-events-none absolute left-[9.25vw] top-0 -ml-[0.75px] block w-[1.5px] origin-top bg-[#15EC0D] lg:block"
           />
           <GlowOrb
             ref={aboutConnectorDotRef}
-            className="about-connector absolute left-[9.25vw] z-20 hidden -translate-x-1/2 -translate-y-1/2 lg:block"
+            className="about-connector absolute left-[9.25vw] z-20 block -translate-x-1/2 -translate-y-1/2 lg:block"
           />
 
           {/* ABOUT BLOCK */}
@@ -1207,7 +1200,7 @@ function Home() {
             <div className="relative w-full max-w-6xl h-full">
               <h2
                 ref={quote1Ref}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center type-statement text-black whitespace-nowrap"
+                className="absolute left-1/2 top-1/2 w-[88vw] -translate-x-1/2 -translate-y-1/2 text-center type-statement text-black whitespace-normal lg:w-auto lg:whitespace-nowrap"
               >
                 Technology, in isolation, doesn&rsquo;t scale.
               </h2>
@@ -1224,7 +1217,7 @@ function Home() {
         {/* ========================== WHAT WE DO (title + content, single pin) ========================== */}
         <section
           ref={whatRef}
-          className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-black px-5 py-16 sm:min-h-[100dvh] sm:px-8 lg:h-screen lg:max-h-screen lg:overflow-hidden lg:min-h-0 lg:px-0 lg:py-0"
+          className="what-section relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-black px-5 py-16 sm:min-h-[100dvh] sm:px-8 lg:h-screen lg:max-h-screen lg:overflow-hidden lg:min-h-0 lg:px-0 lg:py-0"
         >
           <h2 className="what-big-title relative z-10 mb-10 text-center font-display type-title uppercase text-white lg:absolute lg:mb-0 lg:whitespace-nowrap">
             WHAT WE DO
@@ -1244,7 +1237,7 @@ function Home() {
                 />
               </div>
 
-              <ul className="flex w-full flex-col lg:max-h-none lg:overflow-visible">
+              <ul className="what-list flex w-full flex-col lg:max-h-none lg:overflow-visible">
                 {WHAT_WE_DO.map((s) => (
                   <li
                     key={s.sequenceNumber}
@@ -1285,7 +1278,7 @@ function Home() {
         {/* ============================= INDUSTRIES — PINNED VIEWPORT ============================*/}
         <section
           ref={industriesSectionRef}
-          className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-black py-6 sm:min-h-[100dvh] sm:py-8 lg:h-screen lg:max-h-screen lg:overflow-hidden lg:py-10"
+          className="home-industries relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-black py-6 sm:min-h-[100dvh] sm:py-8 lg:h-screen lg:max-h-screen lg:overflow-hidden lg:py-10"
         >
           <div className="w-full px-4 sm:px-8 lg:px-12 flex-1 flex flex-col justify-between mb-4 lg:mb-6">
             <h2
@@ -1357,11 +1350,11 @@ function Home() {
         {/*============================= CASE STUDIES ========================*/}
         <section
           ref={caseRef}
-          className="case-studies-section relative overflow-hidden bg-black py-20 lg:flex lg:h-screen lg:items-center lg:py-0"
+          className="case-studies-section relative flex h-[100svh] items-center overflow-hidden bg-black py-0 lg:h-screen"
         >
           <div
             ref={caseTitleRef}
-            className="case-title relative hidden whitespace-nowrap uppercase text-white lg:block"
+            className="case-title relative block whitespace-nowrap uppercase text-white"
             style={{
               color: "#FFF",
               fontFamily: '"Inter", sans-serif',
@@ -1400,7 +1393,7 @@ function Home() {
               Hospital Navigation App
             </div>
           </div>
-          <div className="mx-auto grid w-full max-w-2xl gap-3 px-6 lg:hidden">
+          <div className="mx-auto hidden w-full max-w-2xl gap-3 px-6">
             <h2 className="mb-5 text-center font-display text-[clamp(2.5rem,13vw,5.5rem)] font-bold uppercase leading-[0.82] text-white">
               Case Studies
             </h2>
@@ -1463,33 +1456,6 @@ function Home() {
           </div>
         </section>
 
-        {/*============================= RESELLER / PARTNER CARDS =============*/}
-        <section
-          ref={resellerSectionRef}
-          className="reseller-section relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 py-16 sm:px-8 lg:h-screen lg:min-h-0 lg:px-[3.33vw] lg:py-0"
-        >
-          {/* Desktop: cards stacked in one big frame, shown one at a time. Mobile: simple column. */}
-          <ul className="m-0 grid w-full max-w-[640px] list-none grid-cols-1 gap-4 p-0 lg:relative lg:block lg:max-w-none lg:w-[calc(min(92vw,82vh*1.714)-20px)] lg:aspect-[1875/1094]">
-            {[
-              { src: "/figma/home/reseller-cards/sap.png", alt: "SAP Authorized Reseller" },
-              { src: "/figma/home/reseller-cards/anydesk.png", alt: "AnyDesk Reseller" },
-              { src: "/figma/home/reseller-cards/salesforce.png", alt: "Salesforce Partner" },
-              { src: "/figma/home/reseller-cards/manageengine.png", alt: "ManageEngine Reseller" },
-              { src: "/figma/home/reseller-cards/zoho.png", alt: "Zoho Reseller" },
-            ].map((c) => (
-              <li
-                key={c.alt}
-                className="reseller-card aspect-[1875/1094] overflow-hidden rounded-[20px] bg-white lg:absolute lg:inset-0 lg:aspect-auto"
-              >
-                <img src={c.src} alt={c.alt} loading="lazy" className="block h-full w-full object-cover" />
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* breathing room between the reseller cards and Platforms & Partners */}
-        <div aria-hidden="true" className="h-[14vh] bg-black lg:h-[18vh]" />
-
         {/*============================= PLATFORMS & PARTNERS ================*/}
         <section
           ref={partnerSectionRef}
@@ -1521,7 +1487,7 @@ function Home() {
             {/* Cards container: Single unified rounded container with card height reduced by 4% */}
             <div
               ref={partnerCardRef}
-              className="relative w-full max-w-[1400px] overflow-hidden rounded-[20px] bg-black will-change-transform grid grid-cols-2 md:grid-cols-4 gap-[2px]"
+              className="platform-cards relative w-full max-w-[1400px] overflow-hidden rounded-[20px] bg-black will-change-transform grid grid-cols-2 md:grid-cols-4 gap-[2px]"
               style={{
                 gridAutoRows: "225px",
               }}
@@ -1555,7 +1521,7 @@ function Home() {
         </section>
 
         {/* Breathing room between the partner cards and the collaborations section */}
-        <div className="h-[16vh] w-full bg-black" aria-hidden="true" />
+        <div className="hidden h-[16vh] w-full bg-black lg:block" aria-hidden="true" />
 
         {/*============================= VALUABLE COLLABORATIONS ==============*/}
         <section
@@ -1567,24 +1533,24 @@ function Home() {
               <h2 className="collab-heading font-sans font-semibold uppercase text-white text-[clamp(2.2rem,4.4vw,64px)] leading-[1.14]">
                 Valuable
                 <br />
-                Collaborations
+                Customers
               </h2>
             </div>
 
             {/* Logo grid — one row at a time slides in from the right, then leaves for the next */}
-            <div className="relative mt-4 sm:mt-6 w-full overflow-hidden">
+            <div className="collab-logos-container relative mt-4 sm:mt-6 w-full overflow-hidden">
               <div
-                className="relative mx-auto"
+                className="collab-logos-wrapper relative mx-auto"
                 style={{ "--collab-w": "min(100vw, 2400px)", width: "var(--collab-w)", height: "calc(var(--collab-w) * 0.24)" } as CSSProperties}
               >
-                <div className="absolute left-0 top-1/2 w-full -translate-y-1/2" style={{ aspectRatio: "2 / 1" }}>
+                <div className="collab-logos-inner absolute left-0 top-1/2 w-full -translate-y-1/2" style={{ aspectRatio: "2 / 1" }}>
                   {[[0,29],[29,50.4],[50.4,67.3],[67.3,100]].map(([from, to], i) => (
                     <div key={`collab-col-${i}`} className="collab-col absolute inset-0" style={{ opacity: 0 }}>
                       <img
                         src="/figma/home/collaborations-logos.png"
                         alt={i === 0 ? "Our collaborators: Tata Communications, Humanata, Compulink, Steel1, intellimation.ai, Apexpertise, Roche, Themis Medicare, Symbiosis International, POSCO, Amdocs, Xoriant, CitiusTech, Indian Army 512 Army Base Workshop, GA Steel Tech and Netafim" : ""}
                         loading="eager"
-                        className="pointer-events-none h-full w-full max-w-none select-none"
+                        className="collab-logo-img pointer-events-none h-full w-full max-w-none select-none"
                         style={{ clipPath: `inset(${from}% 0 ${100 - to}% 0)` }}
                       />
                     </div>

@@ -45,7 +45,7 @@ function CaseStudies() {
           scrollTrigger: {
             trigger: storySection as HTMLElement,
             start: "center center",
-            end: "+=1500",
+            end: "+=975",
             scrub: 1.5,
             pin: true,
             anticipatePin: 1,
@@ -62,7 +62,7 @@ function CaseStudies() {
           { x: "50vw", opacity: 0 },
           { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
           0
-        ).to({}, { duration: 1 });
+        ).to({}, { duration: 0.3 });
       }
 
 
@@ -71,7 +71,7 @@ function CaseStudies() {
         scrollTrigger: {
           trigger: ".case-preface",
           start: "center center",
-          end: "+=1500",
+          end: "+=1060",
           scrub: 1.5,
           pin: true,
           anticipatePin: 1,
@@ -82,7 +82,7 @@ function CaseStudies() {
         ".case-preface p",
         { opacity: 0, y: 100 },
         { opacity: 1, y: 0, stagger: 0.2, ease: "power2.out", duration: 1 }
-      ).to({}, { duration: 1 });
+      ).to({}, { duration: 0.3 });
       gsap.fromTo(
         ".case-study-heading",
         { y: 100, opacity: 0 },
@@ -108,7 +108,7 @@ function CaseStudies() {
         scrollTrigger: {
           trigger: ".case-study-stage",
           start: "top top",
-          end: "+=1500",
+          end: "+=1133",
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -126,7 +126,7 @@ function CaseStudies() {
         duration: 1,
       });
 
-      panelTl.to({}, { duration: 1.5 });
+      panelTl.to({}, { duration: 0.4 });
 
       const measureSection = gsap.utils.toArray(".case-measure")[0];
       const measureLine1 = gsap.utils.toArray(".case-measure h2:nth-child(1)")[0];
@@ -139,7 +139,7 @@ function CaseStudies() {
           scrollTrigger: {
             trigger: measureSection as HTMLElement,
             start: "center center",
-            end: "+=1500",
+            end: "+=975",
             scrub: 1.5,
             pin: true,
             anticipatePin: 1,
@@ -156,7 +156,7 @@ function CaseStudies() {
           { x: "50vw", opacity: 0 },
           { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
           0
-        ).to({}, { duration: 1 });
+        ).to({}, { duration: 0.3 });
       }
       const ctaSection = gsap.utils.toArray(".case-cta")[0];
       const ctaTitle = gsap.utils.toArray(".case-cta-content h2")[0];
@@ -170,7 +170,7 @@ function CaseStudies() {
           scrollTrigger: {
             trigger: ctaSection as HTMLElement,
             start: "top top",
-            end: "+=3000",
+            end: "+=2400",
             scrub: 1.5,
             pin: true,
             anticipatePin: 1,
@@ -197,7 +197,7 @@ function CaseStudies() {
           duration: 1,
           ease: "power2.out",
         })
-        .to({}, { duration: 1.5 });
+        .to({}, { duration: 0.4 });
       }
     }, containerRef);
 

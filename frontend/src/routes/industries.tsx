@@ -108,7 +108,7 @@ function Services() {
             scrollTrigger: {
               trigger: complexitySectionRef.current,
               start: "top top",
-              end: "+=2000",
+              end: "+=1120",
               scrub: true,
               pin: true,
             },
@@ -120,7 +120,7 @@ function Services() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 1.5 });
+          .to({}, { duration: 0.4 });
         }, complexitySectionRef);
 
         return () => ctx.revert();
@@ -139,7 +139,7 @@ function Services() {
             scrollTrigger: {
               trigger: messageRef.current,
               start: "top top",
-              end: "+=2000",
+              end: "+=1120",
               scrub: true,
               pin: true,
             },
@@ -151,7 +151,7 @@ function Services() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 1.5 });
+          .to({}, { duration: 0.4 });
         }, messageRef);
 
         return () => ctx.revert();
@@ -199,7 +199,7 @@ function Services() {
             scrollTrigger: {
               trigger: industriesTitleSectionRef.current,
               start: "top top",
-              end: "+=2000",
+              end: "+=1120",
               scrub: true,
               pin: true,
             },
@@ -211,7 +211,7 @@ function Services() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 1.5 });
+          .to({}, { duration: 0.4 });
         }, industriesTitleSectionRef);
 
         return () => ctx.revert();
@@ -244,7 +244,7 @@ function Services() {
             scrollTrigger: {
               trigger: fintechCardsSectionRef.current,
               start: "center center",
-              end: "+=3500",
+              end: "+=3115",
               scrub: true,
               pin: true,
             },
@@ -294,7 +294,7 @@ function Services() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 1.5 });
+          .to({}, { duration: 0.4 });
         }, fintechCardsSectionRef);
 
         return () => ctx.revert();
@@ -322,7 +322,7 @@ function Services() {
             scrollTrigger: {
               trigger: caseStudySectionRef.current,
               start: "center center",
-              end: "+=1500",
+              end: "+=1080",
               scrub: true,
               pin: true,
             },
@@ -349,7 +349,7 @@ function Services() {
             });
           }
 
-          tl.to({}, { duration: 1 });
+          tl.to({}, { duration: 0.3 });
         }, caseStudySectionRef);
 
         return () => ctx.revert();
@@ -368,7 +368,7 @@ function Services() {
             scrollTrigger: {
               trigger: nextRef.current,
               start: "center center",
-              end: "+=1500",
+              end: "+=1935",
               scrub: true,
               pin: true,
             },
@@ -394,7 +394,7 @@ function Services() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 1 });
+          .to({}, { duration: 0.3 });
         }, nextRef);
 
         return () => ctx.revert();
@@ -866,7 +866,7 @@ function Services() {
 
             <section
               ref={complexitySectionRef}
-              className="bg-black flex items-center justify-center px-6 min-h-screen h-screen overflow-hidden w-full relative text-center"
+              className="industries-complexity bg-black flex items-center justify-center px-6 min-h-screen h-screen overflow-hidden w-full relative text-center"
             >
               <div className="flex items-center justify-center">
 
@@ -896,7 +896,7 @@ function Services() {
               </div>
             </section>
             {/* ================= Message Section ================= */}
-            <section ref={messageRef} className="bg-black flex items-center justify-center px-6 min-h-[75vh] overflow-hidden w-full relative">
+            <section ref={messageRef} className="industries-message bg-black flex items-center justify-center px-6 min-h-[75vh] overflow-hidden w-full relative">
               <div className="flex items-center justify-center">
                 <div
                   ref={messageTextRef}
@@ -919,7 +919,7 @@ function Services() {
             {/* =================== SECTION : 3 scale. pressure. speed. Regulation. ======================*/}
             <section
               ref={tickerSectionRef}
-              className="bg-black overflow-hidden flex items-center justify-center px-6 min-h-[75vh] w-full relative"
+              className="industries-ticker bg-black overflow-hidden flex items-center justify-center px-6 min-h-[75vh] w-full relative"
             >
               <div className="flex items-center justify-center w-full">
 
@@ -959,7 +959,7 @@ function Services() {
             {/* =================== SECTION : 4 INDUSTRIES ======================*/}
             <section
               ref={industriesTitleSectionRef}
-              className="bg-black flex items-center justify-center px-6 min-h-[75vh] overflow-hidden w-full relative text-center"
+              className="industries-title-sec bg-black flex items-center justify-center px-6 min-h-[75vh] overflow-hidden w-full relative text-center"
             >
               <div className="flex items-center justify-center">
 
@@ -1311,7 +1311,7 @@ function Services() {
               </div>
             </section>
             )}
-            <section ref={fintechCardsSectionRef} className="bg-black min-h-[100vh] flex flex-col items-center justify-center relative w-full overflow-hidden">
+            <section ref={fintechCardsSectionRef} className="industries-cards-sec bg-black min-h-[100vh] flex flex-col items-center justify-center relative w-full overflow-hidden">
               <div className="industries-banking-layout flex-none">
                 <h2 ref={fintechTitleRef}>{details[0]?.name}</h2>
                 <img
@@ -1351,7 +1351,7 @@ function Services() {
             {/* =================== SECTION : 6 Our impact ======================*/}
             <section
               ref={caseStudySectionRef}
-              className="relative bg-black min-h-[75vh] flex items-center justify-center px-6 overflow-hidden w-full"
+              className="industries-impact relative bg-black min-h-[75vh] flex items-center justify-center px-6 overflow-hidden w-full"
             >
               <div className="relative z-10 flex flex-col items-center text-center">
 
@@ -1439,7 +1439,7 @@ function Services() {
   {/*=======================SECTION : 7 Let’s solve what’s next =================*/}
        <section
           ref={nextRef}
-          className="relative bg-black min-h-[75vh] w-full flex items-center justify-center overflow-hidden px-6"
+          className="industries-next relative bg-black min-h-[75vh] w-full flex items-center justify-center overflow-hidden px-6"
         >
           <div className="relative flex w-full max-w-[1360px] items-center justify-center overflow-hidden py-20 md:py-24">
 

@@ -111,7 +111,7 @@ function Solutions() {
           scrollTrigger: {
             trigger: introSectionRef.current,
             start: "top top",
-            end: "+=1000",
+            end: "+=720",
             scrub: true,
             pin: true,
           }
@@ -120,7 +120,7 @@ function Solutions() {
         tl.to(solutiRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0)
           .to(onRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0)
           .to(textRef.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0.5)
-          .to({}, { duration: 1 }); // empty space to let it hold at the end
+          .to({}, { duration: 0.3 }); // empty space to let it hold at the end
       }
 
       // Intro Statement slide & pin animation
@@ -131,7 +131,7 @@ function Solutions() {
           scrollTrigger: {
             trigger: introStatementSectionRef.current,
             start: "center center",
-            end: "+=800",
+            end: "+=520",
             scrub: true,
             pin: true,
           }
@@ -144,7 +144,7 @@ function Solutions() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 1 });
+          .to({}, { duration: 0.3 });
       }
 
       // Core services animation
@@ -166,7 +166,7 @@ function Solutions() {
           scrollTrigger: {
             trigger: coreSectionRef.current,
             start: "top top",
-            end: "+=2000",
+            end: "+=1650",
             scrub: true,
             pin: true,
             invalidateOnRefresh: true,
@@ -198,7 +198,7 @@ function Solutions() {
               duration: 1,
               ease: "power2.out",
             }, "<"); // card 2 enters to center as card 1 exits
-            coreTl.to({}, { duration: 1 }); // hold card 2 in center
+            coreTl.to({}, { duration: 0.3 }); // hold card 2 in center
           }
         });
       }
@@ -211,7 +211,7 @@ function Solutions() {
           scrollTrigger: {
             trigger: outcomesSubHeadingSectionRef.current,
             start: "center center",
-            end: "+=1000",
+            end: "+=650",
             scrub: true,
             pin: true,
           }
@@ -223,7 +223,7 @@ function Solutions() {
           opacity: 1,
           duration: 1,
           ease: "power2.out"
-        }).to({}, { duration: 1 });
+        }).to({}, { duration: 0.3 });
       }
 
       // Outcomes moving dot animation and synchronized text fade
@@ -276,7 +276,7 @@ function Solutions() {
           scrollTrigger: {
             trigger: playbookSectionRef.current,
             start: "center center",
-            end: "+=700",
+            end: "+=455",
             scrub: true,
             pin: true,
           }
@@ -292,7 +292,7 @@ function Solutions() {
           duration: 1,
           ease: "power2.out"
         }, 0)
-        .to({}, { duration: 1 });
+        .to({}, { duration: 0.3 });
       }
 
       // Statement slide & pin animation
@@ -303,7 +303,7 @@ function Solutions() {
           scrollTrigger: {
             trigger: statementSectionRef.current,
             start: "center center",
-            end: "+=800",
+            end: "+=520",
             scrub: true,
             pin: true,
           }
@@ -316,7 +316,7 @@ function Solutions() {
             duration: 1,
             ease: "power2.out",
           })
-          .to({}, { duration: 1 });
+          .to({}, { duration: 0.3 });
       }
 
       // CTA stagger animation
@@ -332,7 +332,7 @@ function Solutions() {
             scrollTrigger: {
               trigger: ctaSectionRef.current,
               start: "top top",
-              end: "+=1000",
+              end: "+=1720",
               scrub: true,
               pin: true,
             }
@@ -343,7 +343,7 @@ function Solutions() {
                .to(ctaText, { x: 0, opacity: 1, duration: 1, ease: "power2.out" })
                .to({}, { duration: 0.5 })
                .to(ctaBtn, { x: 0, opacity: 1, duration: 1, ease: "power2.out" })
-               .to({}, { duration: 1.5 });
+               .to({}, { duration: 0.3 });
         }
       }
     }, containerRef);
@@ -360,7 +360,7 @@ function Solutions() {
           <ActionButton href="/contact">Explore More</ActionButton>
         </section>
 
-        <section ref={introSectionRef} className="py-20 px-6 min-h-[clamp(500px,100vh,1000px)] flex items-center justify-center overflow-hidden w-full bg-black">
+        <section ref={introSectionRef} className="solutions-intro py-20 px-6 min-h-[clamp(500px,100vh,1000px)] flex items-center justify-center overflow-hidden w-full bg-black">
           <div className="flex flex-col items-start w-fit mx-auto text-white">
             <div ref={solutiRef} className="text-[6rem] sm:text-[10rem] md:text-[13rem] lg:text-[15rem] font-bold leading-[0.8] tracking-tighter -ml-2">soluti</div>
             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 mt-2 md:mt-4">
@@ -377,7 +377,7 @@ function Solutions() {
 
         <section
           ref={introStatementSectionRef}
-          className="min-h-screen flex items-center justify-center relative w-full overflow-hidden text-center px-6"
+          className="solutions-statement-block min-h-screen flex items-center justify-center relative w-full overflow-hidden text-center px-6"
         >
           <p
             ref={introStatementTextRef}
@@ -490,7 +490,7 @@ function Solutions() {
           </ol>
         </section>
 
-        <section ref={playbookSectionRef} className="min-h-[75vh] flex justify-center items-center overflow-hidden w-full relative">
+        <section ref={playbookSectionRef} className="solutions-playbook min-h-[75vh] flex justify-center items-center overflow-hidden w-full relative">
           <div className="max-w-[1400px] w-full flex flex-col">
             <h2
               className="w-full text-white tracking-tight"
@@ -509,7 +509,7 @@ function Solutions() {
 
         <section
           ref={statementSectionRef}
-          className="min-h-screen flex items-center justify-center relative w-full overflow-hidden text-center px-6"
+          className="solutions-statement-block min-h-screen flex items-center justify-center relative w-full overflow-hidden text-center px-6"
         >
           <p
             ref={statementTextRef}

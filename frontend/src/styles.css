@@ -102,6 +102,12 @@
 @layer base {
   * {
     border-color: var(--color-border);
+    -webkit-tap-highlight-color: transparent;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   html,
   body {
@@ -109,8 +115,19 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
     overflow-x: clip;
     max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    touch-action: manipulation;
   }
   img,
   svg {
@@ -717,3 +734,187 @@ a[class*="rounded-full"][class*="bg-"]:hover {
 .enable-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .enable-back { transform: rotateY(180deg); background: #8af500; }
 @media (prefers-reduced-motion: reduce) { .enable-inner { transition: none; } }
+
+/* ==========================================================================
+   HOME — phone/tablet layout fixes (below the 1024px desktop breakpoint only).
+   The global .case-tag / .testimonial-card rules above are `position:absolute`
+   for the desktop scene; on smaller screens the stacked layout needs them in
+   normal flow. Desktop (>=1024px) is untouched.
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .testimonials-section .testimonial-card {
+    position: relative;
+  }
+}
+
+@media (max-width: 767px) {
+  .testimonials-section .testimonials-title {
+    font-size: clamp(1.75rem, 9.2vw, 2.75rem);
+    max-width: 100%;
+  }
+}
+
+/* ---- HOME · What We Do (phones/tablets): title and list share one pinned screen,
+   exactly like desktop — the big title shrinks away and the list takes its place. ---- */
+@media (max-width: 1023px) {
+  .what-section .what-big-title {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .what-section .what-content {
+    position: absolute;
+    inset: 0;
+    padding: 5.25rem 1rem 0.75rem;
+  }
+
+  .what-section .what-list .service-row {
+    padding-block: 0.3rem;
+  }
+
+  .what-section .what-list .service-row span.block {
+    font-size: 0.8125rem;
+    line-height: 1.2;
+  }
+
+  .what-section .what-list .service-row p {
+    font-size: 0.6875rem;
+    line-height: 1.25;
+  }
+
+  .what-section .what-list .service-row p .block {
+    margin-top: 0.15rem;
+  }
+
+  .what-section .what-list .service-row a {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+}
+
+/* ---- HOME · Industries (phones): the six tiles sit in a 2 x 3 grid so the whole
+   grid fits on the single pinned screen, like the one-row grid on desktop. ---- */
+@media (max-width: 767px) {
+  .industries-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .industries-grid .industry-card {
+    min-height: 7.5rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.5);
+    border-right: 1px solid rgb(255 255 255 / 0.5);
+  }
+
+  .industries-grid .industry-card:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .industries-grid .industry-card:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* keep pinned screens clear of the fixed navbar */
+  .home-industries {
+    padding-top: 5.25rem;
+  }
+}
+
+/* ---- HOME · Case Studies (phones): the big "CASE STUDIES" title flies across the pinned
+   screen with its tags, exactly like desktop; the tags are just scaled down. ---- */
+@media (max-width: 767px) {
+  .case-title .case-tag {
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 9px;
+  }
+}
+
+/* ---- HOME · Platforms & Partners (phones): shorter logo tiles so the heading and
+   all eight logos fit on the one pinned screen. ---- */
+@media (max-width: 767px) {
+  .platforms-section .platform-cards {
+    grid-auto-rows: 100px !important;
+  }
+
+  .platforms-section {
+    padding-top: 4.5rem;
+  }
+}
+
+
+/* ==========================================================================
+   PRODUCTS - phones (<= 767px)
+   Same scenes, order, colours and animations as desktop. Each pinned scene is
+   sized to ONE visible screen (svh) so no card or text runs off it, and the CRM
+   product cards slide in a row exactly like desktop (the slide distance is measured
+   in the script). Desktop is untouched.
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* ---- text scenes: type fits the width, no tall empty screens ---- */
+  .products-quote { padding-top: 4rem; padding-bottom: 4rem; min-height: 45svh; }
+  .products-quote h2 { font-size: clamp(1.9rem, 8.6vw, 2.8rem); }
+  .products-built { height: auto; min-height: 45svh; }
+  .products-built h2 { font-size: clamp(1.1rem, 5.3vw, 1.5rem); }
+
+  /* ---- CRM & Cloud Platform: info block on top, product cards slide below ---- */
+  .products-crm-sec { height: 100svh; }
+  .products-crm-sec > div { height: 100%; }
+  .products-main-card {
+    height: 100svh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 4.75rem 1.25rem 1rem;
+  }
+  .products-main-card > div:first-child { padding-top: 0; }
+  .products-main-card > div:first-child button { margin-top: 1rem; }
+
+  .products-cards-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    margin-top: 0.9rem;
+    border-radius: 28px;
+  }
+  .products-cards-row {
+    left: 1.25rem;
+    top: calc(50% - 0.625rem);
+    height: calc(100% - 3.75rem);
+    gap: 1.25rem;
+    --tw-translate-y: 0px; /* the script already centres this row vertically (yPercent -50) */
+  }
+  .products-card {
+    width: calc(100vw - 5rem); /* centred in the grey panel: 1.25rem margin each side */
+    height: 100%;
+    padding: 1.4rem;
+    border-radius: 28px;
+  }
+  .products-card > img { width: 120px; }
+  .products-card > p { margin-top: 1.1rem; font-size: 1rem; line-height: 1.25; }
+  .products-dots { bottom: 1rem; }
+
+  /* ---- What it enables: four flip cards in a 2 x 2 grid on one screen ---- */
+  .products-enables { height: 100svh; padding-top: 4.5rem; padding-bottom: 1rem; }
+  .products-enables-title { margin-bottom: 1rem; }
+  .products-enables-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+  .products-enables-grid .enable-card { min-height: 0; height: clamp(170px, 27svh, 230px); }
+  .products-enables-grid .enable-face { padding: 0.9rem; border-radius: 20px; }
+  .products-enables-grid .enable-front svg { width: 2.5rem; height: 2.5rem; }
+  .products-enables-grid .enable-front h3 { font-size: 0.95rem; }
+  .products-enables-grid .enable-back h3 { font-size: 0.95rem; }
+  .products-enables-grid .enable-back p { font-size: 0.72rem; line-height: 1.3; }
+
+  /* ---- Closing card ---- */
+  .products-next { height: auto; min-height: 100svh; }
+  .products-next-card { min-height: 0; padding-top: 3.5rem; padding-bottom: 3.5rem; border-radius: 32px; }
+  .products-next-card h2 { font-size: clamp(1.55rem, 7.2vw, 2rem); }
+  .products-next-card p { font-size: 0.9rem; margin-top: 1.25rem; }
+  .products-next-card button { margin-top: 1.75rem; }
+}

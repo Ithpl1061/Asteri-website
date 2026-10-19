@@ -379,3 +379,252 @@
   padding: 0 1.5rem !important;
 }
 
+
+
+/* ==========================================================================
+   ABOUT — phone layouts for the card sections (desktop is untouched).
+   Same cards, same order, same animations; only sizes/columns adapt so the
+   whole set fits the one pinned screen instead of spilling out of it.
+   ========================================================================== */
+
+/* The Visionaries: circle + photo on top, the person's details underneath. */
+@media (max-width: 1023px) {
+  .visionaries-grid {
+    --vc: min(70vw, 34svh, 340px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    padding-inline: 1.25rem;
+    padding-top: 3.5rem; /* clear of the fixed navbar */
+  }
+
+  .visionaries-visual {
+    height: calc(var(--vc) * 1.12);
+  }
+
+  .visionaries-circle {
+    left: 50%;
+    top: calc(var(--vc) * 0.07);
+    width: var(--vc);
+    height: var(--vc);
+    margin-left: calc(var(--vc) / -2);
+  }
+
+  .visionaries-photo {
+    left: 50%;
+    top: 0;
+    width: var(--vc);
+    max-height: calc(var(--vc) * 1.07);
+    margin-left: calc(var(--vc) / -2);
+  }
+
+  .visionaries-content {
+    min-height: 14.5rem;
+    height: auto;
+    max-height: 18.5rem;
+  }
+
+  .visionaries-content > div {
+    gap: 0;
+  }
+
+  .visionaries-content .type-label {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.35rem 0 !important;
+  }
+
+  .visionaries-content h2 {
+    font-size: clamp(1.65rem, 6.5vw, 2.1rem);
+    line-height: 1.15;
+    margin: 0 0 0.25rem 0 !important;
+  }
+
+  .visionaries-content h3 {
+    font-size: clamp(1.02rem, 4vw, 1.22rem);
+    line-height: 1.25;
+    margin: 0 0 0.75rem 0 !important;
+  }
+
+  .visionaries-content p {
+    font-size: clamp(0.9rem, 3.6vw, 1.05rem);
+    line-height: 1.45;
+    margin: 0 0 1.25rem 0 !important;
+  }
+
+  .visionaries-content a {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.875rem !important;
+    padding-top: 0 !important;
+    margin: 0 !important;
+    min-height: 44px;
+    width: fit-content;
+  }
+
+  .visionaries-content a > span:first-child {
+    height: 2.75rem;
+    width: 2.75rem;
+    min-width: 2.75rem;
+    flex-shrink: 0;
+  }
+
+  .visionaries-content a > span:last-child {
+    font-size: 1.12rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+}
+
+/* Our Approach + Culture & Values: the four cards sit 2 x 2 (like the 4-across
+   desktop row, just wrapped) so all four fit on one pinned screen. */
+@media (max-width: 639px) {
+  .approach-grid,
+  .culture-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .approach-grid .flip-card {
+    height: clamp(180px, 29svh, 240px);
+  }
+
+  .culture-grid .flip-card {
+    height: clamp(232px, 34svh, 300px);
+  }
+
+  .culture-wrap {
+    padding-top: 2.5rem; /* clear of the fixed navbar */
+  }
+
+  .culture-wrap h2 {
+    font-size: 1.7rem;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .approach-grid .flip-front,
+  .approach-grid .flip-back,
+  .culture-grid .flip-front,
+  .culture-grid .flip-back {
+    padding: 0.8rem;
+  }
+
+  .approach-grid svg {
+    height: 2.25rem;
+    width: 2.25rem;
+  }
+
+  .approach-grid h3,
+  .culture-grid h3 {
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .approach-grid p {
+    font-size: 0.85rem;
+    line-height: 1.35;
+  }
+
+  .culture-grid h4 {
+    font-size: 0.92rem;
+    line-height: 1.25;
+  }
+
+  .culture-grid .flip-back p {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .culture-grid .flip-back > div {
+    max-width: 100%;
+  }
+
+  .culture-grid [class*="text-[260px]"] {
+    font-size: 150px;
+    bottom: -0.5rem;
+    right: -0.25rem;
+  }
+
+  /* Mobile typography and spacing refinement */
+  .about-page .hero-headline {
+    font-size: clamp(2.2rem, 9.8vw, 3.5rem) !important;
+    line-height: 1.18 !important;
+  }
+
+  .about-page .about-hero p {
+    font-size: clamp(1.08rem, 4.4vw, 1.45rem) !important;
+    line-height: 1.35 !important;
+  }
+
+  .about-page .about-hero .cta-pill {
+    margin-top: 1.75rem !important;
+  }
+
+  .about-page .type-display .serve-client-left-item {
+    font-size: clamp(1.95rem, 8.2vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  /* Statement Section — restore original 3-line desktop alignment without line breaks */
+  .about-page .solutions-outcomes-heading {
+    padding-inline: 0.5rem !important;
+  }
+
+  .about-page .solutions-outcomes-heading h2 {
+    font-size: clamp(0.68rem, 3.2vw, 1.25rem) !important;
+    line-height: 1.55 !important;
+    padding: 0 !important;
+  }
+
+  .about-page .solutions-outcomes-heading .statement-text-item {
+    white-space: nowrap !important;
+  }
+
+  /* SECTION 3 — Technology Only Matters */
+  .about-page div[class*="max-w-[1200px]"] > h2,
+  .about-page h2:has(> span[class*="whitespace-normal"]) {
+    font-size: clamp(1.4rem, 6.2vw, 2.35rem) !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+    text-align: center !important;
+  }
+
+  /* SECTION 1 — Designed For What's Next (match desktop single-line heading and 2-line paragraph without line breaks) */
+  .about-page .next-text-item.type-display {
+    font-size: clamp(1.25rem, 5.6vw, 2.75rem) !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  .about-page p.next-text-item {
+    font-size: clamp(0.78rem, 3.2vw, 1.15rem) !important;
+    line-height: 1.45 !important;
+    margin-top: 1.25rem !important;
+    text-align: center !important;
+  }
+
+  .about-page button.next-text-item.cta-pill {
+    margin-top: 1.75rem !important;
+  }
+}
+
+/* Visionaries refinement for compact mobile screens */
+@media (max-width: 360px) {
+  .visionaries-grid {
+    --vc: min(65vw, 28svh, 240px);
+    padding-top: 2.75rem;
+    gap: 0.5rem;
+  }
+}
+
+/* About · "We Serve Clients": on phones the heading keeps its desktop indent and line,
+   with the type sized so the whole phrase fits in the space to the right of the indent. */
+@media (max-width: 767px) {
+  .serve-heading {
+    font-size: calc((70vw - 1.25rem) / 8.8);
+  }
+}
+

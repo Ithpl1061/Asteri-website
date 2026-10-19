@@ -91,3 +91,36 @@
 @keyframes contactSpin{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(90deg) scale(1.25)}}
 @keyframes contactSpark{0%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateX(0) scale(.2)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateX(var(--d)) scale(1.4)}}
 @media(prefers-reduced-motion:reduce){.contact-spark,.contact-success-text svg{animation:none;opacity:0}}
+
+/* ==========================================================================
+   CONTACT - phones / small tablets (<= 900px)
+   Same scenes, order, colours and animations as desktop. The page used a flex column
+   whose pinned section did not get its scroll distance (so the footer drew on top of the
+   contact details); a grid column fixes that, and the sizes are brought down to fit a
+   phone so nothing is clipped and there are no big empty gaps.
+   ========================================================================== */
+@media (max-width: 900px) {
+  /* grid (not flex): pinned scenes get their scroll distance reliably; `order` still works */
+  .contact-frame { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; }
+
+  /* gaps */
+  .contact-hero { margin-top: 6.5rem; min-height: calc(66svh - 9.5rem); } /* just tall enough that the next scene starts below the first screen */
+  .contact-hero p { margin-top: 1.5rem; }
+  .contact-information { margin: 3rem 24px 0; }
+  .contact-conversation { height: 60svh; margin: 0 24px; }
+
+  /* Contact Information: heading, details, social, form - sized for a phone */
+  .contact-information h2 { font-size: clamp(1.9rem, 9vw, 2.6rem); line-height: 1.05; letter-spacing: -1px; }
+  .contact-details { margin-top: 1.5rem; font-size: 0.95rem; line-height: 1.4; }
+  .detail-email, .detail-phone, .detail-address { gap: 14px; }
+  .detail { margin-bottom: 1.1rem; }
+  .contact-social { margin-top: 1.5rem; gap: 16px; }
+  .contact-social a { width: 38px; height: 38px; }
+  .contact-form { margin-top: 1.75rem; transform: none; }
+  .contact-form > div { padding: 1.1rem; border-radius: 22px; }
+  .contact-form label { font-size: 1rem; line-height: 1.4; margin-bottom: 1rem; }
+  .contact-form input, .contact-form textarea { padding: 12px; font-size: 1rem; }
+  .contact-form input { height: 52px; }
+  .contact-form textarea { height: 110px; }
+  .contact-form button { height: 56px; margin-top: 0.5rem; font-size: 1.15rem; line-height: 1.2; }
+}

@@ -301,8 +301,8 @@
   
   /* Reset ALL absolutely positioned elements safely */
   .figma-services__nav, .figma-services__hero, .figma-services__intro,
-  .figma-services__statement, .figma-services__core, .figma-services__work,
-  .figma-services__partner-story, .figma-services__partner-grid,
+  .figma-services__statement, .figma-services__work,
+  .figma-services__partner-story,
   .figma-services__quote, .figma-services__cta, .figma-services__footer {
     position: relative !important; top: auto !important; left: auto !important;
     right: auto !important; width: 100% !important; margin: 0 !important;
@@ -324,10 +324,10 @@
 
   /* Intro */
   .figma-services__intro { display: flex; flex-direction: column; gap: 16px; margin-top: 20px !important; }
-  .figma-services__statement { position: relative !important; top: auto !important; left: auto !important; width: 100% !important;  padding: 0 !important; box-sizing: border-box; text-align: left !important;   color: #aaa; margin-top: 10px !important; }
+  .figma-services__statement { position: relative !important; top: auto !important; left: auto !important; width: 100% !important;  padding: 0 !important; box-sizing: border-box; text-align: center !important;   color: #aaa; margin-top: 10px !important; }
 
   /* Core Services (Cards) */
-  .figma-services__core > h2 {  margin-bottom: 24px !important; text-align: left !important;  }
+  .figma-services__core > h2 {  margin-bottom: 24px !important; text-align: center !important;  }
   .figma-services__core article { position: relative !important; top: auto !important; left: auto !important; width: 100% !important; height: auto !important; padding: 40px 24px !important; box-sizing: border-box; display: flex !important; flex-direction: column; align-items: flex-start; gap: 16px; border-radius: 24px; background: linear-gradient(145deg, #1f1f1f, #121212) !important; border: 1px solid #333; margin-bottom: 24px; transform: none; overflow: hidden; }
   /* Make the h3 a huge watermarked background text like on desktop */
   .figma-services__core article h3 { position: absolute !important; top: 10px !important; left: -10px !important; width: 100% !important; font-size: 80px !important; text-align: left !important; margin: 0 !important; letter-spacing: -3px !important; opacity: 0.06; z-index: 0; word-break: normal !important; white-space: nowrap !important; }
@@ -359,7 +359,7 @@
   .figma-services__partner-story p:last-child { position: relative !important; top: auto !important; left: auto !important; text-align: left !important; }
 
   /* Partner Grid */
-  .figma-services__partner-grid { height: auto !important; margin-top: 20px; }
+  .figma-services__partner-grid:not(.figma-services__partner-grid--desktop) { height: auto !important; margin-top: 20px; }
   .figma-services__partner-grid h2 { display: block !important;  text-align: left !important;  margin-bottom: 16px !important; color: #fff; }
   .figma-services__grid-next { display: none !important; }
   .figma-services__partner-card { position: relative !important; top: auto !important; left: auto !important; width: 100% !important; display: grid !important; grid-template-columns: repeat(2, 1fr) !important; grid-auto-rows: 90px !important; gap: 8px !important; border-radius: 16px !important; padding: 12px; box-sizing: border-box; background: transparent; }
@@ -431,3 +431,225 @@
   /* canvas is scaled by 100vw/1479px, so 127px here lands at ~8.6vw on screen, same as Solutions */
   .figma-services__hero { left: 134.5px; }
 }
+
+
+/* ==========================================================================
+   SERVICES - phones (<= 768px)
+   Same animated, pinned scenes as the desktop page, in the same order and with the
+   same colours and elements; only sizes and positions adapt to a narrow screen.
+   Desktop and tablet rules above are untouched.
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Page becomes a simple column; the canvas wrapper dissolves so every scene can be ordered. */
+  /* grid (not flex): ScrollTrigger gives pin spacers their scroll distance reliably in a grid/block parent */
+  .figma-services { display: grid !important; grid-template-columns: minmax(0, 1fr); align-content: start; padding-bottom: 0 !important; }
+  .figma-services > .figma-services__canvas { display: contents !important; }
+
+  /* static phone duplicates are replaced by the animated scenes */
+  .figma-services__core--mobile,
+  .figma-services__work--mobile,
+  .figma-services__partner-grid--canvas,
+  .figma-services__quote--mobile,
+  .figma-services__support--mobile,
+  .figma-services__cta--mobile { display: none !important; }
+
+  /* ---- Hero (two lines like desktop: "Technology Systems" / "Designed To Perform") ---- */
+  .figma-services .figma-services__hero { order: 1; padding: 5rem 1rem 2rem !important; box-sizing: border-box; }
+  .figma-services .figma-services__hero h1 {
+    font-size: clamp(1.75rem, 8vw, 2.75rem) !important;
+    line-height: 1.15 !important;
+    overflow-wrap: normal;
+  }
+  .figma-services .figma-services__hero h1 span {
+    display: block !important;
+    white-space: nowrap !important;
+  }
+
+  /* ---- Intro: "servic / es" pinned screen ---- */
+  .figma-services .intro-absolute {
+    position: relative; top: auto; left: auto;
+    width: 100%; height: 100svh; z-index: auto; order: 2;
+    padding: 0 1rem !important;
+  }
+  .figma-services .intro-absolute .flex-col.md\:flex-row {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+  .figma-services .intro-absolute .servic-part,
+  .figma-services .intro-absolute .es-part {
+    font-size: clamp(3.75rem, 16vw, 6rem) !important;
+    line-height: 0.8 !important;
+  }
+  .figma-services .intro-absolute .text-part {
+    padding-top: 0.25rem !important;
+    margin-top: 0 !important;
+    max-width: 220px !important;
+  }
+  .figma-services .intro-absolute .text-part p {
+    font-size: clamp(0.72rem, 3vw, 0.95rem) !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+  }
+
+  .figma-services .figma-services__statement {
+    order: 3;
+    padding: 2.25rem 1.25rem 2.25rem !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+    max-width: 92% !important;
+  }
+
+  /* ---- Core services: two cards that slide over each other on one pinned screen ---- */
+  .figma-services .figma-services__core--desktop {
+    display: block !important; order: 4; position: relative;
+    left: auto; top: auto; width: 100%;
+    height: 100svh; margin: 0; padding: 5rem 1rem 1rem;
+    box-sizing: border-box; overflow: hidden; background: #000;
+  }
+  .figma-services__core--desktop > h2 {
+    position: static !important;
+    text-align: center !important;
+    margin: 0 0 1.25rem !important;
+    font-size: clamp(1.75rem, 8vw, 2.5rem) !important;
+  }
+  .figma-services__core--desktop article {
+    position: absolute !important; left: 1rem !important; right: 1rem !important; top: 8.5rem !important;
+    width: auto !important; height: auto !important; margin: 0 !important;
+    padding: 1.4rem 1.25rem 1.5rem !important; box-sizing: border-box;
+    display: block !important; background: #403f3f !important; border: 0 !important; border-radius: 20px !important;
+    overflow: hidden; transform: none; text-align: left;
+  }
+  .figma-services__core--desktop article h3 {
+    position: static !important; width: auto !important; margin: 0 0 0.75rem !important;
+    font-size: min(13vw, 3.4rem) !important; line-height: 0.9 !important; letter-spacing: -2px !important;
+    opacity: 1 !important; word-break: normal !important; white-space: normal !important; text-align: left !important;
+  }
+  .figma-services__core--desktop .figma-services__core-side,
+  .figma-services__core--desktop .figma-services__sap-side {
+    position: static !important; width: auto !important; margin: 0 0 0.9rem !important; transform: none !important;
+  }
+  .figma-services__core--desktop .figma-services__core-side h4,
+  .figma-services__core--desktop .figma-services__sap-side h4 { font-size: 1.25rem !important; margin: 0 !important; color: #fff; }
+  .figma-services__core--desktop .figma-services__core-side p,
+  .figma-services__core--desktop .figma-services__sap-side p { font-size: 0.95rem !important; line-height: 1.3 !important; margin: 0.35rem 0 0 !important; color: #82e926 !important; }
+  .figma-services__core--desktop .figma-services__core-copy,
+  .figma-services__core--desktop .figma-services__sap-copy {
+    position: static !important; width: auto !important; margin: 0 0 1.1rem !important;
+    font-size: 1rem !important; line-height: 1.4 !important; color: #e0e0e0 !important; transform: none !important;
+  }
+  .figma-services__core--desktop .figma-service-button { position: static !important; margin: 0 !important; transform: none !important; height: 46px !important; }
+
+  /* ---- "OUR PROCESS" flip heading ---- */
+  .figma-services .figma-services__work-subheading--desktop {
+    display: flex !important; order: 5; position: relative; left: auto; top: auto;
+    width: 100%; margin: 0; min-height: 45vh !important; height: 45vh !important;
+  }
+
+  /* ---- Process list with the travelling green dot ---- */
+  .figma-services .figma-services__work-list--desktop {
+    display: block !important; order: 6; position: relative !important; left: auto !important; top: auto !important;
+    width: 100% !important; margin: 0 !important; transform: none !important; padding: 1.5rem 1rem 3rem; box-sizing: border-box;
+  }
+  .figma-services__work-list--desktop ol { width: 100% !important; margin: 0 !important; }
+  .figma-services__work-list--desktop ol::before { left: calc(36% + 12px) !important; height: auto !important; bottom: calc(7.5rem - 24px); }
+  .figma-services__work-list--desktop .figma-services__moving-dot { left: calc(36% + 12px) !important; width: 18px; height: 18px; }
+  .figma-services__work-list--desktop li { grid-template-columns: 36% 24px minmax(0, 1fr) !important; min-height: 7.5rem !important; }
+  .figma-services__work-list--desktop strong { font-size: clamp(1rem, 5vw, 1.6rem) !important; padding-right: 0.75rem !important; }
+  .figma-services__work-list--desktop li p { width: auto !important; font-size: 0.95rem !important; line-height: 1.4 !important; padding-left: 0.75rem !important; text-align: left !important; margin: 0 !important; color: #fff !important; }
+
+  /* ---- Platforms & Partners: logo grid slides in ---- */
+  .figma-services .figma-services__partner-grid--desktop {
+    display: flex !important; flex-direction: column; justify-content: center; order: 7;
+    position: relative; left: auto; top: auto; width: 100%;
+    height: 100svh; margin: 0; padding: 4.5rem 1rem 1rem; box-sizing: border-box; overflow: hidden;
+  }
+  .figma-services .figma-services__partner-grid--desktop h2,
+  .figma-services .figma-services__partner-grid--desktop h2.type-title,
+  .figma-services__partner-grid--desktop h2.\!text-\[clamp\(2\.5rem\,5vw\,5\.6rem\)\] {
+    margin-bottom: 1rem !important;
+    text-align: center !important;
+    font-size: clamp(1.15rem, 5.2vw, 2.2rem) !important;
+    white-space: nowrap !important;
+  }
+  .figma-services__partner-grid--desktop .figma-services__partner-card {
+    position: relative !important; top: auto !important; left: auto !important; width: 100% !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-auto-rows: 100px !important; gap: 2px !important;
+    padding: 0 !important; border-radius: 20px !important; background: #000 !important;
+  }
+  .figma-services__partner-grid--desktop .figma-services__partner-card figure { background: #d9d9d9 !important; border: 0 !important; border-radius: 0 !important; }
+  .figma-services__partner-grid--desktop .figma-services__partner-card img { max-width: 72% !important; max-height: 58% !important; filter: none !important; opacity: 1 !important; }
+
+  /* ---- Quote / support / CTA scenes ---- */
+  .figma-services .figma-services__quote--desktop {
+    display: flex !important; order: 8; position: relative; left: auto; top: auto; margin: 0; width: 100%;
+    min-height: 50vh !important; height: 50vh !important;
+  }
+  .figma-services .figma-services__support--desktop {
+    display: flex !important; order: 9; position: relative; left: auto; top: auto; margin: 0; width: 100%;
+    min-height: 50vh !important; height: 50vh !important;
+  }
+  .figma-services .figma-services__cta--desktop {
+    display: flex !important; order: 10; position: relative; left: auto; top: auto; margin: 0; width: 100%;
+    min-height: 50vh !important; height: 50vh !important;
+  }
+}
+
+
+/* SERVICES - phones, part 2: the desktop-only base styles these scenes rely on
+   (they live in a min-width:769px block above, so they must be restated here). */
+@media (max-width: 768px) {
+  .figma-services__work-subheading--desktop h3 { margin: 0; text-align: center; }
+
+  .figma-services__work-list--desktop ol { position: relative; padding: 0; list-style: none; }
+  .figma-services__work-list--desktop ol::before {
+    content: ""; position: absolute; top: 24px; width: 1px; background: #82e926;
+  }
+  .figma-services__work-list--desktop .figma-services__moving-dot {
+    position: absolute; top: 24px; transform: translateX(-50%); z-index: 10;
+    border-radius: 50%; background: #82e926; box-shadow: 0 0 20px #82e926;
+  }
+  .figma-services__work-list--desktop li { position: relative; display: grid; will-change: opacity; }
+  .figma-services__work-list--desktop strong { line-height: 1; font-weight: 600; text-align: right; box-sizing: border-box; }
+  .figma-services__work-list--desktop li p { font-weight: 600; margin-top: 0.2rem !important; }
+
+  .figma-services__quote--desktop { text-align: center; min-height: 50vh !important; height: 50vh !important; background: transparent; }
+  .figma-services__quote--desktop h2 {
+    font-size: clamp(1.2rem, 5.2vw, 2.2rem) !important; line-height: 1.15; letter-spacing: -1px; margin: 0; font-weight: 600; color: #fff;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+  .figma-services__quote--desktop h2:last-child { margin-top: 1rem; }
+
+  .figma-services__support--desktop { align-items: center; justify-content: center; min-height: 50vh !important; height: 50vh !important; background: transparent; padding: 0 10px !important; box-sizing: border-box; }
+  .figma-services__support--desktop p,
+  .figma-services .figma-services__support--desktop p {
+    color: #fff; text-align: center !important; max-width: 340px !important; margin: 0 auto !important;
+    font-size: clamp(0.85rem, 3.7vw, 1.2rem) !important; line-height: 1.4 !important;
+  }
+
+  .figma-services__cta--desktop { align-items: center; justify-content: center; text-align: center; min-height: 50vh !important; height: 50vh !important; background: transparent; }
+  .figma-services__cta--desktop > div {
+    position: relative; top: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; width: 100%; margin: 0 auto;
+  }
+  .figma-services__cta--desktop h2 {
+    margin: 0; line-height: 1.15; letter-spacing: -1px;
+    font-size: clamp(1.35rem, 6.2vw, 2.5rem) !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+  .figma-services__cta--desktop p { margin: 1rem 0 2rem; font-size: 1.1rem; font-weight: 500; text-align: center !important; }
+  .figma-services__cta--desktop .figma-service-button { transform: scale(1); margin: 0 auto; }
+}
+
+@layer utilities {
+  @media (max-width: 768px) {
+    .figma-services__partner-grid--desktop h2,
+    .figma-services .figma-services__partner-grid--desktop h2 {
+      font-size: clamp(1.15rem, 5.2vw, 2.2rem) !important;
+      white-space: nowrap !important;
+    }
+  }
+}
+

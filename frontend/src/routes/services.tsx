@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useTouchScroll } from "@/hooks/use-touch-scroll";
 import "./services-page.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -41,6 +42,7 @@ function Button({
 
 
 function Services() {
+  useTouchScroll();
   const [partners, setPartners] = useState<any[]>([]);
 
   useEffect(() => {
@@ -69,6 +71,9 @@ function Services() {
   const ctaSectionRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
+    // Phones run the same pinned scenes as desktop; only lengths/smoothing adapt.
+    const phone = window.innerWidth <= 768;
+    const sc = (v: number | boolean) => (phone ? 0.5 : v);
     const ctx = gsap.context(() => {
       if (introSectionRef.current && servicRef.current && esRef.current && textRef.current) {
         gsap.set(servicRef.current, { y: -150, opacity: 0 });
@@ -79,8 +84,8 @@ function Services() {
           scrollTrigger: {
             trigger: introSectionRef.current,
             start: "top top",
-            end: "+=1200",
-            scrub: true,
+            end: phone ? "+=780" : "+=1200",
+            scrub: sc(true),
             pin: true,
             invalidateOnRefresh: true,
           }
@@ -89,7 +94,7 @@ function Services() {
         tl.to(servicRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0.1)
           .to(esRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0.1)
           .to(textRef.current, { x: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0.6)
-          .to({}, { duration: 1.5 });
+          .to({}, { duration: phone ? 0.4 : 1.5 });
       }
 
       const statement = document.querySelector(".figma-services__statement");
@@ -116,8 +121,8 @@ function Services() {
           scrollTrigger: {
             trigger: coreSectionRef.current,
             start: "top top",
-            end: () => `+=${2000 * (window.innerWidth < 1479 ? window.innerWidth / 1479 : 1)}`,
-            scrub: 0.5,
+            end: phone ? "+=1700" : () => `+=${2000 * (window.innerWidth < 1479 ? window.innerWidth / 1479 : 1)}`,
+            scrub: sc(0.5),
             pin: true,
             invalidateOnRefresh: true,
           }
@@ -127,18 +132,18 @@ function Services() {
           // Card 1 gently glides into place
           coreTl.to(coreCards[0], { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" });
           // Card 1 stays locked in place for comfortable reading
-          coreTl.to({}, { duration: 2.5 });
+          coreTl.to({}, { duration: phone ? 1.5 : 2.5 });
           // Card 1 exits smoothly left while Card 2 enters from right
           coreTl.to(coreCards[0], { x: -250, opacity: 0, duration: 0.8, ease: "power2.inOut" });
           coreTl.to(coreCards[1], { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, "<0.1");
           // Card 2 stays locked in place for comfortable reading
-          coreTl.to({}, { duration: 2.5 });
+          coreTl.to({}, { duration: phone ? 1.5 : 2.5 });
           // Card 2 gently exits
           coreTl.to(coreCards[1], { x: -250, opacity: 0, duration: 0.8, ease: "power2.in" });
         } else {
           coreCards.forEach((card) => {
             coreTl.to(card, { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" });
-            coreTl.to({}, { duration: 2.5 });
+            coreTl.to({}, { duration: phone ? 1.5 : 2.5 });
             coreTl.to(card, { x: -250, opacity: 0, duration: 0.8, ease: "power2.in" });
           });
         }
@@ -151,8 +156,8 @@ function Services() {
           scrollTrigger: {
             trigger: workSubHeadingSectionRef.current,
             start: "center center",
-            end: "+=800",
-            scrub: true,
+            end: phone ? "+=520" : "+=800",
+            scrub: sc(true),
             pin: true,
           }
         });
@@ -163,7 +168,7 @@ function Services() {
           opacity: 1,
           duration: 1,
           ease: "power2.out"
-        }).to({}, { duration: 1 });
+        }).to({}, { duration: phone ? 0.3 : 1 });
       }
 
       // Process list moving dot animation and synchronized text fade (same as solutions page)
@@ -180,13 +185,14 @@ function Services() {
                 trigger: olElement,
                 start: "top center",
                 end: "bottom center",
-                scrub: true,
+                scrub: sc(true),
               }
             });
 
             // Dot moves continuously from top to bottom
             workTl.to(dotRef.current, {
-              top: "1047px",
+              // desktop: 24px + 3 rows * 341px; phones: measured from the real row height
+              top: phone ? `${24 + (n - 1) * workItems[0].offsetHeight}px` : "1047px",
               ease: "none",
               duration: totalDuration,
             }, 0);
@@ -214,8 +220,8 @@ function Services() {
           scrollTrigger: {
             trigger: partnerSectionRef.current,
             start: "top 45px",
-            end: "+=800",
-            scrub: true,
+            end: phone ? "+=520" : "+=800",
+            scrub: sc(true),
             pin: true,
           }
         });
@@ -225,7 +231,7 @@ function Services() {
           opacity: 1,
           duration: 1,
           ease: "power2.out"
-        }).to({}, { duration: 1 });
+        }).to({}, { duration: phone ? 0.3 : 1 });
       }
 
       if (quoteSectionRef.current && quoteLine1Ref.current && quoteLine2Ref.current) {
@@ -237,7 +243,7 @@ function Services() {
             trigger: quoteSectionRef.current,
             start: "center center",
             end: "+=800",
-            scrub: true,
+            scrub: sc(true),
             pin: true,
           }
         });
@@ -257,7 +263,7 @@ function Services() {
             trigger: supportSectionRef.current,
             start: "center center",
             end: "+=800",
-            scrub: true,
+            scrub: sc(true),
             pin: true,
           }
         });
@@ -288,7 +294,7 @@ function Services() {
               trigger: ctaSectionRef.current,
               start: "center center",
               end: "+=800",
-              scrub: true,
+              scrub: sc(true),
               pin: true,
             }
           });
@@ -311,7 +317,13 @@ function Services() {
       }
     });
 
-    return () => ctx.revert();
+    // Phones: recalculate once every pin exists and the layout has settled.
+    const mobileRefresh = phone ? window.setTimeout(() => ScrollTrigger.refresh(), 300) : 0;
+
+    return () => {
+      window.clearTimeout(mobileRefresh);
+      ctx.revert();
+    };
   }, []);
 
   return (

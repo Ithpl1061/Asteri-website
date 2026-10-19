@@ -54,7 +54,7 @@ function FeaturedCard({ category, title, image, accent }: FeaturedPost) {
           <p>{category}</p>
           <h3>{title}</h3>
         </div>
-        <img className="featured-card-image" src={image} alt="" />
+        <img className="featured-card-image" src={image} alt="" decoding="async" />
         <ReadButton />
       </article>
     </div>
@@ -64,7 +64,7 @@ function FeaturedCard({ category, title, image, accent }: FeaturedPost) {
 function RecentCard({ category, title, image, position, categoryAfter }: RecentPost) {
   return (
     <article className={`recent-card ${position}`}>
-      <img className="recent-card-image" src={image} alt="" />
+      <img className="recent-card-image" src={image} alt="" decoding="async" />
       <div className="recent-card-overlay" aria-hidden />
       <div className="recent-card-copy">
         {categoryAfter ? (
@@ -124,8 +124,8 @@ function Blog() {
           scrollTrigger: {
             trigger: featuredSection,
             start: "top top",
-            end: "+=4000",
-            scrub: true,
+            end: "+=3280",
+            scrub: 0.5,
             pin: true,
           },
         });
@@ -136,17 +136,27 @@ function Blog() {
           duration: 1,
         });
 
-        featuredCards.forEach((card) => {
+        // Phones fit one tall card at a time: the cards share one spot; each flips in while the
+        // previous one slides out, with a short hold so every card can be read. (Desktop shows all three.)
+        const holdBetween = window.innerWidth <= 700;
+
+        featuredCards.forEach((card, i) => {
           gsap.set(card, { rotationY: 0, transformPerspective: 1000 });
           tlFeatured.to(card, {
             x: 0,
             opacity: 1,
             rotationY: 360,
             duration: 1.2,
+            force3D: true,
           });
+          // one card on screen at a time: the previous card leaves to the left as this one arrives
+          if (holdBetween && i > 0) {
+            tlFeatured.to(featuredCards[i - 1], { x: "-100vw", opacity: 0, duration: 1.2, ease: "power2.inOut" }, "<");
+          }
+          if (holdBetween && i < featuredCards.length - 1) tlFeatured.to({}, { duration: 0.6 });
         });
 
-        tlFeatured.to({}, { duration: 1.5 });
+        tlFeatured.to({}, { duration: 0.4 });
       }
 
       const recentHeadingSection = query(".blog-recent-heading")[0];
@@ -163,7 +173,7 @@ function Blog() {
           scrollTrigger: {
             trigger: recentHeadingSection,
             start: "center center",
-            end: "+=1000",
+            end: "+=650",
             scrub: true,
             pin: true,
           },
@@ -174,7 +184,7 @@ function Blog() {
           opacity: 1,
           duration: 1,
           ease: "power2.out",
-        }).to({}, { duration: 1 });
+        }).to({}, { duration: 0.3 });
       }
 
       if (recentCardsSection && recentLayout && recentBtn) {
@@ -183,15 +193,12 @@ function Blog() {
           opacity: 0,
         });
 
-        const recentCards = query(".recent-card");
-        gsap.set(recentCards, { rotationY: 0, transformPerspective: 1000 });
-
         const tlRecentCards = gsap.timeline({
           scrollTrigger: {
             trigger: recentCardsSection,
             start: "center center",
-            end: "+=1500",
-            scrub: true,
+            end: "+=1260",
+            scrub: 0.5,
             pin: true,
           },
         });
@@ -203,19 +210,13 @@ function Blog() {
           ease: "power2.out",
         })
         .to({}, { duration: 0.5 })
-        .to(recentCards, {
-          rotationY: 360,
-          duration: 1,
-          ease: "power2.inOut",
-          stagger: 0.1
-        })
         .to(recentBtn, {
           x: 0,
           opacity: 1,
           duration: 1,
           ease: "power2.out",
         })
-        .to({}, { duration: 1.5 });
+        .to({}, { duration: 0.3 });
       }
 
       if (newsletter && title && text && form) {
@@ -228,7 +229,7 @@ function Blog() {
           scrollTrigger: {
             trigger: newsletter,
             start: "top top",
-            end: "+=3000",
+            end: "+=2400",
             scrub: true,
             pin: true,
           },
@@ -254,7 +255,7 @@ function Blog() {
           duration: 1,
           ease: "power2.out",
         })
-        .to({}, { duration: 1.5 });
+        .to({}, { duration: 0.4 });
       }
     }, containerRef);
 

@@ -155,7 +155,8 @@ export function Hero3DBackground({ horizonAnchorRef }: Hero3DBackgroundProps) {
       antialias: true,
       powerPreference: "high-performance",
     });
-    const pixelRatio = Math.min(window.devicePixelRatio, 2);
+    const isMobile = window.innerWidth < 768;
+    const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
@@ -215,7 +216,8 @@ export function Hero3DBackground({ horizonAnchorRef }: Hero3DBackgroundProps) {
     spinner.add(new THREE.Points(pointsGeo, pointsMat));
 
     // --- Opaque core (hides the far hemisphere, adds a fresnel edge) ---
-    const coreGeo = new THREE.SphereGeometry(RADIUS * 0.985, 96, 96);
+    const sphereSegs = window.innerWidth < 768 ? 48 : 96;
+    const coreGeo = new THREE.SphereGeometry(RADIUS * 0.985, sphereSegs, sphereSegs);
     const coreMat = new THREE.ShaderMaterial({
       vertexShader: coreVertex,
       fragmentShader: coreFragment,
@@ -224,7 +226,7 @@ export function Hero3DBackground({ horizonAnchorRef }: Hero3DBackgroundProps) {
     planet.add(new THREE.Mesh(coreGeo, coreMat));
 
     // --- Atmosphere halo ---
-    const atmoGeo = new THREE.SphereGeometry(RADIUS * 1.18, 96, 96);
+    const atmoGeo = new THREE.SphereGeometry(RADIUS * 1.18, sphereSegs, sphereSegs);
     const atmoMat = new THREE.ShaderMaterial({
       vertexShader: coreVertex,
       fragmentShader: atmosphereFragment,
@@ -383,6 +385,7 @@ export function Hero3DBackground({ horizonAnchorRef }: Hero3DBackgroundProps) {
       // Pull the camera back on narrow screens so the horizon stays wide.
       camera.position.z = camera.aspect < 1 ? 30 + (1 - camera.aspect) * 22 : 30;
       camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
       renderer.setSize(w, h);
 
       horizonFrac = measureHorizon(h);

@@ -52,13 +52,16 @@ function ContactInformation() {
       gsap.set("h2", { y: 50, opacity: 0 });
       gsap.set(elements, { x: "100vw", opacity: 0 });
 
+      // Phones: the details + form are taller than one screen, so instead of holding the section
+      // pinned they slide in (same animation) as it scrolls through the screen.
+      const phone = window.innerWidth <= 900;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top top",
-          end: "+=4000",
-          scrub: true,
-          pin: true,
+          start: phone ? "top 62%" : "top top",
+          end: phone ? "bottom 78%" : "+=3230",
+          scrub: phone ? 0.5 : true,
+          pin: !phone,
           anticipatePin: 1,
         }
       });
@@ -77,7 +80,7 @@ function ContactInformation() {
         ease: "power2.out",
       });
 
-      tl.to({}, { duration: 1.5 });
+      tl.to({}, { duration: 0.4 });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -143,7 +146,7 @@ function ContactConversation() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=1500",
+          end: "+=1300",
           scrub: true,
           pin: true,
         },
@@ -151,7 +154,7 @@ function ContactConversation() {
 
       tl.from(".line-1", { x: "-100vw", ease: "none", duration: 1 }, 0);
       tl.from(".line-2", { x: "100vw", ease: "none", duration: 1 }, 0);
-      tl.to({}, { duration: 0.5 }); // Hold at the end
+      tl.to({}, { duration: 0.3 }); // Hold at the end
     }, sectionRef);
 
     return () => ctx.revert();
