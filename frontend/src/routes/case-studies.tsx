@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { apiUrl } from "@/lib/api";
+import { loadApi } from "@/lib/api";
 import { PageShell } from "@/components/PageShell";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -9,19 +9,16 @@ import "./case-studies.css";
 gsap.registerPlugin(ScrollTrigger);
 
 export const Route = createFileRoute("/case-studies")({
-  head: () => ({ meta: [{ title: "Case Studies â€” Asteri" }] }),
+  // Case studies are loaded on the server, so they are in the first HTML
+  loader: async () => ({
+    caseStudies: await loadApi<any[]>("/api/case-studies", []),
+  }),
+  head: () => ({ meta: [{ title: "Case Studies — Asteri" }] }),
   component: CaseStudies,
 });
 
 function CaseStudies() {
-  const [caseStudies, setCaseStudies] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetch(apiUrl('/api/case-studies'))
-      .then(res => res.json())
-      .then(data => setCaseStudies(data))
-      .catch(console.error);
-  }, []);
+  const [caseStudies] = useState<any[]>(Route.useLoaderData().caseStudies);
 
   const containerRef = useRef<HTMLDivElement>(null);
 

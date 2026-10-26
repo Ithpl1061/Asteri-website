@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { apiUrl } from "@/lib/api";
+import { apiUrl, loadApi } from "@/lib/api";
 import { PageShell } from "@/components/PageShell";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -25,9 +25,13 @@ type RecentPost = {
 
 
 export const Route = createFileRoute("/blog")({
+  // Posts are loaded on the server, so they are in the first HTML
+  loader: async () => ({
+    posts: await loadApi<any[]>("/api/blog/posts", []),
+  }),
   head: () => ({
     meta: [
-      { title: "About â€” Asteri" },
+      { title: "Blog — Asteri" },
       {
         name: "description",
         content: "Asteri is a digital engineering studio building cinematic enterprise software.",
@@ -87,18 +91,10 @@ function RecentCard({ category, title, image, position, categoryAfter }: RecentP
 function Blog() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [subscribed, setSubscribed] = useState(false);
-  const [featuredPosts, setFeaturedPosts] = useState<any[]>([]);
-  const [recentPosts, setRecentPosts] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetch(apiUrl('/api/blog/posts'))
-      .then(res => res.json())
-      .then(data => {
-        setFeaturedPosts(data.filter((p: any) => p.isFeatured));
-        setRecentPosts(data.filter((p: any) => !p.isFeatured));
-      })
-      .catch(console.error);
-  }, []);
+  const [subFailed, setSubFailed] = useState(false);
+  const posts = Route.useLoaderData().posts;
+  const [featuredPosts] = useState<any[]>(() => posts.filter((p: any) => p.isFeatured));
+  const [recentPosts] = useState<any[]>(() => posts.filter((p: any) => !p.isFeatured));
 
   const positions = ["recent-ai", "recent-cloud", "recent-system", "recent-crm", "recent-automation", "recent-productivity"];
 
@@ -355,20 +351,31 @@ function Blog() {
             <form className="blog-subscribe-form" onSubmit={(e) => {
               e.preventDefault();
               const email = new FormData(e.currentTarget).get('email');
+              const form = e.currentTarget;
+              setSubFailed(false);
               fetch(apiUrl('/api/newsletter'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })
               })
-              .then(() => {
-                (e.target as HTMLFormElement).reset();
+              .then(res => {
+                if (!res.ok) throw new Error(`Newsletter request failed: ${res.status}`);
+                form.reset();
                 setSubscribed(true);
                 window.setTimeout(() => setSubscribed(false), 4500);
               })
-              .catch(console.error);
+              .catch(err => {
+                console.error(err);
+                setSubFailed(true);
+              });
             }}>
               <input type="email" name="email" placeholder="Enter Your Email" aria-label="Email address" required />
               <button type="submit">Subscribe</button>
+              {subFailed && (
+                <p role="alert" style={{ color: "#ff6b6b", marginTop: "12px" }}>
+                  Sorry, we could not subscribe you. Please try again.
+                </p>
+              )}
               {subscribed && (
                 <div className="subscribe-success" role="status" aria-live="polite">
                   {Array.from({ length: 14 }).map((_, i) => (

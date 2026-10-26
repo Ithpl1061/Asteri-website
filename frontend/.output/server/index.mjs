@@ -45,13 +45,6 @@ var public_assets_data_default = {
 		"size": 33848,
 		"path": "../public/4.webp"
 	},
-	"/anydesk.png": {
-		"type": "image/png",
-		"etag": "\"8496-0gmXobyOiHHwNax99cj+tOSTUs4\"",
-		"mtime": "2026-07-31T05:48:43.297Z",
-		"size": 33942,
-		"path": "../public/anydesk.png"
-	},
 	"/5.webp": {
 		"type": "image/webp",
 		"etag": "\"3e26-41f2KH3HSrmYaaUbmDpzuG0MCyQ\"",
@@ -66,26 +59,12 @@ var public_assets_data_default = {
 		"size": 16622,
 		"path": "../public/asteri logo footer.jpeg"
 	},
-	"/Asteri Animated Logo.mp4": {
-		"type": "video/mp4",
-		"etag": "\"23df6-spNvHUofaWdFV1l2LG6utY41Ddk\"",
-		"mtime": "2026-07-31T05:48:43.313Z",
-		"size": 146934,
-		"path": "../public/Asteri Animated Logo.mp4"
-	},
 	"/Asteri logo for footer.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"638-3vx3gbkoIPjLEroCcxmTsqNXUT4\"",
 		"mtime": "2026-07-31T05:48:43.336Z",
 		"size": 1592,
 		"path": "../public/Asteri logo for footer.svg"
-	},
-	"/Asteri logo.png": {
-		"type": "image/png",
-		"etag": "\"6aa8-pijoXt961fGekrNzz3K5l9QRXuM\"",
-		"mtime": "2026-07-31T05:48:43.355Z",
-		"size": 27304,
-		"path": "../public/Asteri logo.png"
 	},
 	"/Automation.jpg": {
 		"type": "image/jpeg",
@@ -94,12 +73,40 @@ var public_assets_data_default = {
 		"size": 94307,
 		"path": "../public/Automation.jpg"
 	},
+	"/Asteri logo.png": {
+		"type": "image/png",
+		"etag": "\"6aa8-pijoXt961fGekrNzz3K5l9QRXuM\"",
+		"mtime": "2026-07-31T05:48:43.355Z",
+		"size": 27304,
+		"path": "../public/Asteri logo.png"
+	},
+	"/anydesk.png": {
+		"type": "image/png",
+		"etag": "\"8496-0gmXobyOiHHwNax99cj+tOSTUs4\"",
+		"mtime": "2026-07-31T05:48:43.297Z",
+		"size": 33942,
+		"path": "../public/anydesk.png"
+	},
+	"/Asteri Animated Logo.mp4": {
+		"type": "video/mp4",
+		"etag": "\"23df6-spNvHUofaWdFV1l2LG6utY41Ddk\"",
+		"mtime": "2026-07-31T05:48:43.313Z",
+		"size": 146934,
+		"path": "../public/Asteri Animated Logo.mp4"
+	},
 	"/aws logo.png": {
 		"type": "image/png",
 		"etag": "\"3b4a-3uaZLwyWWDjf5AebYSREvOcFsvQ\"",
 		"mtime": "2026-07-31T05:48:43.443Z",
 		"size": 15178,
 		"path": "../public/aws logo.png"
+	},
+	"/Container.jpg": {
+		"type": "image/jpeg",
+		"etag": "\"18d93-aFbGvzq8l0e5AuIic9LSfPie7ig\"",
+		"mtime": "2026-07-31T05:48:43.464Z",
+		"size": 101779,
+		"path": "../public/Container.jpg"
 	},
 	"/Geist-Black.otf": {
 		"type": "font/otf",
@@ -108,12 +115,12 @@ var public_assets_data_default = {
 		"size": 167896,
 		"path": "../public/Geist-Black.otf"
 	},
-	"/Container.jpg": {
-		"type": "image/jpeg",
-		"etag": "\"18d93-aFbGvzq8l0e5AuIic9LSfPie7ig\"",
-		"mtime": "2026-07-31T05:48:43.464Z",
-		"size": 101779,
-		"path": "../public/Container.jpg"
+	"/Geist-BlackItalic.otf": {
+		"type": "font/otf",
+		"etag": "\"28c64-U4aHSwzEanEESZ1Pc/hUmDTX8WE\"",
+		"mtime": "2026-07-31T05:48:43.502Z",
+		"size": 167012,
+		"path": "../public/Geist-BlackItalic.otf"
 	},
 	"/Geist-BoldItalic.otf": {
 		"type": "font/otf",
@@ -136,12 +143,12 @@ var public_assets_data_default = {
 		"size": 167728,
 		"path": "../public/Geist-ExtraBold.otf"
 	},
-	"/Geist-BlackItalic.otf": {
+	"/Geist-ExtraBoldItalic.otf": {
 		"type": "font/otf",
-		"etag": "\"28c64-U4aHSwzEanEESZ1Pc/hUmDTX8WE\"",
-		"mtime": "2026-07-31T05:48:43.502Z",
-		"size": 167012,
-		"path": "../public/Geist-BlackItalic.otf"
+		"etag": "\"29344-TC3kWEKA9JA51fxHFvR0DvW+1HM\"",
+		"mtime": "2026-07-31T05:48:43.573Z",
+		"size": 168772,
+		"path": "../public/Geist-ExtraBoldItalic.otf"
 	},
 	"/Geist-ExtraLight.otf": {
 		"type": "font/otf",
@@ -150,12 +157,12 @@ var public_assets_data_default = {
 		"size": 160476,
 		"path": "../public/Geist-ExtraLight.otf"
 	},
-	"/Geist-ExtraBoldItalic.otf": {
+	"/Geist-ExtraLightItalic.otf": {
 		"type": "font/otf",
-		"etag": "\"29344-TC3kWEKA9JA51fxHFvR0DvW+1HM\"",
-		"mtime": "2026-07-31T05:48:43.573Z",
-		"size": 168772,
-		"path": "../public/Geist-ExtraBoldItalic.otf"
+		"etag": "\"27b74-zzIpJMgC/75+G+q27EJE0+PrpWs\"",
+		"mtime": "2026-07-31T05:48:43.611Z",
+		"size": 162676,
+		"path": "../public/Geist-ExtraLightItalic.otf"
 	},
 	"/Geist-Italic.otf": {
 		"type": "font/otf",
@@ -177,13 +184,6 @@ var public_assets_data_default = {
 		"mtime": "2026-07-31T05:48:43.242Z",
 		"size": 762332,
 		"path": "../public/AishwariaMam.png"
-	},
-	"/Geist-ExtraLightItalic.otf": {
-		"type": "font/otf",
-		"etag": "\"27b74-zzIpJMgC/75+G+q27EJE0+PrpWs\"",
-		"mtime": "2026-07-31T05:48:43.611Z",
-		"size": 162676,
-		"path": "../public/Geist-ExtraLightItalic.otf"
 	},
 	"/AnurajSir.png": {
 		"type": "image/png",
@@ -290,19 +290,19 @@ var public_assets_data_default = {
 		"size": 181400,
 		"path": "../public/GeistMono-ExtraBold.otf"
 	},
-	"/GeistMono-ExtraLight.otf": {
-		"type": "font/otf",
-		"etag": "\"2ab1c-HBu5PXYDP2u7gZhl9jEhYgI+6go\"",
-		"mtime": "2026-07-31T05:48:43.914Z",
-		"size": 174876,
-		"path": "../public/GeistMono-ExtraLight.otf"
-	},
 	"/GeistMono-ExtraBoldItalic.otf": {
 		"type": "font/otf",
 		"etag": "\"2ca68-D2Dj2XpaAX9eWHTe7a30dHiTzf0\"",
 		"mtime": "2026-07-31T05:48:43.896Z",
 		"size": 182888,
 		"path": "../public/GeistMono-ExtraBoldItalic.otf"
+	},
+	"/GeistMono-ExtraLight.otf": {
+		"type": "font/otf",
+		"etag": "\"2ab1c-HBu5PXYDP2u7gZhl9jEhYgI+6go\"",
+		"mtime": "2026-07-31T05:48:43.914Z",
+		"size": 174876,
+		"path": "../public/GeistMono-ExtraLight.otf"
 	},
 	"/GeistMono-ExtraLightItalic.otf": {
 		"type": "font/otf",
@@ -367,12 +367,19 @@ var public_assets_data_default = {
 		"size": 179232,
 		"path": "../public/GeistMono-SemiBoldItalic.otf"
 	},
-	"/GeistMono-Thin.otf": {
+	"/GeistMono-ThinItalic.otf": {
 		"type": "font/otf",
-		"etag": "\"2a520-UDALtIb30yXftRZJ2WXf6WHgWgg\"",
-		"mtime": "2026-07-31T05:48:44.095Z",
-		"size": 173344,
-		"path": "../public/GeistMono-Thin.otf"
+		"etag": "\"2aa28-v2e378Jm2lilcZESEeU5RJbYZ0c\"",
+		"mtime": "2026-07-31T05:48:44.112Z",
+		"size": 174632,
+		"path": "../public/GeistMono-ThinItalic.otf"
+	},
+	"/hero-line.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"fa-aNCycD/UMLxhjhW5ryW1YUxg1wE\"",
+		"mtime": "2026-09-23T09:41:53.191Z",
+		"size": 250,
+		"path": "../public/hero-line.svg"
 	},
 	"/hero-orb.svg": {
 		"type": "image/svg+xml",
@@ -380,13 +387,6 @@ var public_assets_data_default = {
 		"mtime": "2026-09-23T09:41:52.806Z",
 		"size": 2844,
 		"path": "../public/hero-orb.svg"
-	},
-	"/GeistMono-ThinItalic.otf": {
-		"type": "font/otf",
-		"etag": "\"2aa28-v2e378Jm2lilcZESEeU5RJbYZ0c\"",
-		"mtime": "2026-07-31T05:48:44.112Z",
-		"size": 174632,
-		"path": "../public/GeistMono-ThinItalic.otf"
 	},
 	"/Image Placeholder (1).jpg": {
 		"type": "image/jpeg",
@@ -409,26 +409,12 @@ var public_assets_data_default = {
 		"size": 20612,
 		"path": "../public/ManageEngine logo.png"
 	},
-	"/hero-line.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"fa-aNCycD/UMLxhjhW5ryW1YUxg1wE\"",
-		"mtime": "2026-09-23T09:41:53.191Z",
-		"size": 250,
-		"path": "../public/hero-line.svg"
-	},
-	"/Image Placeholder.jpg": {
-		"type": "image/jpeg",
-		"etag": "\"30bda-qrOAgbOBUqtiWpuJgT1ZoWvfRmE\"",
-		"mtime": "2026-07-31T05:48:44.183Z",
-		"size": 199642,
-		"path": "../public/Image Placeholder.jpg"
-	},
-	"/plsql.png": {
+	"/Salesforce.png": {
 		"type": "image/png",
-		"etag": "\"bae8-p5N0TMVM/P4K6vph4A1lSDiioao\"",
-		"mtime": "2026-07-31T05:48:44.223Z",
-		"size": 47848,
-		"path": "../public/plsql.png"
+		"etag": "\"558d-knDgWppIGTxAR9Q4RTYtlWe07uU\"",
+		"mtime": "2026-07-31T05:48:44.244Z",
+		"size": 21901,
+		"path": "../public/Salesforce.png"
 	},
 	"/sap logo.png": {
 		"type": "image/png",
@@ -437,54 +423,12 @@ var public_assets_data_default = {
 		"size": 12616,
 		"path": "../public/sap logo.png"
 	},
-	"/thinkcell.png": {
-		"type": "image/png",
-		"etag": "\"6783-iWiotWwggxXg1gnauPjrmuIgt8w\"",
-		"mtime": "2026-07-31T05:48:44.349Z",
-		"size": 26499,
-		"path": "../public/thinkcell.png"
-	},
-	"/System Architecture.jpg": {
+	"/Image Placeholder.jpg": {
 		"type": "image/jpeg",
-		"etag": "\"17e9f-W4mn4x19NTFQ2jNJvLT47vIwnAU\"",
-		"mtime": "2026-07-31T05:48:44.330Z",
-		"size": 97951,
-		"path": "../public/System Architecture.jpg"
-	},
-	"/savex.png": {
-		"type": "image/png",
-		"etag": "\"1cb00-g1tgWRPg9f52KkO/fpb4LkxB+vQ\"",
-		"mtime": "2026-07-31T05:48:44.287Z",
-		"size": 117504,
-		"path": "../public/savex.png"
-	},
-	"/Salesforce.png": {
-		"type": "image/png",
-		"etag": "\"558d-knDgWppIGTxAR9Q4RTYtlWe07uU\"",
-		"mtime": "2026-07-31T05:48:44.244Z",
-		"size": 21901,
-		"path": "../public/Salesforce.png"
-	},
-	"/Vector.png": {
-		"type": "image/png",
-		"etag": "\"135cf-NCg2sZ6LOO82Nj1bfh8UXCCtcB8\"",
-		"mtime": "2026-07-31T05:48:44.369Z",
-		"size": 79311,
-		"path": "../public/Vector.png"
-	},
-	"/zoho logo.png": {
-		"type": "image/png",
-		"etag": "\"36bb-4JQkIFfmjFot4qWd/0d5552HarY\"",
-		"mtime": "2026-07-31T05:48:44.454Z",
-		"size": 14011,
-		"path": "../public/zoho logo.png"
-	},
-	"/zionit.png": {
-		"type": "image/png",
-		"etag": "\"a9df-avxiCUoYx7LKUhJYftF2QY/vQzE\"",
-		"mtime": "2026-07-31T05:48:44.436Z",
-		"size": 43487,
-		"path": "../public/zionit.png"
+		"etag": "\"30bda-qrOAgbOBUqtiWpuJgT1ZoWvfRmE\"",
+		"mtime": "2026-07-31T05:48:44.183Z",
+		"size": 199642,
+		"path": "../public/Image Placeholder.jpg"
 	},
 	"/Shipsy_Logo 1.png": {
 		"type": "image/png",
@@ -493,12 +437,61 @@ var public_assets_data_default = {
 		"size": 63616,
 		"path": "../public/Shipsy_Logo 1.png"
 	},
-	"/about/approach-discovery.png": {
+	"/savex.png": {
 		"type": "image/png",
-		"etag": "\"1dd2-/K9podNwZ7zbweIIzej/6uITANY\"",
-		"mtime": "2026-08-04T06:38:21.419Z",
-		"size": 7634,
-		"path": "../public/about/approach-discovery.png"
+		"etag": "\"1cb00-g1tgWRPg9f52KkO/fpb4LkxB+vQ\"",
+		"mtime": "2026-07-31T05:48:44.287Z",
+		"size": 117504,
+		"path": "../public/savex.png"
+	},
+	"/plsql.png": {
+		"type": "image/png",
+		"etag": "\"bae8-p5N0TMVM/P4K6vph4A1lSDiioao\"",
+		"mtime": "2026-07-31T05:48:44.223Z",
+		"size": 47848,
+		"path": "../public/plsql.png"
+	},
+	"/thinkcell.png": {
+		"type": "image/png",
+		"etag": "\"6783-iWiotWwggxXg1gnauPjrmuIgt8w\"",
+		"mtime": "2026-07-31T05:48:44.349Z",
+		"size": 26499,
+		"path": "../public/thinkcell.png"
+	},
+	"/Vector.png": {
+		"type": "image/png",
+		"etag": "\"135cf-NCg2sZ6LOO82Nj1bfh8UXCCtcB8\"",
+		"mtime": "2026-07-31T05:48:44.369Z",
+		"size": 79311,
+		"path": "../public/Vector.png"
+	},
+	"/GeistMono-Thin.otf": {
+		"type": "font/otf",
+		"etag": "\"2a520-UDALtIb30yXftRZJ2WXf6WHgWgg\"",
+		"mtime": "2026-07-31T05:48:44.095Z",
+		"size": 173344,
+		"path": "../public/GeistMono-Thin.otf"
+	},
+	"/System Architecture.jpg": {
+		"type": "image/jpeg",
+		"etag": "\"17e9f-W4mn4x19NTFQ2jNJvLT47vIwnAU\"",
+		"mtime": "2026-07-31T05:48:44.330Z",
+		"size": 97951,
+		"path": "../public/System Architecture.jpg"
+	},
+	"/zionit.png": {
+		"type": "image/png",
+		"etag": "\"a9df-avxiCUoYx7LKUhJYftF2QY/vQzE\"",
+		"mtime": "2026-07-31T05:48:44.436Z",
+		"size": 43487,
+		"path": "../public/zionit.png"
+	},
+	"/zoho logo.png": {
+		"type": "image/png",
+		"etag": "\"36bb-4JQkIFfmjFot4qWd/0d5552HarY\"",
+		"mtime": "2026-07-31T05:48:44.454Z",
+		"size": 14011,
+		"path": "../public/zoho logo.png"
 	},
 	"/about/approach-agile.png": {
 		"type": "image/png",
@@ -507,6 +500,13 @@ var public_assets_data_default = {
 		"size": 8025,
 		"path": "../public/about/approach-agile.png"
 	},
+	"/about/approach-discovery.png": {
+		"type": "image/png",
+		"etag": "\"1dd2-/K9podNwZ7zbweIIzej/6uITANY\"",
+		"mtime": "2026-08-04T06:38:21.419Z",
+		"size": 7634,
+		"path": "../public/about/approach-discovery.png"
+	},
 	"/about/approach-discovery.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"589-X0f0qnKM2lgFQQ8dxxPvhRUh3LE\"",
@@ -514,19 +514,19 @@ var public_assets_data_default = {
 		"size": 1417,
 		"path": "../public/about/approach-discovery.svg"
 	},
-	"/about/approach-team.png": {
-		"type": "image/png",
-		"etag": "\"18f5-ZVoESLVebr4d2NO/u2TYgPkcuUc\"",
-		"mtime": "2026-08-04T06:38:20.976Z",
-		"size": 6389,
-		"path": "../public/about/approach-team.png"
-	},
 	"/about/approach-support.png": {
 		"type": "image/png",
 		"etag": "\"1dd1-e3H52HjvA9uACcpYWXfSr0uxUAE\"",
 		"mtime": "2026-08-04T06:38:22.963Z",
 		"size": 7633,
 		"path": "../public/about/approach-support.png"
+	},
+	"/about/approach-team.png": {
+		"type": "image/png",
+		"etag": "\"18f5-ZVoESLVebr4d2NO/u2TYgPkcuUc\"",
+		"mtime": "2026-08-04T06:38:20.976Z",
+		"size": 6389,
+		"path": "../public/about/approach-team.png"
 	},
 	"/about/cta-arrow.svg": {
 		"type": "image/svg+xml",
@@ -542,13 +542,6 @@ var public_assets_data_default = {
 		"size": 970,
 		"path": "../public/about/final-glow.svg"
 	},
-	"/about/hero-path.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"348-eJPYqLVch49R1WjVJiRlb90ogOs\"",
-		"mtime": "2026-08-04T06:38:18.525Z",
-		"size": 840,
-		"path": "../public/about/hero-path.svg"
-	},
 	"/about/mission-goal.png": {
 		"type": "image/png",
 		"etag": "\"34f0-ELXpAk8shMlMIlvehPhM8PTtsG0\"",
@@ -556,12 +549,12 @@ var public_assets_data_default = {
 		"size": 13552,
 		"path": "../public/about/mission-goal.png"
 	},
-	"/about/vision.png": {
-		"type": "image/png",
-		"etag": "\"230b-yzLoQJDENgV709byEHLxBXj2bv8\"",
-		"mtime": "2026-08-04T06:38:19.058Z",
-		"size": 8971,
-		"path": "../public/about/vision.png"
+	"/about/hero-path.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"348-eJPYqLVch49R1WjVJiRlb90ogOs\"",
+		"mtime": "2026-08-04T06:38:18.525Z",
+		"size": 840,
+		"path": "../public/about/hero-path.svg"
 	},
 	"/about/orb.svg": {
 		"type": "image/svg+xml",
@@ -570,26 +563,12 @@ var public_assets_data_default = {
 		"size": 2084,
 		"path": "../public/about/orb.svg"
 	},
-	"/assets/about-CxNUTqWB.js": {
+	"/assets/about-BZplbgJW.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"7e62-k89b3CFCZHTMbF8Hy+CNt3aH6Zs\"",
-		"mtime": "2026-10-19T04:58:21.204Z",
-		"size": 32354,
-		"path": "../public/assets/about-CxNUTqWB.js"
-	},
-	"/What we do.png": {
-		"type": "image/png",
-		"etag": "\"1ad1d4-d08+zL9xspdZA2W9fwcmaCp/QE0\"",
-		"mtime": "2026-07-31T05:48:44.415Z",
-		"size": 1757652,
-		"path": "../public/What we do.png"
-	},
-	"/assets/api-FWyRYVdn.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"23-Rfu1+7733rzFoqoZleWXJYmYsH4\"",
-		"mtime": "2026-10-19T04:58:21.206Z",
-		"size": 35,
-		"path": "../public/assets/api-FWyRYVdn.js"
+		"etag": "\"7e07-xbyz51i0ezd54MsVaqiEKU1ziY4\"",
+		"mtime": "2026-10-26T06:07:08.559Z",
+		"size": 32263,
+		"path": "../public/assets/about-BZplbgJW.js"
 	},
 	"/about/visionary-circle.svg": {
 		"type": "image/svg+xml",
@@ -598,6 +577,55 @@ var public_assets_data_default = {
 		"size": 467,
 		"path": "../public/about/visionary-circle.svg"
 	},
+	"/assets/blog-CZRORpxs.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"20dd-ym9wgNWF/M2BNG9XaFBH7KGDD/w\"",
+		"mtime": "2026-10-26T06:07:08.560Z",
+		"size": 8413,
+		"path": "../public/assets/blog-CZRORpxs.js"
+	},
+	"/assets/case-studies-CVvyjwTv.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"17e7-bh7QlEtbpwNfOY94cfE5Qonr7Xg\"",
+		"mtime": "2026-10-26T06:07:08.560Z",
+		"size": 6119,
+		"path": "../public/assets/case-studies-CVvyjwTv.js"
+	},
+	"/about/vision.png": {
+		"type": "image/png",
+		"etag": "\"230b-yzLoQJDENgV709byEHLxBXj2bv8\"",
+		"mtime": "2026-08-04T06:38:19.058Z",
+		"size": 8971,
+		"path": "../public/about/vision.png"
+	},
+	"/assets/cloud-solutions-VYGTXseP.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"1ba-Ho7Wq9npzxGMJXu8IpTnQkZGPXY\"",
+		"mtime": "2026-10-26T06:07:08.561Z",
+		"size": 442,
+		"path": "../public/assets/cloud-solutions-VYGTXseP.js"
+	},
+	"/What we do.png": {
+		"type": "image/png",
+		"etag": "\"1ad1d4-d08+zL9xspdZA2W9fwcmaCp/QE0\"",
+		"mtime": "2026-07-31T05:48:44.415Z",
+		"size": 1757652,
+		"path": "../public/What we do.png"
+	},
+	"/assets/contact-DnlkcYh3.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"1688-H/1zcHjC+2ArXOT6RLF7SECMeHU\"",
+		"mtime": "2026-10-26T06:07:08.561Z",
+		"size": 5768,
+		"path": "../public/assets/contact-DnlkcYh3.js"
+	},
+	"/assets/data-science-B4p5Gnxt.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"1ba-Ke1I7OoXeQfbAhLnvVHfBnt0/Zo\"",
+		"mtime": "2026-10-26T06:07:08.561Z",
+		"size": 442,
+		"path": "../public/assets/data-science-B4p5Gnxt.js"
+	},
 	"/about/visionary-avinash.png": {
 		"type": "image/png",
 		"etag": "\"63597-+qxILIfvyP84ye+WPaNUK4XSG7Y\"",
@@ -605,173 +633,166 @@ var public_assets_data_default = {
 		"size": 406935,
 		"path": "../public/about/visionary-avinash.png"
 	},
-	"/assets/Asteri_product-suite-VsUuBxaR.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1d00-a1RAFopTPIBb2xaxqao6ECFeIB4\"",
-		"mtime": "2026-10-19T04:58:21.196Z",
-		"size": 7424,
-		"path": "../public/assets/Asteri_product-suite-VsUuBxaR.js"
-	},
-	"/assets/blog-DNo59fS_.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"2004-vkzWiODmOPot5+mpJgPNHpPVOVM\"",
-		"mtime": "2026-10-19T04:58:21.207Z",
-		"size": 8196,
-		"path": "../public/assets/blog-DNo59fS_.js"
-	},
-	"/assets/case-studies-DHpOYiom.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"180e-VctE9fMhKQmjwd7ulCrKaLUbLpA\"",
-		"mtime": "2026-10-19T04:58:21.207Z",
-		"size": 6158,
-		"path": "../public/assets/case-studies-DHpOYiom.js"
-	},
-	"/assets/cloud-solutions-BLFU9TVY.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1b7-Pe37IHVXW39CKFTl9WnnL0VF0ZU\"",
-		"mtime": "2026-10-19T04:58:21.208Z",
-		"size": 439,
-		"path": "../public/assets/cloud-solutions-BLFU9TVY.js"
-	},
-	"/assets/contact-DLKpOcmS.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1535-MLbEOPoSxqR9z28QEI93LIUd5oU\"",
-		"mtime": "2026-10-19T04:58:21.208Z",
-		"size": 5429,
-		"path": "../public/assets/contact-DLKpOcmS.js"
-	},
-	"/assets/data-science-DZFUPVn4.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1b7-VEIfqRdhL1KB3pEJ7TBaY08+bos\"",
-		"mtime": "2026-10-19T04:58:21.209Z",
-		"size": 439,
-		"path": "../public/assets/data-science-DZFUPVn4.js"
+	"/assets/geist-sans-latin-600-normal-CA1yjETN.woff": {
+		"type": "font/woff",
+		"etag": "\"a0f4-w6YmFho8VLjQDd/wDVi5ErjS+5Q\"",
+		"mtime": "2026-10-26T06:07:08.569Z",
+		"size": 41204,
+		"path": "../public/assets/geist-sans-latin-600-normal-CA1yjETN.woff"
 	},
 	"/assets/geist-sans-latin-600-normal-DFOURf8L.woff2": {
 		"type": "font/woff2",
 		"etag": "\"89dc-kV6faIqiry/+WygSKW3lfDcID2s\"",
-		"mtime": "2026-10-19T04:58:21.250Z",
+		"mtime": "2026-10-26T06:07:08.569Z",
 		"size": 35292,
 		"path": "../public/assets/geist-sans-latin-600-normal-DFOURf8L.woff2"
 	},
-	"/assets/geist-sans-latin-600-normal-CA1yjETN.woff": {
-		"type": "font/woff",
-		"etag": "\"a0f4-w6YmFho8VLjQDd/wDVi5ErjS+5Q\"",
-		"mtime": "2026-10-19T04:58:21.250Z",
-		"size": 41204,
-		"path": "../public/assets/geist-sans-latin-600-normal-CA1yjETN.woff"
+	"/assets/industries-DomWEZST.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"342b-CrCRP2cWcIWYL+eWHf3OwO9v4ZU\"",
+		"mtime": "2026-10-26T06:07:08.562Z",
+		"size": 13355,
+		"path": "../public/assets/industries-DomWEZST.js"
 	},
-	"/assets/index-CovIfBxw.css": {
+	"/assets/matchContext-CTXRldbq.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"2c8-bxZD7eO8Joixzsx5IEZrPWg1cec\"",
+		"mtime": "2026-10-26T06:07:08.562Z",
+		"size": 712,
+		"path": "../public/assets/matchContext-CTXRldbq.js"
+	},
+	"/assets/index-DkbLnPcj.css": {
 		"type": "text/css; charset=utf-8",
-		"etag": "\"168cf-B7VWzjoiuwqW2nVkxlyzq7YF3Uw\"",
-		"mtime": "2026-10-19T04:58:21.252Z",
-		"size": 92367,
-		"path": "../public/assets/index-CovIfBxw.css"
+		"etag": "\"164d6-DdfOA8NZcuKFp2GWyRJdWRibKQI\"",
+		"mtime": "2026-10-26T06:07:08.569Z",
+		"size": 91350,
+		"path": "../public/assets/index-DkbLnPcj.css"
 	},
-	"/assets/index-CXJ51Gfy.js": {
+	"/assets/PageShell-CLfI9mps.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"76529-rbtl7wDv6sni5bHRGTV5R2p4GrE\"",
-		"mtime": "2026-10-19T04:58:21.195Z",
-		"size": 484649,
-		"path": "../public/assets/index-CXJ51Gfy.js"
+		"etag": "\"10c7-xolxAPT9aKFKeS/LizTdzFdSjvM\"",
+		"mtime": "2026-10-26T06:07:08.558Z",
+		"size": 4295,
+		"path": "../public/assets/PageShell-CLfI9mps.js"
 	},
-	"/assets/industries-Cee-FYfD.js": {
+	"/assets/index-DSHvWmhD.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"3539-Xa7sm5mcXILiIpJ3WpsksSCCCcA\"",
-		"mtime": "2026-10-19T04:58:21.210Z",
-		"size": 13625,
-		"path": "../public/assets/industries-Cee-FYfD.js"
+		"etag": "\"4d481-pECam1C5Lo9on1Fnu6HXAemXWyo\"",
+		"mtime": "2026-10-26T06:07:08.550Z",
+		"size": 316545,
+		"path": "../public/assets/index-DSHvWmhD.js"
 	},
-	"/assets/PageShell-5jv_pJeF.js": {
+	"/assets/partnership-C0b1p9_8.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1093-EMXFVCh2lu2Tc+F3aFFjZXmdu6E\"",
-		"mtime": "2026-10-19T04:58:21.199Z",
-		"size": 4243,
-		"path": "../public/assets/PageShell-5jv_pJeF.js"
+		"etag": "\"2503-o84a95uler36G8u163JCoSeNIm8\"",
+		"mtime": "2026-10-26T06:07:08.562Z",
+		"size": 9475,
+		"path": "../public/assets/partnership-C0b1p9_8.js"
 	},
-	"/assets/Partnership-BK27cE6c.js": {
+	"/assets/MotionPathPlugin-C272RmBM.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"2581-uJk3gYcham2WtwGYom2TPyzCidI\"",
-		"mtime": "2026-10-19T04:58:21.200Z",
-		"size": 9601,
-		"path": "../public/assets/Partnership-BK27cE6c.js"
+		"etag": "\"22863-xntvD187iGfwCWjOmixSmq3eF5M\"",
+		"mtime": "2026-10-26T06:07:08.557Z",
+		"size": 141411,
+		"path": "../public/assets/MotionPathPlugin-C272RmBM.js"
 	},
-	"/assets/Footer-Df-iKTlw.js": {
+	"/assets/products-BtdXSklc.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"965f3-AaSfSUW1sFVkKQQz+gviXgxTZ/o\"",
-		"mtime": "2026-10-19T04:58:21.198Z",
-		"size": 615923,
-		"path": "../public/assets/Footer-Df-iKTlw.js"
+		"etag": "\"636d-qVyAva4Cxya2ZeVkQvJ2TUFIogI\"",
+		"mtime": "2026-10-26T06:07:08.562Z",
+		"size": 25453,
+		"path": "../public/assets/products-BtdXSklc.js"
 	},
-	"/assets/products-Df5FQHxy.js": {
+	"/assets/Footer-BhkSIaI8.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"6656-eXenJGnrIlCqkXfBgd6qBUyCEFs\"",
-		"mtime": "2026-10-19T04:58:21.211Z",
-		"size": 26198,
-		"path": "../public/assets/products-Df5FQHxy.js"
+		"etag": "\"96621-jSg8cqwK6O19d6jZNv2kUizbemA\"",
+		"mtime": "2026-10-26T06:07:08.550Z",
+		"size": 615969,
+		"path": "../public/assets/Footer-BhkSIaI8.js"
 	},
-	"/assets/routes-GxdxmmOl.js": {
+	"/assets/routes-DBsBB08V.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"7f9e-7rh7pk13ffrtI4UTgVzMpUTgfCs\"",
-		"mtime": "2026-10-19T04:58:21.212Z",
-		"size": 32670,
-		"path": "../public/assets/routes-GxdxmmOl.js"
+		"etag": "\"7ed9-dUj+E75w5bCp8m9MQVDcbo11/OM\"",
+		"mtime": "2026-10-26T06:07:08.564Z",
+		"size": 32473,
+		"path": "../public/assets/routes-DBsBB08V.js"
 	},
-	"/assets/sap-consulting-D0JSasZL.js": {
+	"/assets/salesforce-BgB3WcGo.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1ee-EKW0yFlpDcdNCBhbqAm+JQ8WjlQ\"",
-		"mtime": "2026-10-19T04:58:21.214Z",
-		"size": 494,
-		"path": "../public/assets/sap-consulting-D0JSasZL.js"
+		"etag": "\"29e4-aUWQBRXGNZ22rSwRcTMe6uVRuNo\"",
+		"mtime": "2026-10-26T06:07:08.564Z",
+		"size": 10724,
+		"path": "../public/assets/salesforce-BgB3WcGo.js"
 	},
-	"/assets/ServiceDetailPage-D44t4Tig.js": {
+	"/assets/sap-consulting-BGqIkau3.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"45a-dHfoRn2A23at2iGFjgQ28AsYRMU\"",
-		"mtime": "2026-10-19T04:58:21.202Z",
-		"size": 1114,
-		"path": "../public/assets/ServiceDetailPage-D44t4Tig.js"
-	},
-	"/assets/Services- Salesforce Consulting-2QfhFrBB.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"29b5-Ice5xrOPeSzFNPOEBKTJ2VMMzIE\"",
-		"mtime": "2026-10-19T04:58:21.203Z",
-		"size": 10677,
-		"path": "../public/assets/Services- Salesforce Consulting-2QfhFrBB.js"
-	},
-	"/assets/services-CQPvgMsz.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"42aa-dMYyrzx4fsXT7oJwG4BugLFZT3k\"",
-		"mtime": "2026-10-19T04:58:21.214Z",
-		"size": 17066,
-		"path": "../public/assets/services-CQPvgMsz.js"
+		"etag": "\"1f1-asxRe5sIdVGAC1NhAlRKdHE/S9U\"",
+		"mtime": "2026-10-26T06:07:08.564Z",
+		"size": 497,
+		"path": "../public/assets/sap-consulting-BGqIkau3.js"
 	},
 	"/assets/ServiceDetailPage-BsaIxYuM.css": {
 		"type": "text/css; charset=utf-8",
 		"etag": "\"410-vIS+jnP1snA+ZEW/tB1aUuyP2Ac\"",
-		"mtime": "2026-10-19T04:58:21.238Z",
+		"mtime": "2026-10-26T06:07:08.567Z",
 		"size": 1040,
 		"path": "../public/assets/ServiceDetailPage-BsaIxYuM.css"
 	},
-	"/assets/software-development-DTxYTYL6.js": {
+	"/assets/ServiceDetailPage-i3BkSYQx.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1e8-NkM73WmDMNMjV9sPih8A7e5alJA\"",
-		"mtime": "2026-10-19T04:58:21.215Z",
-		"size": 488,
-		"path": "../public/assets/software-development-DTxYTYL6.js"
+		"etag": "\"458-2NEYts6HB3ypVJPctiB5h+szVNY\"",
+		"mtime": "2026-10-26T06:07:08.559Z",
+		"size": 1112,
+		"path": "../public/assets/ServiceDetailPage-i3BkSYQx.js"
 	},
-	"/assets/solutions-DsMRg17n.js": {
+	"/assets/services-C8DVG7aL.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"375c-McRRw6+qFHH80B/IHjZSwGGra4o\"",
-		"mtime": "2026-10-19T04:58:21.216Z",
-		"size": 14172,
-		"path": "../public/assets/solutions-DsMRg17n.js"
+		"etag": "\"97-OYSkD6wOIuJEzq+cLax4+iY+8ns\"",
+		"mtime": "2026-10-26T06:07:08.565Z",
+		"size": 151,
+		"path": "../public/assets/services-C8DVG7aL.js"
+	},
+	"/assets/software-development-BVj3Jh0Q.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"1eb-y8veBQ5/zArlv7XQyQcM07FKtYQ\"",
+		"mtime": "2026-10-26T06:07:08.566Z",
+		"size": 491,
+		"path": "../public/assets/software-development-BVj3Jh0Q.js"
+	},
+	"/assets/services-DNLOQJjb.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"425f-G/5H//wfbMOZuTFhORfQcw2Zfbg\"",
+		"mtime": "2026-10-26T06:07:08.566Z",
+		"size": 16991,
+		"path": "../public/assets/services-DNLOQJjb.js"
+	},
+	"/assets/solutions-JOIH8zfM.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"371d-IdMONI33JiEVFB/tJctZs1p6X2U\"",
+		"mtime": "2026-10-26T06:07:08.566Z",
+		"size": 14109,
+		"path": "../public/assets/solutions-JOIH8zfM.js"
+	},
+	"/assets/suite-BrAvYIH8.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"1d2f-88+e9tB4x1vuX7rS2GkzCWAJZY0\"",
+		"mtime": "2026-10-26T06:07:08.567Z",
+		"size": 7471,
+		"path": "../public/assets/suite-BrAvYIH8.js"
 	},
 	"/assets/styles-dWTmSdka.css": {
 		"type": "text/css; charset=utf-8",
 		"etag": "\"21a03-jBiAIH6/0JR9u2SowM2nRfnJsYU\"",
-		"mtime": "2026-10-19T04:58:21.253Z",
+		"mtime": "2026-10-26T06:07:08.570Z",
 		"size": 137731,
 		"path": "../public/assets/styles-dWTmSdka.css"
+	},
+	"/assets/useStore-DlMev5eV.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"6b43-+/zGo00TNmnNV7ZMfszew8kOR/k\"",
+		"mtime": "2026-10-26T06:07:08.567Z",
+		"size": 27459,
+		"path": "../public/assets/useStore-DlMev5eV.js"
 	},
 	"/figma/about/agile-base.svg": {
 		"type": "image/svg+xml",
@@ -808,19 +829,19 @@ var public_assets_data_default = {
 		"size": 878,
 		"path": "../public/figma/about/cta-glow.svg"
 	},
-	"/figma/about/discovery-goal.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"1424-0BDa35JJ3rSxxJvmA6HWLZChYWE\"",
-		"mtime": "2026-08-04T05:46:33.864Z",
-		"size": 5156,
-		"path": "../public/figma/about/discovery-goal.svg"
-	},
 	"/figma/about/discovery-search.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"589-X0f0qnKM2lgFQQ8dxxPvhRUh3LE\"",
 		"mtime": "2026-08-04T05:46:34.879Z",
 		"size": 1417,
 		"path": "../public/figma/about/discovery-search.svg"
+	},
+	"/figma/about/discovery-goal.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"1424-0BDa35JJ3rSxxJvmA6HWLZChYWE\"",
+		"mtime": "2026-08-04T05:46:33.864Z",
+		"size": 5156,
+		"path": "../public/figma/about/discovery-goal.svg"
 	},
 	"/figma/about/hero-orb.svg": {
 		"type": "image/svg+xml",
@@ -850,13 +871,6 @@ var public_assets_data_default = {
 		"size": 1907,
 		"path": "../public/figma/about/support-scale.png"
 	},
-	"/figma/about/vision.png": {
-		"type": "image/png",
-		"etag": "\"74c-XFh8O7Me1Yqma0osLt6/hZBUj64\"",
-		"mtime": "2026-08-04T05:46:36.311Z",
-		"size": 1868,
-		"path": "../public/figma/about/vision.png"
-	},
 	"/figma/about/team-assembly.png": {
 		"type": "image/png",
 		"etag": "\"4a3-aW+RytcIqYGiqgjAaqKRaPcu418\"",
@@ -864,12 +878,47 @@ var public_assets_data_default = {
 		"size": 1187,
 		"path": "../public/figma/about/team-assembly.png"
 	},
+	"/figma/about/vision.png": {
+		"type": "image/png",
+		"etag": "\"74c-XFh8O7Me1Yqma0osLt6/hZBUj64\"",
+		"mtime": "2026-08-04T05:46:36.311Z",
+		"size": 1868,
+		"path": "../public/figma/about/vision.png"
+	},
 	"/figma/about/visionary-circle.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"fd-pd1D4eQHQqiCrJvx2Xof9/27B2Y\"",
 		"mtime": "2026-08-04T05:46:32.559Z",
 		"size": 253,
 		"path": "../public/figma/about/visionary-circle.svg"
+	},
+	"/figma/case-studies/case-arrow.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"364-F6U5UvSlZPIKKkVKt2HvLYuKvQw\"",
+		"mtime": "2026-08-13T10:12:33.470Z",
+		"size": 868,
+		"path": "../public/figma/case-studies/case-arrow.svg"
+	},
+	"/figma/case-studies/contact-arrow.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"31b-EfQmZldFeGUkvGytaEiaGJzLvxI\"",
+		"mtime": "2026-08-13T10:12:32.722Z",
+		"size": 795,
+		"path": "../public/figma/case-studies/contact-arrow.svg"
+	},
+	"/figma/case-studies/talk-to-us.png": {
+		"type": "image/png",
+		"etag": "\"121b-o57xM9fsFAqxt1LJNKHgghxj+qs\"",
+		"mtime": "2026-08-13T10:12:34.264Z",
+		"size": 4635,
+		"path": "../public/figma/case-studies/talk-to-us.png"
+	},
+	"/figma/case-studies/cta-glow.png": {
+		"type": "image/png",
+		"etag": "\"62032-qr4bVCa1ShMERWZRoS21Hjzo1IY\"",
+		"mtime": "2026-08-13T10:12:32.055Z",
+		"size": 401458,
+		"path": "../public/figma/case-studies/cta-glow.png"
 	},
 	"/figma/blog/down-button.png": {
 		"type": "image/png",
@@ -899,13 +948,6 @@ var public_assets_data_default = {
 		"size": 252161,
 		"path": "../public/figma/blog/featured-sap-erp.png"
 	},
-	"/figma/blog/newsletter-glow.png": {
-		"type": "image/png",
-		"etag": "\"621df-InMr8LCI6DWkI2dEs1Gw2TUA/3s\"",
-		"mtime": "2026-08-13T09:41:58.203Z",
-		"size": 401887,
-		"path": "../public/figma/blog/newsletter-glow.png"
-	},
 	"/figma/blog/read-arrow.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"38e-OI5VOxBpmn//CpMdA+ru8U3OJ9s\"",
@@ -913,12 +955,12 @@ var public_assets_data_default = {
 		"size": 910,
 		"path": "../public/figma/blog/read-arrow.svg"
 	},
-	"/figma/blog/recent-ai.png": {
+	"/figma/blog/newsletter-glow.png": {
 		"type": "image/png",
-		"etag": "\"4474f-IPvOu1NLodnMUxuFBYgZ+so7A8E\"",
-		"mtime": "2026-08-13T09:40:31.812Z",
-		"size": 280399,
-		"path": "../public/figma/blog/recent-ai.png"
+		"etag": "\"621df-InMr8LCI6DWkI2dEs1Gw2TUA/3s\"",
+		"mtime": "2026-08-13T09:41:58.203Z",
+		"size": 401887,
+		"path": "../public/figma/blog/newsletter-glow.png"
 	},
 	"/figma/blog/recent-automation.png": {
 		"type": "image/png",
@@ -926,6 +968,13 @@ var public_assets_data_default = {
 		"mtime": "2026-08-13T09:40:34.960Z",
 		"size": 167129,
 		"path": "../public/figma/blog/recent-automation.png"
+	},
+	"/figma/blog/recent-ai.png": {
+		"type": "image/png",
+		"etag": "\"4474f-IPvOu1NLodnMUxuFBYgZ+so7A8E\"",
+		"mtime": "2026-08-13T09:40:31.812Z",
+		"size": 280399,
+		"path": "../public/figma/blog/recent-ai.png"
 	},
 	"/figma/blog/recent-crm.png": {
 		"type": "image/png",
@@ -941,6 +990,13 @@ var public_assets_data_default = {
 		"size": 312116,
 		"path": "../public/figma/blog/recent-cloud.png"
 	},
+	"/figma/blog/recent-system-architecture.png": {
+		"type": "image/png",
+		"etag": "\"2d7b8-IR28cl2aIJbUiVXXVLByxf3LZ/c\"",
+		"mtime": "2026-08-13T09:40:33.174Z",
+		"size": 186296,
+		"path": "../public/figma/blog/recent-system-architecture.png"
+	},
 	"/figma/blog/recent-productivity.png": {
 		"type": "image/png",
 		"etag": "\"42358-evvE3oFbgt2boOXwpzIynWVA8gY\"",
@@ -948,12 +1004,12 @@ var public_assets_data_default = {
 		"size": 271192,
 		"path": "../public/figma/blog/recent-productivity.png"
 	},
-	"/figma/blog/recent-system-architecture.png": {
+	"/images/figma-raw-13.png": {
 		"type": "image/png",
-		"etag": "\"2d7b8-IR28cl2aIJbUiVXXVLByxf3LZ/c\"",
-		"mtime": "2026-08-13T09:40:33.174Z",
-		"size": 186296,
-		"path": "../public/figma/blog/recent-system-architecture.png"
+		"etag": "\"27f2ce-nEgJZ/KPB8tGnTSaGLE5a7Mo7s8\"",
+		"mtime": "2026-08-13T06:50:57.062Z",
+		"size": 2618062,
+		"path": "../public/images/figma-raw-13.png"
 	},
 	"/figma/blog/search-more.png": {
 		"type": "image/png",
@@ -990,13 +1046,6 @@ var public_assets_data_default = {
 		"size": 15982,
 		"path": "../public/figma/contact/footer-location-text.svg"
 	},
-	"/images/figma-raw-13.png": {
-		"type": "image/png",
-		"etag": "\"27f2ce-nEgJZ/KPB8tGnTSaGLE5a7Mo7s8\"",
-		"mtime": "2026-08-13T06:50:57.062Z",
-		"size": 2618062,
-		"path": "../public/images/figma-raw-13.png"
-	},
 	"/figma/contact/footer-logo.png": {
 		"type": "image/png",
 		"etag": "\"f84c-sZlQsnM/Yd1bt21VxmKbqYMMnP4\"",
@@ -1018,13 +1067,6 @@ var public_assets_data_default = {
 		"size": 1926,
 		"path": "../public/figma/contact/footer-mask.svg"
 	},
-	"/figma/contact/location.png": {
-		"type": "image/png",
-		"etag": "\"a4e-2ZJOidzYlykjbA1l1h98mREucTk\"",
-		"mtime": "2026-08-13T09:08:27.365Z",
-		"size": 2638,
-		"path": "../public/figma/contact/location.png"
-	},
 	"/figma/contact/footer-stripe.png": {
 		"type": "image/png",
 		"etag": "\"132f-ZrJjDkZnO9zck2bYt8HxSyXu7SI\"",
@@ -1032,19 +1074,19 @@ var public_assets_data_default = {
 		"size": 4911,
 		"path": "../public/figma/contact/footer-stripe.png"
 	},
+	"/figma/contact/location.png": {
+		"type": "image/png",
+		"etag": "\"a4e-2ZJOidzYlykjbA1l1h98mREucTk\"",
+		"mtime": "2026-08-13T09:08:27.365Z",
+		"size": 2638,
+		"path": "../public/figma/contact/location.png"
+	},
 	"/figma/contact/logo-nav.png": {
 		"type": "image/png",
 		"etag": "\"2736-xu7ORYY1HkCWKGgnS97ubn406tg\"",
 		"mtime": "2026-08-13T09:08:21.046Z",
 		"size": 10038,
 		"path": "../public/figma/contact/logo-nav.png"
-	},
-	"/figma/contact/nav-instagram.png": {
-		"type": "image/png",
-		"etag": "\"ce4-g9qk7Yz3Z1cmmsMgqNdpB9bJzus\"",
-		"mtime": "2026-08-13T09:08:22.497Z",
-		"size": 3300,
-		"path": "../public/figma/contact/nav-instagram.png"
 	},
 	"/figma/contact/menu.png": {
 		"type": "image/png",
@@ -1059,6 +1101,13 @@ var public_assets_data_default = {
 		"mtime": "2026-08-13T09:08:22.057Z",
 		"size": 2050,
 		"path": "../public/figma/contact/nav-linkedin.png"
+	},
+	"/figma/contact/nav-instagram.png": {
+		"type": "image/png",
+		"etag": "\"ce4-g9qk7Yz3Z1cmmsMgqNdpB9bJzus\"",
+		"mtime": "2026-08-13T09:08:22.497Z",
+		"size": 3300,
+		"path": "../public/figma/contact/nav-instagram.png"
 	},
 	"/figma/contact/nav-youtube.png": {
 		"type": "image/png",
@@ -1095,96 +1144,12 @@ var public_assets_data_default = {
 		"size": 1749,
 		"path": "../public/figma/contact/social-youtube.png"
 	},
-	"/figma/case-studies/case-arrow.svg": {
+	"/figma/industries/case-arrow.svg": {
 		"type": "image/svg+xml",
-		"etag": "\"364-F6U5UvSlZPIKKkVKt2HvLYuKvQw\"",
-		"mtime": "2026-08-13T10:12:33.470Z",
-		"size": 868,
-		"path": "../public/figma/case-studies/case-arrow.svg"
-	},
-	"/figma/case-studies/contact-arrow.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"31b-EfQmZldFeGUkvGytaEiaGJzLvxI\"",
-		"mtime": "2026-08-13T10:12:32.722Z",
-		"size": 795,
-		"path": "../public/figma/case-studies/contact-arrow.svg"
-	},
-	"/figma/case-studies/talk-to-us.png": {
-		"type": "image/png",
-		"etag": "\"121b-o57xM9fsFAqxt1LJNKHgghxj+qs\"",
-		"mtime": "2026-08-13T10:12:34.264Z",
-		"size": 4635,
-		"path": "../public/figma/case-studies/talk-to-us.png"
-	},
-	"/figma/case-studies/cta-glow.png": {
-		"type": "image/png",
-		"etag": "\"62032-qr4bVCa1ShMERWZRoS21Hjzo1IY\"",
-		"mtime": "2026-08-13T10:12:32.055Z",
-		"size": 401458,
-		"path": "../public/figma/case-studies/cta-glow.png"
-	},
-	"/figma/home/hero-about-orb.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"ad6-tH1f7LI13IlDLli5kSHWfiwesGw\"",
-		"mtime": "2026-08-03T07:29:34.845Z",
-		"size": 2774,
-		"path": "../public/figma/home/hero-about-orb.svg"
-	},
-	"/figma/home/hero-about-path.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"202-E1BHPCG83DOvS5BsilW9fEfMLbA\"",
-		"mtime": "2026-08-03T07:29:34.480Z",
-		"size": 514,
-		"path": "../public/figma/home/hero-about-path.svg"
-	},
-	"/figma/home/hero-ambition.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"191d-Y7lsppawvNc1wT/M2Np2DQSU0NA\"",
-		"mtime": "2026-08-03T06:58:31.360Z",
-		"size": 6429,
-		"path": "../public/figma/home/hero-ambition.svg"
-	},
-	"/figma/home/hero-digital-scale.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"978b-WP1NrlPfVFo4s485T2TZzmAznqk\"",
-		"mtime": "2026-08-03T06:58:30.479Z",
-		"size": 38795,
-		"path": "../public/figma/home/hero-digital-scale.svg"
-	},
-	"/figma/home/hero-engineering.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"2656-MCFrwai/ROvO3kjzLY8FDCYGI8o\"",
-		"mtime": "2026-08-03T06:58:29.937Z",
-		"size": 9814,
-		"path": "../public/figma/home/hero-engineering.svg"
-	},
-	"/figma/home/hero-systems.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"1fe1-1oU1vTGcgKXqcz5F8AVhC/HhCfc\"",
-		"mtime": "2026-08-03T06:58:30.933Z",
-		"size": 8161,
-		"path": "../public/figma/home/hero-systems.svg"
-	},
-	"/figma/home/partners-arrows.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"7ad-R5rmFex3Tnm+aYGMYMlnwBTVcAk\"",
-		"mtime": "2026-10-12T10:45:25.820Z",
-		"size": 1965,
-		"path": "../public/figma/home/partners-arrows.svg"
-	},
-	"/figma/home/partners-logo2.png": {
-		"type": "image/png",
-		"etag": "\"9d3d-1WLY9VIuTvziwe5vvV8dYqAooZQ\"",
-		"mtime": "2026-10-12T10:45:25.282Z",
-		"size": 40253,
-		"path": "../public/figma/home/partners-logo2.png"
-	},
-	"/figma/industries/banking.png": {
-		"type": "image/png",
-		"etag": "\"6d56c-nxfXpCvsylH9bGTppACwJmkRPFM\"",
-		"mtime": "2026-08-13T11:22:22.858Z",
-		"size": 447852,
-		"path": "../public/figma/industries/banking.png"
+		"etag": "\"448-nW2bsSSliOgt6uusHfWJByE/6Kw\"",
+		"mtime": "2026-08-13T11:22:25.866Z",
+		"size": 1096,
+		"path": "../public/figma/industries/case-arrow.svg"
 	},
 	"/figma/industries/carousel-button.svg": {
 		"type": "image/svg+xml",
@@ -1193,13 +1158,6 @@ var public_assets_data_default = {
 		"size": 1945,
 		"path": "../public/figma/industries/carousel-button.svg"
 	},
-	"/figma/industries/case-arrow.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"448-nW2bsSSliOgt6uusHfWJByE/6Kw\"",
-		"mtime": "2026-08-13T11:22:25.866Z",
-		"size": 1096,
-		"path": "../public/figma/industries/case-arrow.svg"
-	},
 	"/figma/industries/corner-arrow.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"418-Nc2qqA234ZG7Qs6P3w1ik8BGnic\"",
@@ -1207,19 +1165,19 @@ var public_assets_data_default = {
 		"size": 1048,
 		"path": "../public/figma/industries/corner-arrow.svg"
 	},
-	"/figma/home/collaborations-logos.png": {
-		"type": "image/png",
-		"etag": "\"122c41-M2Lm+aqM7nNDifSLIdQkze21pNQ\"",
-		"mtime": "2026-10-12T10:51:30.004Z",
-		"size": 1190977,
-		"path": "../public/figma/home/collaborations-logos.png"
-	},
 	"/figma/industries/down-arrow.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"3d5-J4sqkIf8P9NdFuyfEkO649Chpvw\"",
 		"mtime": "2026-08-13T11:27:34.103Z",
 		"size": 981,
 		"path": "../public/figma/industries/down-arrow.svg"
+	},
+	"/figma/industries/banking.png": {
+		"type": "image/png",
+		"etag": "\"6d56c-nxfXpCvsylH9bGTppACwJmkRPFM\"",
+		"mtime": "2026-08-13T11:22:22.858Z",
+		"size": 447852,
+		"path": "../public/figma/industries/banking.png"
 	},
 	"/figma/partnership/asset-01.svg": {
 		"type": "image/svg+xml",
@@ -1235,19 +1193,19 @@ var public_assets_data_default = {
 		"size": 872,
 		"path": "../public/figma/partnership/asset-02.svg"
 	},
-	"/figma/partnership/asset-03.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"3e73-XvxI8kqL9Vp0cSO21PkldCbKuM4\"",
-		"mtime": "2026-08-21T06:56:01.241Z",
-		"size": 15987,
-		"path": "../public/figma/partnership/asset-03.svg"
-	},
 	"/figma/partnership/asset-04.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"1e4a-kNZNX3L7y0NXh3jb7jD/MqdeT0Y\"",
 		"mtime": "2026-08-21T06:56:01.561Z",
 		"size": 7754,
 		"path": "../public/figma/partnership/asset-04.svg"
+	},
+	"/figma/partnership/asset-03.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"3e73-XvxI8kqL9Vp0cSO21PkldCbKuM4\"",
+		"mtime": "2026-08-21T06:56:01.241Z",
+		"size": 15987,
+		"path": "../public/figma/partnership/asset-03.svg"
 	},
 	"/figma/partnership/asset-05.svg": {
 		"type": "image/svg+xml",
@@ -1270,13 +1228,6 @@ var public_assets_data_default = {
 		"size": 327,
 		"path": "../public/figma/partnership/asset-07.svg"
 	},
-	"/figma/partnership/asset-08.svg": {
-		"type": "image/svg+xml",
-		"etag": "\"364-Kv7TLIjUmc+iJ9WeoeMT4UXj7sY\"",
-		"mtime": "2026-08-21T06:56:03.107Z",
-		"size": 868,
-		"path": "../public/figma/partnership/asset-08.svg"
-	},
 	"/figma/partnership/asset-09.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"7e65-FaCKyQbVDjDnRcjcDtYTcW4Pwc0\"",
@@ -1284,12 +1235,12 @@ var public_assets_data_default = {
 		"size": 32357,
 		"path": "../public/figma/partnership/asset-09.svg"
 	},
-	"/figma/partnership/asset-10.svg": {
+	"/figma/partnership/asset-08.svg": {
 		"type": "image/svg+xml",
-		"etag": "\"293-iMGUWO/BmccV8SeZXhyKqHN3caU\"",
-		"mtime": "2026-08-21T06:56:04.323Z",
-		"size": 659,
-		"path": "../public/figma/partnership/asset-10.svg"
+		"etag": "\"364-Kv7TLIjUmc+iJ9WeoeMT4UXj7sY\"",
+		"mtime": "2026-08-21T06:56:03.107Z",
+		"size": 868,
+		"path": "../public/figma/partnership/asset-08.svg"
 	},
 	"/figma/partnership/asset-11.svg": {
 		"type": "image/svg+xml",
@@ -1297,6 +1248,13 @@ var public_assets_data_default = {
 		"mtime": "2026-08-21T06:56:04.639Z",
 		"size": 264,
 		"path": "../public/figma/partnership/asset-11.svg"
+	},
+	"/figma/partnership/asset-10.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"293-iMGUWO/BmccV8SeZXhyKqHN3caU\"",
+		"mtime": "2026-08-21T06:56:04.323Z",
+		"size": 659,
+		"path": "../public/figma/partnership/asset-10.svg"
 	},
 	"/figma/partnership/asset-12.svg": {
 		"type": "image/svg+xml",
@@ -1354,13 +1312,6 @@ var public_assets_data_default = {
 		"size": 1161,
 		"path": "../public/figma/partnership/raw-05.png"
 	},
-	"/figma/partnership/figma-export.png": {
-		"type": "image/png",
-		"etag": "\"de7f8-8sjrdL2ljzZPoedJ9vdT62ahYy4\"",
-		"mtime": "2026-08-21T06:52:17.644Z",
-		"size": 911352,
-		"path": "../public/figma/partnership/figma-export.png"
-	},
 	"/figma/partnership/raw-06.png": {
 		"type": "image/png",
 		"etag": "\"7553-Fgy/m1rL7CBiFfoXvqjn7XHcUyM\"",
@@ -1389,6 +1340,13 @@ var public_assets_data_default = {
 		"size": 115938,
 		"path": "../public/figma/partnership/raw-09.png"
 	},
+	"/figma/partnership/figma-export.png": {
+		"type": "image/png",
+		"etag": "\"de7f8-8sjrdL2ljzZPoedJ9vdT62ahYy4\"",
+		"mtime": "2026-08-21T06:52:17.644Z",
+		"size": 911352,
+		"path": "../public/figma/partnership/figma-export.png"
+	},
 	"/figma/partnership/raw-10.png": {
 		"type": "image/png",
 		"etag": "\"4197-5PaSDdSPmsI8bZuUFrbsNKLEhlM\"",
@@ -1410,19 +1368,19 @@ var public_assets_data_default = {
 		"size": 1453,
 		"path": "../public/figma/partnership/raw-12.png"
 	},
-	"/figma/partnership/raw-13.png": {
-		"type": "image/png",
-		"etag": "\"92c-XoC0QljYXMit2vh5IuCVHSyfnZI\"",
-		"mtime": "2026-08-21T06:55:15.404Z",
-		"size": 2348,
-		"path": "../public/figma/partnership/raw-13.png"
-	},
 	"/figma/partnership/raw-14.png": {
 		"type": "image/png",
 		"etag": "\"152-h7wb2DO8x/REA9T/S9a+uWIL+O4\"",
 		"mtime": "2026-08-21T06:55:15.770Z",
 		"size": 338,
 		"path": "../public/figma/partnership/raw-14.png"
+	},
+	"/figma/partnership/raw-13.png": {
+		"type": "image/png",
+		"etag": "\"92c-XoC0QljYXMit2vh5IuCVHSyfnZI\"",
+		"mtime": "2026-08-21T06:55:15.404Z",
+		"size": 2348,
+		"path": "../public/figma/partnership/raw-13.png"
 	},
 	"/figma/partnership/raw-15.png": {
 		"type": "image/png",
@@ -1445,6 +1403,62 @@ var public_assets_data_default = {
 		"size": 1749,
 		"path": "../public/figma/partnership/raw-17.png"
 	},
+	"/figma/home/hero-about-orb.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"ad6-tH1f7LI13IlDLli5kSHWfiwesGw\"",
+		"mtime": "2026-08-03T07:29:34.845Z",
+		"size": 2774,
+		"path": "../public/figma/home/hero-about-orb.svg"
+	},
+	"/figma/home/hero-about-path.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"202-E1BHPCG83DOvS5BsilW9fEfMLbA\"",
+		"mtime": "2026-08-03T07:29:34.480Z",
+		"size": 514,
+		"path": "../public/figma/home/hero-about-path.svg"
+	},
+	"/figma/home/hero-ambition.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"191d-Y7lsppawvNc1wT/M2Np2DQSU0NA\"",
+		"mtime": "2026-08-03T06:58:31.360Z",
+		"size": 6429,
+		"path": "../public/figma/home/hero-ambition.svg"
+	},
+	"/figma/home/hero-digital-scale.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"978b-WP1NrlPfVFo4s485T2TZzmAznqk\"",
+		"mtime": "2026-08-03T06:58:30.479Z",
+		"size": 38795,
+		"path": "../public/figma/home/hero-digital-scale.svg"
+	},
+	"/figma/home/hero-engineering.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"2656-MCFrwai/ROvO3kjzLY8FDCYGI8o\"",
+		"mtime": "2026-08-03T06:58:29.937Z",
+		"size": 9814,
+		"path": "../public/figma/home/hero-engineering.svg"
+	},
+	"/figma/home/hero-systems.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"1fe1-1oU1vTGcgKXqcz5F8AVhC/HhCfc\"",
+		"mtime": "2026-08-03T06:58:30.933Z",
+		"size": 8161,
+		"path": "../public/figma/home/hero-systems.svg"
+	},
+	"/figma/home/partners-arrows.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"7ad-R5rmFex3Tnm+aYGMYMlnwBTVcAk\"",
+		"mtime": "2026-10-12T10:45:25.820Z",
+		"size": 1965,
+		"path": "../public/figma/home/partners-arrows.svg"
+	},
+	"/figma/home/partners-logo2.png": {
+		"type": "image/png",
+		"etag": "\"9d3d-1WLY9VIuTvziwe5vvV8dYqAooZQ\"",
+		"mtime": "2026-10-12T10:45:25.282Z",
+		"size": 40253,
+		"path": "../public/figma/home/partners-logo2.png"
+	},
 	"/figma/home/reseller-cards/anydesk.png": {
 		"type": "image/png",
 		"etag": "\"20262-52LymzZpIKni/0dxyvKMt5yaFnM\"",
@@ -1459,13 +1473,6 @@ var public_assets_data_default = {
 		"size": 98041,
 		"path": "../public/figma/home/reseller-cards/manageengine.png"
 	},
-	"/figma/home/reseller-cards/sap.png": {
-		"type": "image/png",
-		"etag": "\"17059-RbKd2PI1f3BO1n68+LGNwFvDKkU\"",
-		"mtime": "2026-10-12T12:12:25.376Z",
-		"size": 94297,
-		"path": "../public/figma/home/reseller-cards/sap.png"
-	},
 	"/figma/home/reseller-cards/salesforce.png": {
 		"type": "image/png",
 		"etag": "\"1690b-Y95lbxjHzsFR/2SDFfBPwvhxYX0\"",
@@ -1473,12 +1480,26 @@ var public_assets_data_default = {
 		"size": 92427,
 		"path": "../public/figma/home/reseller-cards/salesforce.png"
 	},
+	"/figma/home/reseller-cards/sap.png": {
+		"type": "image/png",
+		"etag": "\"17059-RbKd2PI1f3BO1n68+LGNwFvDKkU\"",
+		"mtime": "2026-10-12T12:12:25.376Z",
+		"size": 94297,
+		"path": "../public/figma/home/reseller-cards/sap.png"
+	},
 	"/figma/home/reseller-cards/zoho.png": {
 		"type": "image/png",
 		"etag": "\"12e17-l3RLcBo99GI9OGpMwfkiw+ds/iU\"",
 		"mtime": "2026-10-13T08:45:30.596Z",
 		"size": 77335,
 		"path": "../public/figma/home/reseller-cards/zoho.png"
+	},
+	"/figma/home/collaborations-logos.png": {
+		"type": "image/png",
+		"etag": "\"122c41-M2Lm+aqM7nNDifSLIdQkze21pNQ\"",
+		"mtime": "2026-10-12T10:51:30.004Z",
+		"size": 1190977,
+		"path": "../public/figma/home/collaborations-logos.png"
 	}
 };
 //#endregion
@@ -1568,11 +1589,11 @@ var findRouteRules = /* @__PURE__ */ (() => {
 		return r;
 	};
 })();
-var _lazy_dauIcg = defineLazyEventHandler(() => import("./_chunks/ssr-renderer.mjs"));
+var _lazy_QUFYEI = defineLazyEventHandler(() => import("./_chunks/ssr-renderer.mjs"));
 var findRoute = /* @__PURE__ */ (() => {
 	const data = {
 		route: "/**",
-		handler: _lazy_dauIcg
+		handler: _lazy_QUFYEI
 	};
 	return ((_m, p) => {
 		return {

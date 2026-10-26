@@ -2,13 +2,13 @@ node_modules/
 .env
 .env.*
 !.env.example
+!.env.*.example
 dist/
 build/
 .next/
 out/
 .DS_Store
 *.log
-*.cjs
 *.old
 .lovable/
 .vite/
@@ -18,12 +18,14 @@ out/
 recycle_bin/
 session_memory.md
 edits.json
-*.mp4
-*.png
-*.jpg
-*.jpeg
-*.svg
-!frontend/public/
+.output/
+
+# Local screenshots and capture folders (NOT site assets; assets live in frontend/public/)
+frontend/*.png
+frontend/frames*/
+frontend/services-icons-check.png
+frontend/asteri-about-update/
+
 playwright-report/
 test-results/
 blob-report/

@@ -7,7 +7,9 @@ module.exports = {
       env: {
         PORT: 3000,
         HOST: "127.0.0.1",
-        NODE_ENV: "production"
+        NODE_ENV: "production",
+        // Route loaders fetch page data from the API on the private network during SSR
+        API_INTERNAL_URL: "http://127.0.0.1:5000"
       }
     },
     {

@@ -11,7 +11,13 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-const links = [
+type NavLink = {
+  label: string;
+  to: string;
+  children: NavLink[];
+};
+
+const links: NavLink[] = [
   {
     label: "Home",
     to: "/",
@@ -44,7 +50,7 @@ const links = [
 
   {
     label: "Partnership",
-    to: "/Partnership",
+    to: "/partnership",
     children: [],
   },
 

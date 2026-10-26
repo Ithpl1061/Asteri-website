@@ -173,7 +173,7 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
             {/* RIGHT COLUMN */}
             <div className="footer-middle flex flex-col gap-4 text-[18px] sm:text-[20px] whitespace-nowrap">
               <Link
-                to="/Partnership"
+                to="/partnership"
                 className="transition hover:text-[#7ED957]"
               >
                 Partnership

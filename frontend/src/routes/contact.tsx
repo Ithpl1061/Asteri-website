@@ -42,6 +42,8 @@ function ContactHero() {
 function ContactInformation() {
   const sectionRef = useRef<HTMLElement>(null);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -104,18 +106,25 @@ function ContactInformation() {
       const email = formData.get('email');
       const message = formData.get('message');
       
+      const form = event.currentTarget;
+      setSending(true);
+      setFailed(false);
       fetch(apiUrl('/api/contact'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message })
       })
-      .then(res => res.json())
-      .then(() => {
-        (event.target as HTMLFormElement).reset();
+      .then(res => {
+        if (!res.ok) throw new Error(`Contact request failed: ${res.status}`);
+        form.reset();
         setSent(true);
         window.setTimeout(() => setSent(false), 4500);
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error(err);
+        setFailed(true);
+      })
+      .finally(() => setSending(false));
     }}>
       <div><label>Your Name<input name="name" required /></label><label>Email Address<input name="email" type="email" required /></label><label>Message<textarea name="message" required /></label>
         {sent && (
@@ -129,8 +138,13 @@ function ContactInformation() {
             </span>
           </div>
         )}
+        {failed && (
+          <p role="alert" style={{ color: "#ff6b6b", marginTop: "12px" }}>
+            Sorry, your message could not be sent. Please try again.
+          </p>
+        )}
       </div>
-      <button type="submit">Send Message</button>
+      <button type="submit" disabled={sending}>Send Message</button>
     </form>
   </section>;
 }

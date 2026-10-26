@@ -11,20 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as ServicesRouteImport } from './routes/services'
-import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PartnershipRouteImport } from './routes/partnership'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as ServicesSalesforceConsultingRouteImport } from './routes/Services- Salesforce Consulting'
-import { Route as PartnershipRouteImport } from './routes/Partnership'
-import { Route as Asteri_productSuiteRouteImport } from './routes/Asteri_product-suite'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesIndexRouteImport } from './routes/services/index'
+import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as ServicesSoftwareDevelopmentRouteImport } from './routes/services/software-development'
 import { Route as ServicesSapConsultingRouteImport } from './routes/services/sap-consulting'
+import { Route as ServicesSalesforceRouteImport } from './routes/services/salesforce'
 import { Route as ServicesDataScienceRouteImport } from './routes/services/data-science'
 import { Route as ServicesCloudSolutionsRouteImport } from './routes/services/cloud-solutions'
+import { Route as ProductsSuiteRouteImport } from './routes/products/suite'
 
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
@@ -36,9 +37,9 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
+const PartnershipRoute = PartnershipRouteImport.update({
+  id: '/partnership',
+  path: '/partnership',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustriesRoute = IndustriesRouteImport.update({
@@ -66,25 +67,19 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesSalesforceConsultingRoute =
-  ServicesSalesforceConsultingRouteImport.update({
-    id: '/Services- Salesforce Consulting',
-    path: '/Services- Salesforce Consulting',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const PartnershipRoute = PartnershipRouteImport.update({
-  id: '/Partnership',
-  path: '/Partnership',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Asteri_productSuiteRoute = Asteri_productSuiteRouteImport.update({
-  id: '/Asteri_product-suite',
-  path: '/Asteri_product-suite',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesSoftwareDevelopmentRoute =
@@ -98,6 +93,11 @@ const ServicesSapConsultingRoute = ServicesSapConsultingRouteImport.update({
   path: '/sap-consulting',
   getParentRoute: () => ServicesRoute,
 } as any)
+const ServicesSalesforceRoute = ServicesSalesforceRouteImport.update({
+  id: '/salesforce',
+  path: '/salesforce',
+  getParentRoute: () => ServicesRoute,
+} as any)
 const ServicesDataScienceRoute = ServicesDataScienceRouteImport.update({
   id: '/data-science',
   path: '/data-science',
@@ -108,132 +108,140 @@ const ServicesCloudSolutionsRoute = ServicesCloudSolutionsRouteImport.update({
   path: '/cloud-solutions',
   getParentRoute: () => ServicesRoute,
 } as any)
+const ProductsSuiteRoute = ProductsSuiteRouteImport.update({
+  id: '/products/suite',
+  path: '/products/suite',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/Asteri_product-suite': typeof Asteri_productSuiteRoute
-  '/Partnership': typeof PartnershipRoute
-  '/Services- Salesforce Consulting': typeof ServicesSalesforceConsultingRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
-  '/products': typeof ProductsRoute
+  '/partnership': typeof PartnershipRoute
   '/services': typeof ServicesRouteWithChildren
   '/solutions': typeof SolutionsRoute
+  '/products/suite': typeof ProductsSuiteRoute
   '/services/cloud-solutions': typeof ServicesCloudSolutionsRoute
   '/services/data-science': typeof ServicesDataScienceRoute
+  '/services/salesforce': typeof ServicesSalesforceRoute
   '/services/sap-consulting': typeof ServicesSapConsultingRoute
   '/services/software-development': typeof ServicesSoftwareDevelopmentRoute
+  '/products/': typeof ProductsIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/Asteri_product-suite': typeof Asteri_productSuiteRoute
-  '/Partnership': typeof PartnershipRoute
-  '/Services- Salesforce Consulting': typeof ServicesSalesforceConsultingRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
-  '/products': typeof ProductsRoute
-  '/services': typeof ServicesRouteWithChildren
+  '/partnership': typeof PartnershipRoute
   '/solutions': typeof SolutionsRoute
+  '/products/suite': typeof ProductsSuiteRoute
   '/services/cloud-solutions': typeof ServicesCloudSolutionsRoute
   '/services/data-science': typeof ServicesDataScienceRoute
+  '/services/salesforce': typeof ServicesSalesforceRoute
   '/services/sap-consulting': typeof ServicesSapConsultingRoute
   '/services/software-development': typeof ServicesSoftwareDevelopmentRoute
+  '/products': typeof ProductsIndexRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/Asteri_product-suite': typeof Asteri_productSuiteRoute
-  '/Partnership': typeof PartnershipRoute
-  '/Services- Salesforce Consulting': typeof ServicesSalesforceConsultingRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
-  '/products': typeof ProductsRoute
+  '/partnership': typeof PartnershipRoute
   '/services': typeof ServicesRouteWithChildren
   '/solutions': typeof SolutionsRoute
+  '/products/suite': typeof ProductsSuiteRoute
   '/services/cloud-solutions': typeof ServicesCloudSolutionsRoute
   '/services/data-science': typeof ServicesDataScienceRoute
+  '/services/salesforce': typeof ServicesSalesforceRoute
   '/services/sap-consulting': typeof ServicesSapConsultingRoute
   '/services/software-development': typeof ServicesSoftwareDevelopmentRoute
+  '/products/': typeof ProductsIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/Asteri_product-suite'
-    | '/Partnership'
-    | '/Services- Salesforce Consulting'
     | '/about'
     | '/blog'
     | '/case-studies'
     | '/contact'
     | '/industries'
-    | '/products'
+    | '/partnership'
     | '/services'
     | '/solutions'
+    | '/products/suite'
     | '/services/cloud-solutions'
     | '/services/data-science'
+    | '/services/salesforce'
     | '/services/sap-consulting'
     | '/services/software-development'
+    | '/products/'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/Asteri_product-suite'
-    | '/Partnership'
-    | '/Services- Salesforce Consulting'
     | '/about'
     | '/blog'
     | '/case-studies'
     | '/contact'
     | '/industries'
-    | '/products'
-    | '/services'
+    | '/partnership'
     | '/solutions'
+    | '/products/suite'
     | '/services/cloud-solutions'
     | '/services/data-science'
+    | '/services/salesforce'
     | '/services/sap-consulting'
     | '/services/software-development'
+    | '/products'
+    | '/services'
   id:
     | '__root__'
     | '/'
-    | '/Asteri_product-suite'
-    | '/Partnership'
-    | '/Services- Salesforce Consulting'
     | '/about'
     | '/blog'
     | '/case-studies'
     | '/contact'
     | '/industries'
-    | '/products'
+    | '/partnership'
     | '/services'
     | '/solutions'
+    | '/products/suite'
     | '/services/cloud-solutions'
     | '/services/data-science'
+    | '/services/salesforce'
     | '/services/sap-consulting'
     | '/services/software-development'
+    | '/products/'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  Asteri_productSuiteRoute: typeof Asteri_productSuiteRoute
-  PartnershipRoute: typeof PartnershipRoute
-  ServicesSalesforceConsultingRoute: typeof ServicesSalesforceConsultingRoute
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
   CaseStudiesRoute: typeof CaseStudiesRoute
   ContactRoute: typeof ContactRoute
   IndustriesRoute: typeof IndustriesRoute
-  ProductsRoute: typeof ProductsRoute
+  PartnershipRoute: typeof PartnershipRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   SolutionsRoute: typeof SolutionsRoute
+  ProductsSuiteRoute: typeof ProductsSuiteRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,11 +260,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
+    '/partnership': {
+      id: '/partnership'
+      path: '/partnership'
+      fullPath: '/partnership'
+      preLoaderRoute: typeof PartnershipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industries': {
@@ -294,32 +302,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/Services- Salesforce Consulting': {
-      id: '/Services- Salesforce Consulting'
-      path: '/Services- Salesforce Consulting'
-      fullPath: '/Services- Salesforce Consulting'
-      preLoaderRoute: typeof ServicesSalesforceConsultingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Partnership': {
-      id: '/Partnership'
-      path: '/Partnership'
-      fullPath: '/Partnership'
-      preLoaderRoute: typeof PartnershipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Asteri_product-suite': {
-      id: '/Asteri_product-suite'
-      path: '/Asteri_product-suite'
-      fullPath: '/Asteri_product-suite'
-      preLoaderRoute: typeof Asteri_productSuiteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/software-development': {
@@ -336,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSapConsultingRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/services/salesforce': {
+      id: '/services/salesforce'
+      path: '/salesforce'
+      fullPath: '/services/salesforce'
+      preLoaderRoute: typeof ServicesSalesforceRouteImport
+      parentRoute: typeof ServicesRoute
+    }
     '/services/data-science': {
       id: '/services/data-science'
       path: '/data-science'
@@ -350,21 +358,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesCloudSolutionsRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/products/suite': {
+      id: '/products/suite'
+      path: '/products/suite'
+      fullPath: '/products/suite'
+      preLoaderRoute: typeof ProductsSuiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface ServicesRouteChildren {
   ServicesCloudSolutionsRoute: typeof ServicesCloudSolutionsRoute
   ServicesDataScienceRoute: typeof ServicesDataScienceRoute
+  ServicesSalesforceRoute: typeof ServicesSalesforceRoute
   ServicesSapConsultingRoute: typeof ServicesSapConsultingRoute
   ServicesSoftwareDevelopmentRoute: typeof ServicesSoftwareDevelopmentRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 const ServicesRouteChildren: ServicesRouteChildren = {
   ServicesCloudSolutionsRoute: ServicesCloudSolutionsRoute,
   ServicesDataScienceRoute: ServicesDataScienceRoute,
+  ServicesSalesforceRoute: ServicesSalesforceRoute,
   ServicesSapConsultingRoute: ServicesSapConsultingRoute,
   ServicesSoftwareDevelopmentRoute: ServicesSoftwareDevelopmentRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 
 const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
@@ -373,17 +392,16 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  Asteri_productSuiteRoute: Asteri_productSuiteRoute,
-  PartnershipRoute: PartnershipRoute,
-  ServicesSalesforceConsultingRoute: ServicesSalesforceConsultingRoute,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
   CaseStudiesRoute: CaseStudiesRoute,
   ContactRoute: ContactRoute,
   IndustriesRoute: IndustriesRoute,
-  ProductsRoute: ProductsRoute,
+  PartnershipRoute: PartnershipRoute,
   ServicesRoute: ServicesRouteWithChildren,
   SolutionsRoute: SolutionsRoute,
+  ProductsSuiteRoute: ProductsSuiteRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

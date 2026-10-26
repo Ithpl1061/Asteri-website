@@ -45,18 +45,16 @@ export function useGsapAnimation() {
  * if (prefersReducedMotion) return <StaticComponent />;
  */
 export function useReducedMotion(): boolean {
-  const [prefersReduced, setPrefersReduced] = (
-    useRef<boolean | null>(null)
-  );
+  const prefersReduced = useRef<boolean | null>(null);
 
   useEffect(() => {
     // Check if window is available (client-side)
     if (typeof window !== "undefined") {
       const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-      setPrefersReduced.current = mediaQuery.matches;
+      prefersReduced.current = mediaQuery.matches;
 
       const handleChange = (e: MediaQueryListEvent) => {
-        setPrefersReduced.current = e.matches;
+        prefersReduced.current = e.matches;
       };
 
       mediaQuery.addEventListener("change", handleChange);
@@ -111,7 +109,7 @@ export function createCinematicTimeline(
  */
 export function animateWithMotionSafe(
   target: gsap.TweenTarget,
-  vars: gsap.ToVars,
+  vars: gsap.TweenVars,
   prefersReduced: boolean
 ) {
   if (prefersReduced) {

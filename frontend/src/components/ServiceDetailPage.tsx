@@ -42,7 +42,7 @@ export function ServiceDetailPage({
 
         <div className="service-detail-cta">
           <CTA
-            title={`Letâ€™s discuss your ${title.toLowerCase()} needs.`}
+            title={`Let’s discuss your ${title.toLowerCase()} needs.`}
             primaryLabel="Start a conversation"
           />
         </div>

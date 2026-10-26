@@ -1,5 +1,11 @@
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
+
+// Safety: these scripts DELETE rows before re-inserting them. Refuse to run in production.
+if (process.env.NODE_ENV === 'production' && process.env.ALLOW_SEED_PROD !== 'yes') {
+  console.error('Refusing to run seed3.js: NODE_ENV=production. Set ALLOW_SEED_PROD=yes only for a deliberate restore.');
+  process.exit(1);
+}
 const prisma = new PrismaClient();
 
 async function main() {

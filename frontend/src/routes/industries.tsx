@@ -1,7 +1,7 @@
 // ========================================= IMPORTS =================================================
 
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { apiUrl } from "@/lib/api";
+import { loadApi } from "@/lib/api";
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -32,6 +32,10 @@ import "./industries-section.css";
 // ========================================= ROUTE ==================================================
 
 export const Route = createFileRoute("/industries")({
+  // Industry details are loaded on the server, so they are in the first HTML
+  loader: async () => ({
+    details: await loadApi<any[]>("/api/industry-details", []),
+  }),
   head: () => ({
     meta: [
       {
@@ -44,18 +48,11 @@ export const Route = createFileRoute("/industries")({
       },
     ],
   }),
-  component: Services,
+  component: IndustriesPage,
 });
 // ========================================= START HERE ==============================================
-function Services() {
-  const [details, setDetails] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetch(apiUrl('/api/industry-details'))
-      .then(res => res.json())
-      .then(data => setDetails(data))
-      .catch(console.error);
-  }, []);
+function IndustriesPage() {
+  const [details] = useState<any[]>(Route.useLoaderData().details);
 
 // ========================================= REFS ====================================================
    

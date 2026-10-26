@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { apiUrl } from "@/lib/api";
+import { loadApi } from "@/lib/api";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { gsap } from "gsap";
@@ -10,6 +10,10 @@ import "./solutions-page.css";
 gsap.registerPlugin(ScrollTrigger);
 
 export const Route = createFileRoute("/solutions")({
+  // Outcomes are loaded on the server, so they are in the first HTML
+  loader: async () => ({
+    outcomes: await loadApi<any[]>("/api/solutions-outcomes", []),
+  }),
   head: () => ({
     meta: [
       { title: "Solutions — Asteri" },
@@ -42,18 +46,8 @@ const DEFAULT_OUTCOMES = [
 ];
 
 function Solutions() {
-  const [outcomes, setOutcomes] = useState<any[]>(DEFAULT_OUTCOMES);
-
-  useEffect(() => {
-    fetch(apiUrl('/api/solutions-outcomes'))
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setOutcomes(data);
-        }
-      })
-      .catch(err => console.error(err));
-  }, []);
+  const loadedOutcomes = Route.useLoaderData().outcomes;
+  const [outcomes] = useState<any[]>(loadedOutcomes.length > 0 ? loadedOutcomes : DEFAULT_OUTCOMES);
 
   useEffect(() => {
     document.fonts.ready.then(() => {

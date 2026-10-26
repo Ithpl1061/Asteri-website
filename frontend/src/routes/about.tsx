@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { apiUrl } from "@/lib/api";
+import { loadApi } from "@/lib/api";
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -11,6 +11,10 @@ import "./about-page.css";
 import "@fontsource/geist-sans/latin-600.css";
 
 export const Route = createFileRoute("/about")({
+  // Data is loaded on the server, so it is in the first HTML
+  loader: async () => ({
+    team: await loadApi<any[]>("/api/team", []),
+  }),
   head: () => ({
     meta: [
       { title: "About — Asteri" },
@@ -161,16 +165,9 @@ function VisionariesSection({
 }
 
 function About() {
-  const [visionaries, setVisionaries] = useState<any[]>([]);
-  const [teamLoaded, setTeamLoaded] = useState(false);
-
-  useEffect(() => {
-    fetch(apiUrl('/api/team'))
-      .then(res => res.json())
-      .then(data => setVisionaries(data))
-      .catch(err => console.error(err))
-      .finally(() => setTeamLoaded(true));
-  }, []);
+  // Team arrives with the page (route loader), so it is ready on the first render
+  const [visionaries] = useState<any[]>(Route.useLoaderData().team);
+  const teamLoaded = true;
 
   // ========================================= REFS ====================================================
   const rootRef = useRef<HTMLDivElement>(null);

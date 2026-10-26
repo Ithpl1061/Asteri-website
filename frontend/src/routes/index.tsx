@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { apiUrl } from "@/lib/api";
+import { loadApi } from "@/lib/api";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,6 +12,15 @@ import { GlowOrb } from "@/components/GlowOrb";
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export const Route = createFileRoute("/")({
+  // Data is loaded on the server, so it is in the first HTML
+  loader: async () => {
+    const [services, industries, partners] = await Promise.all([
+      loadApi<any[]>("/api/services", []),
+      loadApi<any[]>("/api/industries", []),
+      loadApi<any[]>("/api/partners", []),
+    ]);
+    return { services, industries, partners };
+  },
   head: () => ({
     meta: [
       { title: "Home — Asteri" },
@@ -161,26 +170,10 @@ function Home() {
 
   const heroOutlineStroke = "clamp(1px, 0.55vw, 3px)";
 
-  const [services, setServices] = useState<any[]>([]);
-  const [industries, setIndustries] = useState<any[]>([]);
-  const [partners, setPartners] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetch(apiUrl('/api/services'))
-      .then(res => res.json())
-      .then(data => setServices(data))
-      .catch(err => console.error(err));
-
-    fetch(apiUrl('/api/industries'))
-      .then(res => res.json())
-      .then(data => setIndustries(data))
-      .catch(err => console.error(err));
-
-    fetch(apiUrl('/api/partners'))
-      .then(res => res.json())
-      .then(data => setPartners(data))
-      .catch(err => console.error(err));
-  }, []);
+  const loaderData = Route.useLoaderData();
+  const [services] = useState<any[]>(loaderData.services);
+  const [industries] = useState<any[]>(loaderData.industries);
+  const [partners] = useState<any[]>(loaderData.partners);
   // =================================== END REFS ==========================================
 
   //======================================= HERO ENTRANCE (runs once on load, all breakpoints) ===========
@@ -1471,7 +1464,7 @@ function Home() {
                 PLATFORMS &amp; PARTNERS
               </h2>
               <Link
-                to="/Partnership"
+                to="/partnership"
                 aria-label="View all platforms and partners"
                 className="!absolute !right-0 !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105"
               >

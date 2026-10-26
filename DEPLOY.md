@@ -78,7 +78,7 @@ ALTER DATABASE asteri OWNER TO asteri_user;
 
 ## 4. Migrate Data from Windows to VPS
 
-Because there are no seed scripts, the safest way to clone your local database exactly (including manual pgAdmin entries) is via a custom-format dump.
+The seed scripts in `backend/seed*.js` delete and re-insert their tables and refuse to run when `NODE_ENV=production` (set `ALLOW_SEED_PROD=yes` only for a deliberate restore). Do not run them against production data. To copy a local database exactly (including manual pgAdmin entries), use a custom-format dump. A dump is a backup and restore tool, not the way production data is created.
 
 **On your local Windows machine:**
 Export the database in custom format (`-Fc`). Open Command Prompt or PowerShell:
