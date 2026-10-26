@@ -20,21 +20,21 @@ async function main() {
       role: "Chief Executive Officer",
       experience: "10+ years of experience building enterprise systems and scaling tech operations globally.",
       imageUrl: "/AvinashSir.png",
-      linkedinUrl: "#",
+      linkedinUrl: "https://in.linkedin.com/in/avinash-abnave-4bb23a32",
     },
     {
       name: "Anuraj Paniker",
       role: "Chief Technology Officer",
       experience: "15+ years architecting complex cloud infrastructures, SAP integrations, and digital products.",
       imageUrl: "/AnurajSir.png",
-      linkedinUrl: "#",
+      linkedinUrl: "https://in.linkedin.com/in/anuraj-paniker-1532025",
     },
     {
       name: "Aishwarya Abnave",
       role: "Chief Marketing Officer",
       experience: "12+ years driving digital brand strategy, client partnerships, and market expansion.",
       imageUrl: "/AishwariaMam.png",
-      linkedinUrl: "#",
+      linkedinUrl: "https://www.linkedin.com/in/aishwarya-abnave-a95117116/",
     }
   ];
 

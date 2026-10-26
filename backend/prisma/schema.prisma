@@ -22,38 +22,42 @@ model Service {
 }
 
 model Industry {
-  id             Int      @id @default(autoincrement())
-  iconName       String   @map("icon_name")
-  titleLine1     String   @map("title_line_1")
-  titleLine2     String   @map("title_line_2")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id         Int      @id @default(autoincrement())
+  iconName   String   @map("icon_name")
+  titleLine1 String   @map("title_line_1")
+  titleLine2 String   @map("title_line_2")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   industryDetails IndustryDetail[]
+
+  slug        String  @unique
+  sortOrder   Int     @default(0) @map("sort_order")
+  isPublished Boolean @default(true) @map("is_published")
 
   @@map("industries")
 }
 
 model Testimonial {
-  id             Int      @id @default(autoincrement())
-  authorName     String   @map("author_name")
-  authorRole     String   @map("author_role")
-  content        String   @db.Text
-  avatarUrl      String   @map("avatar_url")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id         Int      @id @default(autoincrement())
+  authorName String   @map("author_name")
+  authorRole String   @map("author_role")
+  content    String   @db.Text
+  avatarUrl  String   @map("avatar_url")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("testimonials")
 }
 
 model HomePageContent {
-  id             Int      @id @default(autoincrement())
-  sectionName    String   @map("section_name")
-  heading        String   @db.Text
-  subheading     String   @db.Text
-  contentText    String   @map("content_text") @db.Text
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  sectionName String   @map("section_name")
+  heading     String   @db.Text
+  subheading  String   @db.Text
+  contentText String   @map("content_text") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("home_page_content")
 }
@@ -63,25 +67,25 @@ model HomePageContent {
 // ==========================================
 
 model TeamMember {
-  id             Int      @id @default(autoincrement())
-  name           String
-  role           String
-  experience     String   @db.Text
-  imageUrl       String   @map("image_url")
-  linkedinUrl    String   @map("linkedin_url")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  name        String
+  role        String
+  experience  String   @db.Text
+  imageUrl    String   @map("image_url")
+  linkedinUrl String   @map("linkedin_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("team_members")
 }
 
 model AboutPageContent {
-  id             Int      @id @default(autoincrement())
-  sectionName    String   @map("section_name")
-  heading        String
-  contentText    String   @map("content_text") @db.Text
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  sectionName String   @map("section_name")
+  heading     String
+  contentText String   @map("content_text") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("about_page_content")
 }
@@ -100,26 +104,30 @@ model ServiceDetail {
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
+  slug        String  @unique
+  sortOrder   Int     @default(0) @map("sort_order")
+  isPublished Boolean @default(true) @map("is_published")
+
   @@map("service_details")
 }
 
 model WorkProcess {
-  id             Int      @id @default(autoincrement())
-  stepNumber     Int      @map("step_number")
-  title          String
-  description    String   @db.Text
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  stepNumber  Int      @map("step_number")
+  title       String
+  description String   @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("work_processes")
 }
 
 model Partner {
-  id             Int      @id @default(autoincrement())
-  name           String
-  logoUrl        String   @map("logo_url")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  name      String
+  logoUrl   String   @map("logo_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("partners")
 }
@@ -137,17 +145,17 @@ model SolutionDetail {
   fullDescription  String   @map("full_description") @db.Text
   linkUrl          String   @map("link_url")
   createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
   @@map("solutions_details")
 }
 
 model SolutionOutcome {
-  id             Int      @id @default(autoincrement())
-  title          String
-  description    String   @db.Text
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("solutions_outcomes")
 }
@@ -167,7 +175,7 @@ model IndustryDetail {
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
 
-  industry              Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+  industry Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
 
   @@map("industry_details")
 }
@@ -177,23 +185,23 @@ model IndustryDetail {
 // ==========================================
 
 model PartnerEcosystemDetail {
-  id             Int      @id @default(autoincrement())
-  partnerName    String   @map("partner_name")
-  subtitle       String
-  description    String   @db.Text
-  logoUrl        String   @map("logo_url")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  partnerName String   @map("partner_name")
+  subtitle    String
+  description String   @db.Text
+  logoUrl     String   @map("logo_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("partner_ecosystem_details")
 }
 
 model PartnershipPrinciple {
-  id             Int      @id @default(autoincrement())
-  title          String
-  description    String   @db.Text
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("partnership_principles")
 }
@@ -203,23 +211,27 @@ model PartnershipPrinciple {
 // ==========================================
 
 model Product {
-  id             Int      @id @default(autoincrement())
-  name           String
-  type           String
-  description    String   @db.Text
-  logoUrl        String   @map("logo_url")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  description String   @db.Text
+  logoUrl     String   @map("logo_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  slug        String  @unique
+  sortOrder   Int     @default(0) @map("sort_order")
+  isPublished Boolean @default(true) @map("is_published")
 
   @@map("products")
 }
 
 model ProductEnabler {
-  id             Int      @id @default(autoincrement())
-  title          String
-  iconName       String   @map("icon_name")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  title     String
+  iconName  String   @map("icon_name")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("product_enablers")
 }
@@ -229,14 +241,18 @@ model ProductEnabler {
 // ==========================================
 
 model CaseStudy {
-  id             Int      @id @default(autoincrement())
-  industryName   String   @map("industry_name")
-  situationText  String   @map("situation_text") @db.Text
-  approachList   String   @map("approach_list") @db.Text
-  outcomeText    String   @map("outcome_text") @db.Text
-  imageUrl       String?  @map("image_url")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id            Int      @id @default(autoincrement())
+  industryName  String   @map("industry_name")
+  situationText String   @map("situation_text") @db.Text
+  approachList  Json     @map("approach_list")
+  outcomeText   String   @map("outcome_text") @db.Text
+  imageUrl      String?  @map("image_url")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  slug        String  @unique
+  sortOrder   Int     @default(0) @map("sort_order")
+  isPublished Boolean @default(true) @map("is_published")
 
   @@map("case_studies")
 }
@@ -246,35 +262,48 @@ model CaseStudy {
 // ==========================================
 
 model BlogCategory {
-  id             Int      @id @default(autoincrement())
-  name           String
-  createdAt      DateTime @default(now()) @map("created_at")
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
 
-  posts          BlogPost[]
+  posts BlogPost[]
+
+  slug      String   @unique
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("blog_categories")
 }
 
 model BlogPost {
-  id             Int      @id @default(autoincrement())
-  categoryId     Int      @map("category_id")
-  title          String
-  content        String   @db.Text
-  imageUrl       String   @map("image_url")
-  isFeatured     Boolean  @default(false) @map("is_featured")
-  isAccent       Boolean  @default(false) @map("is_accent")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id         Int      @id @default(autoincrement())
+  categoryId Int      @map("category_id")
+  title      String
+  content    String   @db.Text
+  imageUrl   String   @map("image_url")
+  isFeatured Boolean  @default(false) @map("is_featured")
+  isAccent   Boolean  @default(false) @map("is_accent")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  category       BlogCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category BlogCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
+  slug        String    @unique
+  excerpt     String?
+  author      String?
+  isPublished Boolean   @default(true) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+
+  @@index([categoryId])
   @@map("blog_posts")
 }
 
 model NewsletterSubscriber {
-  id             Int      @id @default(autoincrement())
-  email          String   @unique
-  subscribedAt   DateTime @default(now()) @map("subscribed_at")
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  subscribedAt DateTime @default(now()) @map("subscribed_at")
+
+  status           String  @default("subscribed")
+  unsubscribeToken String? @unique @map("unsubscribe_token")
 
   @@map("newsletter_subscribers")
 }
@@ -284,21 +313,27 @@ model NewsletterSubscriber {
 // ==========================================
 
 model ContactMessage {
-  id             Int      @id @default(autoincrement())
-  name           String
-  email          String
-  message        String   @db.Text
-  status         String   @default("new")
-  submittedAt    DateTime @default(now()) @map("submitted_at")
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  message     String   @db.Text
+  status      String   @default("new")
+  submittedAt DateTime @default(now()) @map("submitted_at")
+
+  phone     String?
+  company   String?
+  source    String?
+  ip        String?
+  userAgent String? @map("user_agent")
 
   @@map("contact_messages")
 }
 
 model CompanySetting {
-  id             Int      @id @default(autoincrement())
-  key            String   @unique
-  value          String   @db.Text
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("company_settings")
 }
