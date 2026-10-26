@@ -25,7 +25,7 @@ import { Route as ServicesSapConsultingRouteImport } from './routes/services/sap
 import { Route as ServicesSalesforceRouteImport } from './routes/services/salesforce'
 import { Route as ServicesDataScienceRouteImport } from './routes/services/data-science'
 import { Route as ServicesCloudSolutionsRouteImport } from './routes/services/cloud-solutions'
-import { Route as ProductsSuiteRouteImport } from './routes/products/suite'
+import { Route as AdminContactRouteImport } from './routes/admin/contact'
 
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
@@ -108,9 +108,9 @@ const ServicesCloudSolutionsRoute = ServicesCloudSolutionsRouteImport.update({
   path: '/cloud-solutions',
   getParentRoute: () => ServicesRoute,
 } as any)
-const ProductsSuiteRoute = ProductsSuiteRouteImport.update({
-  id: '/products/suite',
-  path: '/products/suite',
+const AdminContactRoute = AdminContactRouteImport.update({
+  id: '/admin/contact',
+  path: '/admin/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -124,7 +124,7 @@ export interface FileRoutesByFullPath {
   '/partnership': typeof PartnershipRoute
   '/services': typeof ServicesRouteWithChildren
   '/solutions': typeof SolutionsRoute
-  '/products/suite': typeof ProductsSuiteRoute
+  '/admin/contact': typeof AdminContactRoute
   '/services/cloud-solutions': typeof ServicesCloudSolutionsRoute
   '/services/data-science': typeof ServicesDataScienceRoute
   '/services/salesforce': typeof ServicesSalesforceRoute
@@ -142,7 +142,7 @@ export interface FileRoutesByTo {
   '/industries': typeof IndustriesRoute
   '/partnership': typeof PartnershipRoute
   '/solutions': typeof SolutionsRoute
-  '/products/suite': typeof ProductsSuiteRoute
+  '/admin/contact': typeof AdminContactRoute
   '/services/cloud-solutions': typeof ServicesCloudSolutionsRoute
   '/services/data-science': typeof ServicesDataScienceRoute
   '/services/salesforce': typeof ServicesSalesforceRoute
@@ -162,7 +162,7 @@ export interface FileRoutesById {
   '/partnership': typeof PartnershipRoute
   '/services': typeof ServicesRouteWithChildren
   '/solutions': typeof SolutionsRoute
-  '/products/suite': typeof ProductsSuiteRoute
+  '/admin/contact': typeof AdminContactRoute
   '/services/cloud-solutions': typeof ServicesCloudSolutionsRoute
   '/services/data-science': typeof ServicesDataScienceRoute
   '/services/salesforce': typeof ServicesSalesforceRoute
@@ -183,7 +183,7 @@ export interface FileRouteTypes {
     | '/partnership'
     | '/services'
     | '/solutions'
-    | '/products/suite'
+    | '/admin/contact'
     | '/services/cloud-solutions'
     | '/services/data-science'
     | '/services/salesforce'
@@ -201,7 +201,7 @@ export interface FileRouteTypes {
     | '/industries'
     | '/partnership'
     | '/solutions'
-    | '/products/suite'
+    | '/admin/contact'
     | '/services/cloud-solutions'
     | '/services/data-science'
     | '/services/salesforce'
@@ -220,7 +220,7 @@ export interface FileRouteTypes {
     | '/partnership'
     | '/services'
     | '/solutions'
-    | '/products/suite'
+    | '/admin/contact'
     | '/services/cloud-solutions'
     | '/services/data-science'
     | '/services/salesforce'
@@ -240,7 +240,7 @@ export interface RootRouteChildren {
   PartnershipRoute: typeof PartnershipRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   SolutionsRoute: typeof SolutionsRoute
-  ProductsSuiteRoute: typeof ProductsSuiteRoute
+  AdminContactRoute: typeof AdminContactRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
@@ -358,11 +358,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesCloudSolutionsRouteImport
       parentRoute: typeof ServicesRoute
     }
-    '/products/suite': {
-      id: '/products/suite'
-      path: '/products/suite'
-      fullPath: '/products/suite'
-      preLoaderRoute: typeof ProductsSuiteRouteImport
+    '/admin/contact': {
+      id: '/admin/contact'
+      path: '/admin/contact'
+      fullPath: '/admin/contact'
+      preLoaderRoute: typeof AdminContactRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -400,7 +400,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnershipRoute: PartnershipRoute,
   ServicesRoute: ServicesRouteWithChildren,
   SolutionsRoute: SolutionsRoute,
-  ProductsSuiteRoute: ProductsSuiteRoute,
+  AdminContactRoute: AdminContactRoute,
   ProductsIndexRoute: ProductsIndexRoute,
 }
 export const routeTree = rootRouteImport

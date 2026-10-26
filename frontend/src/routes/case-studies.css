@@ -99,8 +99,6 @@
   font: inherit;
 }
 
-
-
 .case-preface {
   height: 400px;
   text-align: center;
@@ -139,13 +137,9 @@
 .case-study-heading {
   margin: 0;
   font-family: Inter, var(--font-sans);
-  
-  
-  
+
   text-align: center;
 }
-
-
 
 .case-study-panel {
   position: relative;
@@ -403,7 +397,6 @@
   }
 
   .case-study-heading {
-    
   }
 
   .case-study-stage {
@@ -463,7 +456,6 @@
   }
 }
 
-
 /* ==========================================================================
    CASE STUDIES - phones / small tablets (<= 900px)
    Same scenes, order, colours and animations. The big white case-study panel was a
@@ -475,14 +467,29 @@
 @media (max-width: 900px) {
   /* headings must wrap instead of running off the screen ("follows the same arc") */
   .case-story,
-  .case-measure { white-space: normal; padding-top: 3.5rem; padding-bottom: 3.5rem; }
-  .case-story { font-size: clamp(1.9rem, 8.4vw, 3.5rem); }
-  .case-measure { font-size: clamp(1.9rem, 8.4vw, 3.5rem); }
-  .case-preface { padding-top: 3rem; padding-bottom: 3rem; }
-  .case-study-heading-stage { height: 45svh; }
+  .case-measure {
+    white-space: normal;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+  .case-story {
+    font-size: clamp(1.9rem, 8.4vw, 3.5rem);
+  }
+  .case-measure {
+    font-size: clamp(1.9rem, 8.4vw, 3.5rem);
+  }
+  .case-preface {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .case-study-heading-stage {
+    height: 45svh;
+  }
 
   /* ---- the case-study panel ---- */
-  .case-study-stage { height: 100svh; }
+  .case-study-stage {
+    height: 100svh;
+  }
   .case-study-stage .case-study-panel {
     position: absolute;
     inset: 0;
@@ -509,13 +516,28 @@
     width: auto;
   }
 
-  .case-panel-column h3 { font-size: 1.25rem; line-height: 1.15; white-space: normal; }
+  .case-panel-column h3 {
+    font-size: 1.25rem;
+    line-height: 1.15;
+    white-space: normal;
+  }
   .case-panel-column p,
-  .case-panel-column li { font-size: clamp(0.66rem, 2.1svh, 0.9rem); line-height: 1.28; }
+  .case-panel-column li {
+    font-size: clamp(0.66rem, 2.1svh, 0.9rem);
+    line-height: 1.28;
+  }
   .case-panel-situation p,
-  .case-panel-outcome p { margin-top: 0.35rem; }
-  .case-panel-approach ul { margin: 0.35rem 0 0; padding-left: 1.1rem; white-space: normal; }
-  .case-panel-approach li + li { margin-top: 0.2rem; }
+  .case-panel-outcome p {
+    margin-top: 0.35rem;
+  }
+  .case-panel-approach ul {
+    margin: 0.35rem 0 0;
+    padding-left: 1.1rem;
+    white-space: normal;
+  }
+  .case-panel-approach li + li {
+    margin-top: 0.2rem;
+  }
 
   .case-study-panel > h2 {
     position: absolute;
@@ -524,9 +546,18 @@
     font-size: clamp(1.6rem, 8vw, 2.2rem);
     line-height: 1.05;
   }
-  .case-panel-arrow { bottom: 1.1rem; left: 1.25rem; width: 40px; height: 40px; }
+  .case-panel-arrow {
+    bottom: 1.1rem;
+    left: 1.25rem;
+    width: 40px;
+    height: 40px;
+  }
 
   /* ---- closing CTA ---- */
-  .case-cta { height: 100svh; }
-  .case-cta-content { padding: 0 1.5rem; }
+  .case-cta {
+    height: 100svh;
+  }
+  .case-cta-content {
+    padding: 0 1.5rem;
+  }
 }

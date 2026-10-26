@@ -1,15 +1,9 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import logo from "/Asteri logo.png";
 import { useEffect, useState, useRef } from "react";
-import gsap from "gsap";
-import {
-  Menu,
-  X,
-  Linkedin,
-  Instagram,
-  Youtube,
-  ArrowRight,
-} from "lucide-react";
+import { gsap } from "@/lib/gsap";
+import { Menu, X, Linkedin, Instagram, Youtube, ArrowRight } from "lucide-react";
+import { site, socialHref } from "@/lib/site";
 
 type NavLink = {
   label: string;
@@ -97,7 +91,7 @@ export function Navbar({ disableAnimations = false }: { disableAnimations?: bool
     gsap.fromTo(
       menuPanelRef.current,
       { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+      { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
     );
 
     // Staggered items entrance
@@ -113,7 +107,7 @@ export function Navbar({ disableAnimations = false }: { disableAnimations?: bool
           stagger: 0.05,
           ease: "power2.out",
           delay: 0.04,
-        }
+        },
       );
     }
   }, [open]);
@@ -154,37 +148,37 @@ export function Navbar({ disableAnimations = false }: { disableAnimations?: bool
     }
   };
 
-useEffect(() => {
-  if (disableAnimations) {
-    setScrolled(false);
-    setShowNav(true);
-    return;
-  }
-
-  let lastScroll = 0;
-
-  const onScroll = () => {
-    const currentScroll = window.scrollY;
-
-    setScrolled(currentScroll > 12);
-
-    if (currentScroll < 50) {
+  useEffect(() => {
+    if (disableAnimations) {
+      setScrolled(false);
       setShowNav(true);
-    } else {
-      setShowNav(false);
+      return;
     }
 
-    lastScroll = currentScroll;
-  };
+    let lastScroll = 0;
 
-  onScroll();
+    const onScroll = () => {
+      const currentScroll = window.scrollY;
 
-  window.addEventListener("scroll", onScroll, {
-    passive: true,
-  });
+      setScrolled(currentScroll > 12);
 
-  return () => window.removeEventListener("scroll", onScroll);
-}, [disableAnimations]);
+      if (currentScroll < 50) {
+        setShowNav(true);
+      } else {
+        setShowNav(false);
+      }
+
+      lastScroll = currentScroll;
+    };
+
+    onScroll();
+
+    window.addEventListener("scroll", onScroll, {
+      passive: true,
+    });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [disableAnimations]);
 
   // Keep the page still while the menu is open. The menu panel remains the
   // only scrollable area, so expanded subtopics stay accessible.
@@ -199,54 +193,53 @@ useEffect(() => {
     };
   }, [open]);
 
+  //===============================================================
+  // useEffect(() => {
+  //   if (!navRef.current) return;
 
-//===============================================================
-// useEffect(() => {
-//   if (!navRef.current) return;
+  //   gsap.set(navRef.current, {
+  //     x: 250,
+  //     opacity: 0,
+  //   });
 
-//   gsap.set(navRef.current, {
-//     x: 250,
-//     opacity: 0,
-//   });
+  //   const tl = gsap.timeline({
+  //     delay: 0.2,
+  //   });
 
-//   const tl = gsap.timeline({
-//     delay: 0.2,
-//   });
+  //   tl.to(navRef.current, {
+  //     x: 0,
+  //     opacity: 1,
+  //     duration: 0.6,
+  //     ease: "power3.out",
+  //   });
 
-//   tl.to(navRef.current, {
-//     x: 0,
-//     opacity: 1,
-//     duration: 0.6,
-//     ease: "power3.out",
-//   });
+  //   tl.from(
+  //     ".navbar-premium img",
+  //     {
+  //       opacity: 0,
+  //       x: -15,
+  //       duration: 0.25,
+  //     },
+  //     "-=0.45"
+  //   );
 
-//   tl.from(
-//     ".navbar-premium img",
-//     {
-//       opacity: 0,
-//       x: -15,
-//       duration: 0.25,
-//     },
-//     "-=0.45"
-//   );
+  //   tl.from(
+  //     ".navbar-premium svg",
+  //     {
+  //       opacity: 0,
+  //       x: 10,
+  //       stagger: 0.03,
+  //       duration: 0.2,
+  //     },
+  //     "-=0.3"
+  //   );
 
-//   tl.from(
-//     ".navbar-premium svg",
-//     {
-//       opacity: 0,
-//       x: 10,
-//       stagger: 0.03,
-//       duration: 0.2,
-//     },
-//     "-=0.3"
-//   );
+  //   return () => {
+  //     tl.kill();
+  //   };
+  // }, []);
 
-//   return () => {
-//     tl.kill();
-//   };
-// }, []);
-
-//===============================================================
+  //===============================================================
   return (
     <header
       // ref={navRef}
@@ -288,11 +281,7 @@ useEffect(() => {
           backdrop-blur-xl
           ${disableAnimations ? "" : "transition-all duration-500"}
 
-          ${
-            scrolled
-              ? "bg-[#242424]/95 shadow-[0_20px_80px_rgba(0,0,0,0.55)]"
-              : "bg-[#2a2a2a]/90"
-          }
+          ${scrolled ? "bg-[#242424]/95 shadow-[0_20px_80px_rgba(0,0,0,0.55)]" : "bg-[#2a2a2a]/90"}
         `}
       >
         <Link to="/" className="flex items-center">
@@ -313,22 +302,34 @@ useEffect(() => {
         {/* RIGHT SIDE */}
         <div className="flex items-center gap-2 sm:gap-6">
           <a
-            href="#"
-            className={disableAnimations ? "" : "transition-all duration-300 hover:scale-110 hover:text-primary"}
+            href={socialHref(site.social.linkedin)}
+            className={
+              disableAnimations
+                ? ""
+                : "transition-all duration-300 hover:scale-110 hover:text-primary"
+            }
           >
             <Linkedin className="h-5 w-5 sm:h-8 sm:w-8 text-white/80" />
           </a>
 
           <a
-            href="#"
-            className={disableAnimations ? "" : "transition-all duration-300 hover:scale-110 hover:text-primary"}
+            href={socialHref(site.social.instagram)}
+            className={
+              disableAnimations
+                ? ""
+                : "transition-all duration-300 hover:scale-110 hover:text-primary"
+            }
           >
             <Instagram className="h-5 w-5 sm:h-8 sm:w-8 text-white/80" />
           </a>
 
           <a
-            href="#"
-            className={disableAnimations ? "" : "transition-all duration-300 hover:scale-110 hover:text-primary"}
+            href={socialHref(site.social.youtube)}
+            className={
+              disableAnimations
+                ? ""
+                : "transition-all duration-300 hover:scale-110 hover:text-primary"
+            }
           >
             <Youtube className="h-5 w-5 sm:h-8 sm:w-8 text-white/80" />
           </a>

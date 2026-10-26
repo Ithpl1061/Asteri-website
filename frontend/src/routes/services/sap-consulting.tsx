@@ -2,7 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ServiceDetailPage } from "@/components/ServiceDetailPage";
 
 export const Route = createFileRoute("/services/sap-consulting")({
-  head: () => ({ meta: [{ title: "SAP Consulting — Asteri" }] }),
+  head: () => ({
+    meta: [
+      { title: "SAP Consulting — Asteri" },
+      {
+        name: "description",
+        content:
+          "We help teams implement, optimize, and integrate SAP systems around the way their business actually works.",
+      },
+    ],
+  }),
   component: SapConsulting,
 });
 

@@ -3,14 +3,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { useRef, useState, useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
-gsap.registerPlugin(ScrollTrigger);
-import * as LucideIcons from "lucide-react";
 import { ArrowUpRight, Settings, Timer, ShieldCheck, HeartHandshake } from "lucide-react";
 
 import { PageShell } from "@/components/PageShell";
+import { canPin } from "@/lib/motion";
 
 // ========================================= ROUTE ====================================================
 
@@ -22,8 +20,7 @@ export const Route = createFileRoute("/products/")({
       },
       {
         name: "description",
-        content:
-          "Asteri is a digital engineering studio building cinematic enterprise software.",
+        content: "Asteri is a digital engineering studio building cinematic enterprise software.",
       },
     ],
   }),
@@ -32,56 +29,51 @@ export const Route = createFileRoute("/products/")({
 
 // ========================================= START HERE ===============================================
 function ProductsPage() {
-
   useEffect(() => {
     // Database integration removed as per request
   }, []);
 
-// ========================================= REFS =====================================================
-          const simpleQuoteSectionRef = useRef(null);
-          const simpleQuoteTextRef = useRef(null);
+  // ========================================= REFS =====================================================
+  const simpleQuoteSectionRef = useRef(null);
+  const simpleQuoteTextRef = useRef(null);
 
-          const builtSectionRef = useRef(null);
-          const builtTextRef = useRef(null);
+  const builtSectionRef = useRef(null);
+  const builtTextRef = useRef(null);
 
-          const operationsSectionRef = useRef(null);
-          const operationsTextRef = useRef(null);
+  const operationsSectionRef = useRef(null);
+  const operationsTextRef = useRef(null);
 
-          const productCardSectionRef = useRef(null);
-          const productMainCardRef = useRef(null);
-          const salesforceCardRef = useRef(null);
-          const zohoCardRef = useRef(null);
-          const dot1Ref = useRef(null);
-          const dot2Ref = useRef(null);
-          const dot3Ref = useRef(null);
-          const dot4Ref = useRef(null);
-          const dot5Ref = useRef(null);
-          const productTitleRef = useRef<HTMLHeadingElement | null>(null);
-          const productSubtitleRef = useRef<HTMLParagraphElement | null>(null);
+  const productCardSectionRef = useRef(null);
+  const productMainCardRef = useRef(null);
+  const salesforceCardRef = useRef(null);
+  const zohoCardRef = useRef(null);
+  const dot1Ref = useRef(null);
+  const dot2Ref = useRef(null);
+  const dot3Ref = useRef(null);
+  const dot4Ref = useRef(null);
+  const dot5Ref = useRef(null);
+  const productTitleRef = useRef<HTMLHeadingElement | null>(null);
+  const productSubtitleRef = useRef<HTMLParagraphElement | null>(null);
 
-          const [productName, setProductName] = useState("Salesforce");
+  const [productName, setProductName] = useState("Salesforce");
 
-          const [productType, setProductType] = useState(
-            "CRM & Cloud Platform"
-          );
+  const [productType, setProductType] = useState("CRM & Cloud Platform");
 
-          const enablesSectionRef = useRef(null);
-          const enablesTitleRef = useRef(null);
-          const enablesCard1Ref = useRef(null);
-          const enablesCard2Ref = useRef(null);
-          const enablesCard3Ref = useRef(null);
-          const enablesCard4Ref = useRef(null);
+  const enablesSectionRef = useRef(null);
+  const enablesTitleRef = useRef(null);
+  const enablesCard1Ref = useRef(null);
+  const enablesCard2Ref = useRef(null);
+  const enablesCard3Ref = useRef(null);
+  const enablesCard4Ref = useRef(null);
 
-          const nextRef = useRef<HTMLElement>(null);
-          const nextTitleRef = useRef<HTMLHeadingElement>(null);
-          const nextTextRef = useRef<HTMLParagraphElement>(null);
-          const nextBtnRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLElement>(null);
+  const nextTitleRef = useRef<HTMLHeadingElement>(null);
+  const nextTextRef = useRef<HTMLParagraphElement>(null);
+  const nextBtnRef = useRef<HTMLButtonElement>(null);
 
-          const cardsWrapperRef = useRef(null);
+  const cardsWrapperRef = useRef(null);
 
-
-
-/* ============================== REMOVED ANIMATIONS =================================
+  /* ============================== REMOVED ANIMATIONS =================================
 
 //================================= 3 Ours are built ===============================
           useEffect(() => {
@@ -99,7 +91,7 @@ function ProductsPage() {
                   start: "top top",
                   end: "+=3500",
                   scrub: 1,
-                  pin: true,
+                  pin: canPin(),
                 },
               });
 
@@ -141,7 +133,7 @@ function ProductsPage() {
                   start: "top top",
                   end: "+=3000",
                   scrub: 1,
-                  pin: true,
+                  pin: canPin(),
                 },
               });
 
@@ -197,7 +189,7 @@ function ProductsPage() {
                   start: "top top",
                   end: "+=6000",
                   scrub: 1,
-                  pin: true,
+                  pin: canPin(),
                 },
               });
 
@@ -313,7 +305,7 @@ function ProductsPage() {
               start: "top top",
               end: "+=700",
               scrub: 1,
-              // pin: true,
+              // pin: canPin(),
             },
           });
 
@@ -358,327 +350,318 @@ function ProductsPage() {
       }, []);
 */
 
-          useEffect(() => {
-            if (!simpleQuoteSectionRef.current) return;
+  useEffect(() => {
+    if (!simpleQuoteSectionRef.current) return;
 
-            const ctx = gsap.context(() => {
-              const tl = gsap.timeline({
-                scrollTrigger: {
-                  trigger: simpleQuoteSectionRef.current,
-                  start: "center center",
-                  end: "+=840",
-                  scrub: 1,
-                  pin: true,
-                },
-              });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: simpleQuoteSectionRef.current,
+          start: "center center",
+          end: "+=840",
+          scrub: 1,
+          pin: canPin(),
+        },
+      });
 
-              tl.fromTo(
-                ".simple-quote-line-1",
-                { x: "-100vw" },
-                { x: 0, ease: "power3.out", duration: 1 },
-                0
-              );
+      tl.fromTo(
+        ".simple-quote-line-1",
+        { x: "-100vw" },
+        { x: 0, ease: "power3.out", duration: 1 },
+        0,
+      );
 
-              tl.fromTo(
-                ".simple-quote-line-2",
-                { x: "100vw" },
-                { x: 0, ease: "power3.out", duration: 1 },
-                0
-              );
+      tl.fromTo(
+        ".simple-quote-line-2",
+        { x: "100vw" },
+        { x: 0, ease: "power3.out", duration: 1 },
+        0,
+      );
 
-              tl.to({}, { duration: 0.4 }); // Hold screen
-            }, simpleQuoteSectionRef);
+      tl.to({}, { duration: 0.4 }); // Hold screen
+    }, simpleQuoteSectionRef);
 
-            return () => ctx.revert();
-          }, []);
+    return () => ctx.revert();
+  }, []);
 
+  useEffect(() => {
+    if (!builtSectionRef.current || !builtTextRef.current) return;
 
+    const ctx = gsap.context(() => {
+      gsap.set(builtTextRef.current, {
+        y: 300,
+        opacity: 0,
+      });
 
-          useEffect(() => {
-            if (!builtSectionRef.current || !builtTextRef.current) return;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: builtSectionRef.current,
+          start: "top top",
+          end: "+=3055",
+          scrub: 1,
+          pin: canPin(),
+        },
+      });
 
-            const ctx = gsap.context(() => {
-              gsap.set(builtTextRef.current, {
-                y: 300,
-                opacity: 0,
-              });
+      // COME UP
+      tl.to(builtTextRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 2,
+      })
 
-              const tl = gsap.timeline({
-                scrollTrigger: {
-                  trigger: builtSectionRef.current,
-                  start: "top top",
-                  end: "+=3055",
-                  scrub: 1,
-                  pin: true,
-                },
-              });
+        // PAUSE / HOLD
+        .to({}, { duration: 0.8 })
 
-              // COME UP
-              tl.to(builtTextRef.current, {
-                y: 0,
-                opacity: 1,
-                duration: 2,
-              })
+        // GO UP / EXIT
+        .to(builtTextRef.current, {
+          y: -700,
+          opacity: 0,
+          duration: 2,
+        });
+    }, builtSectionRef);
 
-              // PAUSE / HOLD
-              .to({}, { duration: 0.8 })
+    return () => ctx.revert();
+  }, []);
 
-              // GO UP / EXIT
-              .to(builtTextRef.current, {
-                y: -700,
-                opacity: 0,
-                duration: 2,
-              });
-            }, builtSectionRef);
+  useEffect(() => {
+    if (!productCardSectionRef.current || !cardsWrapperRef.current) return;
 
-            return () => ctx.revert();
-          }, []);
+    const ctx = gsap.context(() => {
+      gsap.set(cardsWrapperRef.current, { yPercent: -50 });
+      gsap.set(productMainCardRef.current, { y: 400, opacity: 0 });
 
-          useEffect(() => {
-            if (!productCardSectionRef.current || !cardsWrapperRef.current) return;
+      // Distance between two product cards = card width + gap. On desktop this is
+      // 400 + 32 = 432px (unchanged); on phones the cards are narrower, so measure it.
+      const cardStep = () => {
+        const row = cardsWrapperRef.current as HTMLElement | null;
+        const first = row?.firstElementChild as HTMLElement | null;
+        if (!row || !first) return 432;
+        return first.offsetWidth + (parseFloat(getComputedStyle(row).columnGap) || 0);
+      };
 
-            const ctx = gsap.context(() => {
-              gsap.set(cardsWrapperRef.current, { yPercent: -50 });
-              gsap.set(productMainCardRef.current, { y: 400, opacity: 0 });
+      gsap.set(dot1Ref.current, {
+        backgroundColor: "#8AF500",
+      });
 
-              // Distance between two product cards = card width + gap. On desktop this is
-              // 400 + 32 = 432px (unchanged); on phones the cards are narrower, so measure it.
-              const cardStep = () => {
-                const row = cardsWrapperRef.current as HTMLElement | null;
-                const first = row?.firstElementChild as HTMLElement | null;
-                if (!row || !first) return 432;
-                return first.offsetWidth + (parseFloat(getComputedStyle(row).columnGap) || 0);
-              };
+      gsap.set(dot2Ref.current, {
+        backgroundColor: "#666",
+      });
 
-              gsap.set(dot1Ref.current, {
-                backgroundColor: "#8AF500",
-              });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: productCardSectionRef.current,
+          start: "top top",
+          end: "+=5000",
+          scrub: window.innerWidth <= 767 ? 0.5 : true,
+          pin: canPin(),
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const p = self.progress;
+            if (p < 0.2) {
+              setProductName("Salesforce");
+              setProductType("CRM & Cloud Platform");
+            } else if (p < 0.4) {
+              setProductName("Zoho");
+              setProductType("CRM & Cloud Platform");
+            } else if (p < 0.6) {
+              setProductName("1dox.ai");
+              setProductType("CRM & Cloud Platform");
+            } else if (p < 0.8) {
+              setProductName("ManageEngine");
+              setProductType("CRM & Cloud Platform");
+            } else {
+              setProductName("PL/SQL");
+              setProductType("CRM & Cloud Platform");
+            }
+          },
+        },
+      });
 
-              gsap.set(dot2Ref.current, {
-                backgroundColor: "#666",
-              });
+      // CARD ENTER
+      tl.to(productMainCardRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 2,
+      });
 
-              const tl = gsap.timeline({
-                scrollTrigger: {
-                  trigger: productCardSectionRef.current,
-                  start: "top top",
-                  end: "+=5000",
-                  scrub: window.innerWidth <= 767 ? 0.5 : true,
-                  pin: true,
-                  invalidateOnRefresh: true,
-                  onUpdate: (self) => {
-                    const p = self.progress;
-                    if (p < 0.2) {
-                      setProductName("Salesforce");
-                      setProductType("CRM & Cloud Platform");
-                    } else if (p < 0.4) {
-                      setProductName("Zoho");
-                      setProductType("CRM & Cloud Platform");
-                    } else if (p < 0.6) {
-                      setProductName("1dox.ai");
-                      setProductType("CRM & Cloud Platform");
-                    } else if (p < 0.8) {
-                      setProductName("ManageEngine");
-                      setProductType("CRM & Cloud Platform");
-                    } else {
-                      setProductName("PL/SQL");
-                      setProductType("CRM & Cloud Platform");
-                    }
-                  },
-                },
-              });
+      // PAUSE FOR 1ST CARD
+      tl.to({}, { duration: 2 });
 
-              // CARD ENTER
-              tl.to(productMainCardRef.current, {
-                y: 0,
-                opacity: 1,
-                duration: 2,
-              });
+      // 2ND CARD
+      tl.to(cardsWrapperRef.current, {
+        x: () => -cardStep() * 1,
+        duration: 2,
+      });
 
-              // PAUSE FOR 1ST CARD
-              tl.to({}, { duration: 2 });
+      tl.to(dot1Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
+      tl.to(dot2Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
 
-              // 2ND CARD
-              tl.to(cardsWrapperRef.current, {
-                x: () => -cardStep() * 1,
-                duration: 2,
-              });
+      tl.to({}, { duration: 1.5 });
 
-              tl.to(dot1Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
-              tl.to(dot2Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
+      // 3RD CARD
+      tl.to(cardsWrapperRef.current, {
+        x: () => -cardStep() * 2,
+        duration: 2,
+      });
 
-              tl.to({}, { duration: 1.5 });
+      tl.to(dot2Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
+      tl.to(dot3Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
 
-              // 3RD CARD
-              tl.to(cardsWrapperRef.current, {
-                x: () => -cardStep() * 2,
-                duration: 2,
-              });
+      tl.to({}, { duration: 1.5 });
 
-              tl.to(dot2Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
-              tl.to(dot3Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
+      // 4TH CARD
+      tl.to(cardsWrapperRef.current, {
+        x: () => -cardStep() * 3,
+        duration: 2,
+      });
 
-              tl.to({}, { duration: 1.5 });
+      tl.to(dot3Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
+      tl.to(dot4Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
 
-              // 4TH CARD
-              tl.to(cardsWrapperRef.current, {
-                x: () => -cardStep() * 3,
-                duration: 2,
-              });
+      tl.to({}, { duration: 1.5 });
 
-              tl.to(dot3Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
-              tl.to(dot4Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
+      // 5TH CARD
+      tl.to(cardsWrapperRef.current, {
+        x: () => -cardStep() * 4,
+        duration: 2,
+      });
 
-              tl.to({}, { duration: 1.5 });
+      tl.to(dot4Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
+      tl.to(dot5Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
 
-              // 5TH CARD
-              tl.to(cardsWrapperRef.current, {
-                x: () => -cardStep() * 4,
-                duration: 2,
-              });
+      tl.to({}, { duration: 1.5 });
 
-              tl.to(dot4Ref.current, { backgroundColor: "#666", duration: 0.3 }, "<");
-              tl.to(dot5Ref.current, { backgroundColor: "#8AF500", duration: 0.3 }, "<");
+      // CARD EXIT
+      tl.to([productMainCardRef.current, cardsWrapperRef.current], {
+        y: -1200,
+        opacity: 0,
+        duration: 2,
+      });
 
-              tl.to({}, { duration: 1.5 });
+      // Force ScrollTrigger to recalculate bounds now that the DOM is fully populated
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+    }, productCardSectionRef);
 
-              // CARD EXIT
-              tl.to(
-                [productMainCardRef.current, cardsWrapperRef.current],
-                {
-                  y: -1200,
-                  opacity: 0,
-                  duration: 2,
-                }
-              );
+    return () => ctx.revert();
+  }, []);
 
-              // Force ScrollTrigger to recalculate bounds now that the DOM is fully populated
-              setTimeout(() => {
-                ScrollTrigger.refresh();
-              }, 100);
+  useEffect(() => {
+    if (!enablesSectionRef.current) return;
 
-            }, productCardSectionRef);
+    const ctx = gsap.context(() => {
+      // Initial state: Title slightly low, cards far right
+      gsap.set(enablesTitleRef.current, {
+        y: 50,
+        opacity: 0,
+      });
 
-            return () => ctx.revert();
-          }, []);
+      gsap.set(
+        [
+          enablesCard1Ref.current,
+          enablesCard2Ref.current,
+          enablesCard3Ref.current,
+          enablesCard4Ref.current,
+        ],
+        {
+          x: "100vw",
+          opacity: 0,
+        },
+      );
 
-          useEffect(() => {
-            if (!enablesSectionRef.current) return;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: enablesSectionRef.current,
+          start: "top top",
+          end: "+=3320",
+          scrub: true,
+          pin: canPin(),
+        },
+      });
 
-            const ctx = gsap.context(() => {
-              // Initial state: Title slightly low, cards far right
-              gsap.set(enablesTitleRef.current, {
-                y: 50,
-                opacity: 0,
-              });
+      // 1. Title comes in
+      tl.to(enablesTitleRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+      });
 
-              gsap.set([
-                enablesCard1Ref.current,
-                enablesCard2Ref.current,
-                enablesCard3Ref.current,
-                enablesCard4Ref.current
-              ], {
-                x: "100vw",
-                opacity: 0,
-              });
+      // 2. Cards come in one by one from the right
+      tl.to(enablesCard1Ref.current, { x: 0, opacity: 1, duration: 1 });
+      tl.to(enablesCard2Ref.current, { x: 0, opacity: 1, duration: 1 });
+      tl.to(enablesCard3Ref.current, { x: 0, opacity: 1, duration: 1 });
+      tl.to(enablesCard4Ref.current, { x: 0, opacity: 1, duration: 1 });
 
-              const tl = gsap.timeline({
-                scrollTrigger: {
-                  trigger: enablesSectionRef.current,
-                  start: "top top",
-                  end: "+=3320",
-                  scrub: true,
-                  pin: true,
-                },
-              });
+      // 3. Hold at the end
+      tl.to({}, { duration: 0.4 });
+    }, enablesSectionRef);
 
-              // 1. Title comes in
-              tl.to(enablesTitleRef.current, {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-              });
+    return () => ctx.revert();
+  }, []);
 
-              // 2. Cards come in one by one from the right
-              tl.to(enablesCard1Ref.current, { x: 0, opacity: 1, duration: 1 });
-              tl.to(enablesCard2Ref.current, { x: 0, opacity: 1, duration: 1 });
-              tl.to(enablesCard3Ref.current, { x: 0, opacity: 1, duration: 1 });
-              tl.to(enablesCard4Ref.current, { x: 0, opacity: 1, duration: 1 });
+  useEffect(() => {
+    if (!nextRef.current) return;
 
-              // 3. Hold at the end
-              tl.to({}, { duration: 0.4 });
+    const ctx = gsap.context(() => {
+      gsap.set([nextTitleRef.current, nextTextRef.current, nextBtnRef.current], {
+        x: "100vw",
+        opacity: 0,
+      });
 
-            }, enablesSectionRef);
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: nextRef.current,
+          start: "top top",
+          end: "+=2400",
+          scrub: true,
+          pin: canPin(),
+        },
+      });
 
-            return () => ctx.revert();
-          }, []);
+      // TITLE IN
+      tl.to(nextTitleRef.current, {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power3.out",
+      });
 
-          useEffect(() => {
-            if (!nextRef.current) return;
+      // PAUSE
+      tl.to({}, { duration: 0.5 });
 
-            const ctx = gsap.context(() => {
-              gsap.set([
-                nextTitleRef.current,
-                nextTextRef.current,
-                nextBtnRef.current
-              ], {
-                x: "100vw",
-                opacity: 0,
-              });
+      // TEXT IN
+      tl.to(nextTextRef.current, {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power3.out",
+      });
 
-              const tl = gsap.timeline({
-                scrollTrigger: {
-                  trigger: nextRef.current,
-                  start: "top top",
-                  end: "+=2400",
-                  scrub: true,
-                  pin: true,
-                },
-              });
+      // PAUSE
+      tl.to({}, { duration: 0.5 });
 
-              // TITLE IN
-              tl.to(nextTitleRef.current, {
-                x: 0,
-                opacity: 1,
-                duration: 1,
-                ease: "power3.out",
-              });
+      // BUTTON IN
+      tl.to(nextBtnRef.current, {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power3.out",
+      });
 
-              // PAUSE
-              tl.to({}, { duration: 0.5 });
+      // HOLD
+      tl.to({}, { duration: 0.4 });
+    }, nextRef);
 
-              // TEXT IN
-              tl.to(nextTextRef.current, {
-                x: 0,
-                opacity: 1,
-                duration: 1,
-                ease: "power3.out",
-              });
-
-              // PAUSE
-              tl.to({}, { duration: 0.5 });
-
-              // BUTTON IN
-              tl.to(nextBtnRef.current, {
-                x: 0,
-                opacity: 1,
-                duration: 1,
-                ease: "power3.out",
-              });
-
-              // HOLD
-              tl.to({}, { duration: 0.4 });
-
-            }, nextRef);
-
-            return () => ctx.revert();
-          }, []);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <PageShell>
-        {/* =================== SECTION : 1 HERO ============================ */}
-          <section
-              className="
+      {/* =================== SECTION : 1 HERO ============================ */}
+      <section
+        className="
               bg-black
               flex
               items-center
@@ -686,36 +669,30 @@ function ProductsPage() {
               pt-24
               pb-20
             "
-          >
-            <div
-              className="
+      >
+        <div
+          className="
                 w-full
                 max-w-[1360px]
                 mx-auto
                 pl-[3%]
               "
-            >
-
-              <h1
-                className="
+        >
+          <h1
+            className="
                   text-white
                   font-bold
                   text-[clamp(2.75rem,6vw,7rem)]
                   leading-[1]
                 "
-              >
-                Industry-Leading{" "}
-                <span className="text-transparent stroke-text-green">
-                  Software
-                </span>
+          >
+            Industry-Leading <span className="text-transparent stroke-text-green">Software</span>
+            <br />
+            <span className="text-transparent stroke-text-green">Authorized</span> Supported
+          </h1>
 
-                <br />
-
-                <span className="text-transparent stroke-text-green">Authorized</span>{" "}Supported
-              </h1>
-
-              <p
-                className="
+          <p
+            className="
                 mt-8
                 max-w-[900px]
                 text-white
@@ -724,13 +701,13 @@ function ProductsPage() {
                 font-semibold
                 font-sans
                 "
-              >
-                Buy with confidence — implementation expertise included.
-              </p>
+          >
+            Buy with confidence — implementation expertise included.
+          </p>
 
-            {/*Button*/}
-              <button
-                className="
+          {/*Button*/}
+          <button
+            className="
                   mt-[calc(6rem-3vh)]
                   flex
                   items-center
@@ -744,19 +721,19 @@ function ProductsPage() {
                   bg-[#82E926]
                   backdrop-blur-md
                 "
-              >
-                <span
-                  className="
+          >
+            <span
+              className="
                     text-black
                     text-[26px]
                     font-bold
                   "
-                >
-                  Explore More
-                </span>
+            >
+              Explore More
+            </span>
 
-                <div
-                  className="
+            <div
+              className="
                     w-11
                     h-11
                     rounded-full
@@ -765,84 +742,75 @@ function ProductsPage() {
                     items-center
                     justify-center
                   "
-                >
-                  <ArrowUpRight
-                    size={34}
-                    className="text-black"
-                    strokeWidth={2.5}
-                  />
-                </div>
-              </button>
+            >
+              <ArrowUpRight size={34} className="text-black" strokeWidth={2.5} />
             </div>
-          </section>
-        {/* =================== SECTION : 2 Every system should  ========================== */}  
-        <section
-          ref={simpleQuoteSectionRef}
-          className="products-quote bg-black flex items-center justify-center px-6 py-32 overflow-hidden"
-        >
-          <div className="flex items-center justify-center">
-
-            <div
-              ref={simpleQuoteTextRef}
-              className="
+          </button>
+        </div>
+      </section>
+      {/* =================== SECTION : 2 Every system should  ========================== */}
+      <section
+        ref={simpleQuoteSectionRef}
+        className="products-quote bg-black flex items-center justify-center px-6 py-32 overflow-hidden"
+      >
+        <div className="flex items-center justify-center">
+          <div
+            ref={simpleQuoteTextRef}
+            className="
                 text-center
               "
-            >
-              <h2
-                className="
+          >
+            <h2
+              className="
                   text-white
                   font-bold
                   text-[calc(clamp(2.25rem,5vw,4.5rem)+20px)]
                   leading-[1.05]
                 "
-              >
-                <div className="simple-quote-line-1">We only resell</div>
-                <div className="simple-quote-line-2">what we can implement</div>
-              </h2>
-            </div>
-
+            >
+              <div className="simple-quote-line-1">We only resell</div>
+              <div className="simple-quote-line-2">what we can implement</div>
+            </h2>
           </div>
-        </section>
-        {/* =================== SECTION : 3 Ours are built ============================ */}
-        <section
-          ref={builtSectionRef}
-          className="products-built bg-black h-screen flex items-center justify-center px-6 overflow-hidden"
-        >
-          <div className="flex items-center justify-center">
-
-            <div
-              ref={builtTextRef}
-              className="
+        </div>
+      </section>
+      {/* =================== SECTION : 3 Ours are built ============================ */}
+      <section
+        ref={builtSectionRef}
+        className="products-built bg-black h-screen flex items-center justify-center px-6 overflow-hidden"
+      >
+        <div className="flex items-center justify-center">
+          <div
+            ref={builtTextRef}
+            className="
                 text-center
               "
-            >
-              <h2
-                className="
+          >
+            <h2
+              className="
                   text-white
                   font-bold
                   text-[clamp(1.5rem,3.5vw,3rem)]
                   leading-[1.05]
                 "
-              >
-                Certified onboarding support
-                <br />
-                comes with every license.
-              </h2>
-            </div>
-
+            >
+              Certified onboarding support
+              <br />
+              comes with every license.
+            </h2>
           </div>
-        </section>
+        </div>
+      </section>
 
-
-    {/*============================= SECTION : 5 CRM & CLOUD PLATFORM ============================*/}
-        <section
-          ref={productCardSectionRef}
-          className="products-crm-sec bg-black h-screen flex flex-col items-center justify-center"
-        >
-          <div className="w-full mx-auto overflow-hidden">
-            <div
-              ref={productMainCardRef}
-              className="
+      {/*============================= SECTION : 5 CRM & CLOUD PLATFORM ============================*/}
+      <section
+        ref={productCardSectionRef}
+        className="products-crm-sec bg-black h-screen flex flex-col items-center justify-center"
+      >
+        <div className="w-full mx-auto overflow-hidden">
+          <div
+            ref={productMainCardRef}
+            className="
                 products-main-card
                 w-full
                 min-h-[700px]
@@ -851,12 +819,10 @@ function ProductsPage() {
                 md:p-14
                 relative
               "
-            >
+          >
+            {/* LEFT */}
 
-              {/* LEFT */}
-
-              <div className="relative z-10 max-w-full pt-10 md:max-w-[40%]">
-
+            <div className="relative z-10 max-w-full pt-10 md:max-w-[40%]">
               <h2
                 ref={productTitleRef}
                 className="
@@ -884,7 +850,7 @@ function ProductsPage() {
                 {productType}
               </p>
 
-            {/* BUTTON */}
+              {/* BUTTON */}
               <button
                 className="
                   mt-16
@@ -906,7 +872,6 @@ function ProductsPage() {
                 "
               >
                 Contact us
-
                 <div
                   className="
                     w-12
@@ -919,18 +884,14 @@ function ProductsPage() {
                     shrink-0
                   "
                 >
-                  <ArrowUpRight
-                    size={30}
-                    className="text-black"
-                    strokeWidth={2.5}
-                  />
+                  <ArrowUpRight size={30} className="text-black" strokeWidth={2.5} />
                 </div>
               </button>
             </div>
 
             {/* CardsWrapper */}
-                <div
-                  className="
+            <div
+              className="
                     products-cards-panel
                     relative
                     mt-16
@@ -947,10 +908,10 @@ function ProductsPage() {
                     md:w-[58%]
                     md:rounded-l-[40px]
                   "
-                >
-                  <div
-                    ref={cardsWrapperRef}
-                    className="
+            >
+              <div
+                ref={cardsWrapperRef}
+                className="
                       products-cards-row
                       absolute
                       left-[8%]
@@ -962,8 +923,7 @@ function ProductsPage() {
                       gap-8
                       w-max
                     "
-                  > 
-
+              >
                 {/* SALESFORCE */}
 
                 <div
@@ -981,8 +941,7 @@ function ProductsPage() {
                   <img src="/Salesforce.png" className="w-[170px]" />
 
                   <p className="text-black type-lead font-semibold font-medium mt-12 leading-[1.2]">
-                    World's #1 CRM platform —
-                    licenses & configs
+                    World's #1 CRM platform — licenses & configs
                   </p>
 
                   <button
@@ -1018,11 +977,7 @@ function ProductsPage() {
                         shrink-0
                       "
                     >
-                      <ArrowUpRight
-                        size={30}
-                        className="text-black"
-                        strokeWidth={2.5}
-                      />
+                      <ArrowUpRight size={30} className="text-black" strokeWidth={2.5} />
                     </div>
                   </button>
                 </div>
@@ -1044,9 +999,7 @@ function ProductsPage() {
                   <img src="/zoho logo.png" className="w-[170px]" />
 
                   <p className="text-black type-lead font-semibold font-medium mt-12 leading-[1.2]">
-                    Integrated applications for
-                    managing operations, sales,
-                    and customer engagement.
+                    Integrated applications for managing operations, sales, and customer engagement.
                   </p>
 
                   <button
@@ -1082,11 +1035,7 @@ function ProductsPage() {
                         shrink-0
                       "
                     >
-                      <ArrowUpRight
-                        size={30}
-                        className="text-black"
-                        strokeWidth={2.5}
-                      />
+                      <ArrowUpRight size={30} className="text-black" strokeWidth={2.5} />
                     </div>
                   </button>
                 </div>
@@ -1107,7 +1056,8 @@ function ProductsPage() {
                   <img src="/1dox.ai 1.png" className="w-[190px]" />
 
                   <p className="text-black type-lead font-semibold font-medium mt-14 leading-[1.2]">
-                    A unified system to store, manage, and collaborate on documents with workflows and AI.
+                    A unified system to store, manage, and collaborate on documents with workflows
+                    and AI.
                   </p>
 
                   <button
@@ -1143,11 +1093,7 @@ function ProductsPage() {
                         shrink-0
                       "
                     >
-                      <ArrowUpRight
-                        size={30}
-                        className="text-black"
-                        strokeWidth={2.5}
-                      />
+                      <ArrowUpRight size={30} className="text-black" strokeWidth={2.5} />
                     </div>
                   </button>
                 </div>
@@ -1204,11 +1150,7 @@ function ProductsPage() {
                         shrink-0
                       "
                     >
-                      <ArrowUpRight
-                        size={30}
-                        className="text-black"
-                        strokeWidth={2.5}
-                      />
+                      <ArrowUpRight size={30} className="text-black" strokeWidth={2.5} />
                     </div>
                   </button>
                 </div>
@@ -1265,11 +1207,7 @@ function ProductsPage() {
                         shrink-0
                       "
                     >
-                      <ArrowUpRight
-                        size={30}
-                        className="text-black"
-                        strokeWidth={2.5}
-                      />
+                      <ArrowUpRight size={30} className="text-black" strokeWidth={2.5} />
                     </div>
                   </button>
                 </div>
@@ -1288,70 +1226,53 @@ function ProductsPage() {
                   gap-4
                 "
               >
-                <div
-                  ref={dot1Ref}
-                  className="w-4 h-4 rounded-full"
-                />
+                <div ref={dot1Ref} className="w-4 h-4 rounded-full" />
 
-                <div
-                  ref={dot2Ref}
-                  className="w-4 h-4 rounded-full"
-                />
-                
-                <div
-                  ref={dot3Ref}
-                  className="w-4 h-4 rounded-full bg-[#666]"
-                />
+                <div ref={dot2Ref} className="w-4 h-4 rounded-full" />
 
-                <div
-                  ref={dot4Ref}
-                  className="w-4 h-4 rounded-full bg-[#666]"
-                />
+                <div ref={dot3Ref} className="w-4 h-4 rounded-full bg-[#666]" />
 
-                <div
-                  ref={dot5Ref}
-                  className="w-4 h-4 rounded-full bg-[#666]"
-                />
-              </div>
+                <div ref={dot4Ref} className="w-4 h-4 rounded-full bg-[#666]" />
+
+                <div ref={dot5Ref} className="w-4 h-4 rounded-full bg-[#666]" />
               </div>
             </div>
-
           </div>
-        </section>
-    {/*============================= SECTION : 6 WHAT IT ENABLES ============================*/}
-        <section
-          ref={enablesSectionRef}
-          className="products-enables bg-black px-6 h-screen flex flex-col justify-center overflow-hidden"
-        >
-          <div className="mx-auto w-full max-w-[1360px]">
+        </div>
+      </section>
+      {/*============================= SECTION : 6 WHAT IT ENABLES ============================*/}
+      <section
+        ref={enablesSectionRef}
+        className="products-enables bg-black px-6 h-screen flex flex-col justify-center overflow-hidden"
+      >
+        <div className="mx-auto w-full max-w-[1360px]">
+          {/* TITLE */}
 
-            {/* TITLE */}
-
-            <div
-              ref={enablesTitleRef}
-              className="
+          <div
+            ref={enablesTitleRef}
+            className="
                 products-enables-title
                 mb-16
               "
-            >
-              <h2
-                className="
+          >
+            <h2
+              className="
                   text-white
                   text-[clamp(2.25rem,5vw,4.5rem)]
                   font-bold
                   leading-[0.9]
                 "
-              >
-                WHAT
-                <br />
-                IT ENABLES
-              </h2>
-            </div>
+            >
+              WHAT
+              <br />
+              IT ENABLES
+            </h2>
+          </div>
 
-            {/* CARDS */}
+          {/* CARDS */}
 
-            <div
-              className="
+          <div
+            className="
                 products-enables-grid
                 grid
                 grid-cols-1
@@ -1359,20 +1280,16 @@ function ProductsPage() {
                 sm:grid-cols-2
                 lg:grid-cols-4
               "
-            >
+          >
             {/* CARD 1 */}
 
             <div ref={enablesCard1Ref} className="enable-card min-h-[310px]">
               <div className="enable-inner">
                 <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
-              <Settings
-                size={64}
-                strokeWidth={3}
-                className="text-[#8AF500]"
-              />
+                  <Settings size={64} strokeWidth={3} className="text-[#8AF500]" />
 
-              <h3
-                className="
+                  <h3
+                    className="
                   text-black
                   text-xl
                   sm:text-2xl
@@ -1380,15 +1297,20 @@ function ProductsPage() {
                   leading-[1.15]
                   text-right
                 "
-              >
-                Smarter
-                <br />
-                Operations
-              </h3>
-            </div>
+                  >
+                    Smarter
+                    <br />
+                    Operations
+                  </h3>
+                </div>
                 <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
-                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Smarter Operations</h3>
-                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">Automate routine work and unify processes so your teams spend time on what matters.</p>
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">
+                    Smarter Operations
+                  </h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">
+                    Automate routine work and unify processes so your teams spend time on what
+                    matters.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1398,14 +1320,10 @@ function ProductsPage() {
             <div ref={enablesCard2Ref} className="enable-card min-h-[310px]">
               <div className="enable-inner">
                 <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
-              <Timer
-                size={64}
-                strokeWidth={3}
-                className="text-[#8AF500]"
-              />
+                  <Timer size={64} strokeWidth={3} className="text-[#8AF500]" />
 
-              <h3
-                className="
+                  <h3
+                    className="
                   text-black
                   text-xl
                   sm:text-2xl
@@ -1413,15 +1331,19 @@ function ProductsPage() {
                   leading-[1.15]
                   text-right
                 "
-              >
-                Faster
-                <br />
-                Decisions
-              </h3>
-            </div>
+                  >
+                    Faster
+                    <br />
+                    Decisions
+                  </h3>
+                </div>
                 <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
-                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Faster Decisions</h3>
-                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">Real-time data and dashboards turn information into action in minutes, not days.</p>
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">
+                    Faster Decisions
+                  </h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">
+                    Real-time data and dashboards turn information into action in minutes, not days.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1431,14 +1353,10 @@ function ProductsPage() {
             <div ref={enablesCard3Ref} className="enable-card min-h-[310px]">
               <div className="enable-inner">
                 <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
-              <ShieldCheck
-                size={64}
-                strokeWidth={3}
-                className="text-[#8AF500]"
-              />
+                  <ShieldCheck size={64} strokeWidth={3} className="text-[#8AF500]" />
 
-              <h3
-                className="
+                  <h3
+                    className="
                   text-black
                   text-xl
                   sm:text-2xl
@@ -1446,15 +1364,19 @@ function ProductsPage() {
                   leading-[1.15]
                   text-right
                 "
-              >
-                Stronger
-                <br />
-                Security
-              </h3>
-            </div>
+                  >
+                    Stronger
+                    <br />
+                    Security
+                  </h3>
+                </div>
                 <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
-                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Stronger Security</h3>
-                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">Role-based access, audit trails and compliance built into every workflow.</p>
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">
+                    Stronger Security
+                  </h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">
+                    Role-based access, audit trails and compliance built into every workflow.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1464,14 +1386,10 @@ function ProductsPage() {
             <div ref={enablesCard4Ref} className="enable-card min-h-[310px]">
               <div className="enable-inner">
                 <div className="enable-face enable-front rounded-[24px] bg-white p-6 flex flex-col justify-between">
-              <HeartHandshake
-                size={64}
-                strokeWidth={3}
-                className="text-[#8AF500]"
-              />
+                  <HeartHandshake size={64} strokeWidth={3} className="text-[#8AF500]" />
 
-              <h3
-                className="
+                  <h3
+                    className="
                   text-black
                   text-xl
                   sm:text-2xl
@@ -1479,60 +1397,58 @@ function ProductsPage() {
                   leading-[1.15]
                   text-right
                 "
-              >
-                Better
-                <br />
-                Collaboration
-              </h3>
-            </div>
+                  >
+                    Better
+                    <br />
+                    Collaboration
+                  </h3>
+                </div>
                 <div className="enable-face enable-back rounded-[24px] p-6 flex flex-col justify-between">
-                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">Better Collaboration</h3>
-                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">One shared workspace keeps teams, partners and customers on the same page.</p>
+                  <h3 className="text-black text-xl sm:text-2xl font-bold leading-[1.15]">
+                    Better Collaboration
+                  </h3>
+                  <p className="text-black/80 text-base sm:text-lg font-medium leading-snug">
+                    One shared workspace keeps teams, partners and customers on the same page.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-          </div>
-        </section>
-  {/*=======================SECTION : 7 Let’s solve what’s next =================*/}
-       <section
-          ref={nextRef}
-          className="products-next relative h-screen bg-black flex items-center justify-center overflow-hidden px-6"
-        >
-          <div className="products-next-card relative flex min-h-[650px] w-full max-w-[1360px] items-center justify-center overflow-hidden rounded-[40px] bg-[#0B1205] py-28">
+        </div>
+      </section>
+      {/*=======================SECTION : 7 Let’s solve what’s next =================*/}
+      <section
+        ref={nextRef}
+        className="products-next relative h-screen bg-black flex items-center justify-center overflow-hidden px-6"
+      >
+        <div className="products-next-card relative flex min-h-[650px] w-full max-w-[1360px] items-center justify-center overflow-hidden rounded-[40px] bg-[#0B1205] py-28">
+          {/* CONTENT */}
+          <div className="relative z-10 flex flex-col items-center text-center px-6">
+            <h2
+              ref={nextTitleRef}
+              className="text-white text-[clamp(2rem,4.5vw,5.25rem)] font-bold leading-tight text-center"
+            >
+              Not just a license - a real partnership.
+            </h2>
 
-
-
-
-            {/* CONTENT */}
-            <div className="relative z-10 flex flex-col items-center text-center px-6">
-
-              <h2
-                ref={nextTitleRef}
-                className="text-white text-[clamp(2rem,4.5vw,5.25rem)] font-bold leading-tight text-center"
-              >
-                Not just a license - a real partnership.
-              </h2>
-
-              <p
-                ref={nextTextRef}
-                className="
+            <p
+              ref={nextTextRef}
+              className="
                   mt-8
                   text-white
                   text-[clamp(0.875rem,1.3vw,1.125rem)]
                   font-medium
                   leading-relaxed
                 "
-              >
-                Every product we sell, we also implement
-                <br />
-                - at the right price, with the right support.
-              </p>
+            >
+              Every product we sell, we also implement
+              <br />- at the right price, with the right support.
+            </p>
 
             {/*Button*/}
-              <button
-                ref={nextBtnRef}
-                className="
+            <button
+              ref={nextBtnRef}
+              className="
                   mt-10
                   flex
                   items-center
@@ -1546,20 +1462,20 @@ function ProductsPage() {
                   bg-[#D9D9D9]
                   backdrop-blur-md
                 "
-              >
-                <span
-                  className="
+            >
+              <span
+                className="
                     text-black
                     text-sm
                     sm:text-base
                     font-bold
                   "
-                >
-                  Request a Quote
-                </span>
+              >
+                Request a Quote
+              </span>
 
-                <div
-                  className="
+              <div
+                className="
                     w-11
                     h-11
                     rounded-full
@@ -1568,20 +1484,14 @@ function ProductsPage() {
                     items-center
                     justify-center
                   "
-                >
-                  <ArrowUpRight
-                    size={34}
-                    className="text-black"
-                    strokeWidth={2.5}
-                  />
-                </div>
-              </button>
-            </div>
-
+              >
+                <ArrowUpRight size={34} className="text-black" strokeWidth={2.5} />
+              </div>
+            </button>
           </div>
-        </section>
-      </PageShell>
+        </div>
+      </section>
+    </PageShell>
   );
 }
 // ========================================= END ========================================================
-

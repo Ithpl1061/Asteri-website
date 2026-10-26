@@ -2,7 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ServiceDetailPage } from "@/components/ServiceDetailPage";
 
 export const Route = createFileRoute("/services/cloud-solutions")({
-  head: () => ({ meta: [{ title: "Cloud Solutions — Asteri" }] }),
+  head: () => ({
+    meta: [
+      { title: "Cloud Solutions — Asteri" },
+      {
+        name: "description",
+        content:
+          "From architecture through migration and daily operations, we build secure cloud environments that support growth.",
+      },
+    ],
+  }),
   component: CloudSolutions,
 });
 

@@ -1,34 +1,33 @@
+import { z } from "zod";
+import { teamMemberSchema } from "@/lib/schemas";
 import { createFileRoute } from "@tanstack/react-router";
 import { loadApi } from "@/lib/api";
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import gsap from "gsap";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger, MotionPathPlugin } from "@/lib/gsap";
 import { ArrowUpRight, Search, Users, RotateCw, HeartHandshake } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import "./about-page.css";
 // Geist Semi Bold for the hero sub-line (per Figma)
 import "@fontsource/geist-sans/latin-600.css";
+import type { TeamMember } from "@/lib/types";
+import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/about")({
   // Data is loaded on the server, so it is in the first HTML
   loader: async () => ({
-    team: await loadApi<any[]>("/api/team", []),
+    team: await loadApi("/api/team", z.array(teamMemberSchema), []),
   }),
   head: () => ({
     meta: [
       { title: "About — Asteri" },
       {
         name: "description",
-        content:
-          "Asteri is a digital engineering studio building cinematic enterprise software.",
+        content: "Asteri is a digital engineering studio building cinematic enterprise software.",
       },
     ],
   }),
   component: About,
 });
-
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 // Outline words in the hero headline — same style as the Home hero's green text
 const aboutHeroOutline: CSSProperties = {
@@ -39,7 +38,6 @@ const aboutHeroOutline: CSSProperties = {
   paddingBottom: "0.1em",
 };
 
-
 function VisionariesSection({
   visionaries,
   sectionRef,
@@ -47,17 +45,14 @@ function VisionariesSection({
   imageRefs,
   contentRefs,
 }: {
-  visionaries: any[];
+  visionaries: TeamMember[];
   sectionRef: React.RefObject<HTMLElement | null>;
   circleRef: React.RefObject<HTMLDivElement | null>;
   imageRefs: React.MutableRefObject<HTMLImageElement[]>;
   contentRefs: React.MutableRefObject<HTMLDivElement[]>;
 }) {
   return (
-    <section
-      ref={sectionRef}
-      className="relative h-screen w-full bg-black"
-    >
+    <section ref={sectionRef} className="relative h-screen w-full bg-black">
       <div className="flex h-screen items-center overflow-hidden">
         <div className="visionaries-grid mx-auto grid w-full max-w-7xl grid-cols-2 items-center gap-16 lg:gap-20 px-8 lg:px-12">
           {/* Visual area */}
@@ -124,36 +119,20 @@ function VisionariesSection({
                   opacity: index === 0 ? 1 : 0,
                 }}
               >
-                <p className="type-label text-zinc-400">
-                  The Visionaries
-                </p>
+                <p className="type-label text-zinc-400">The Visionaries</p>
 
-                <h2 className="type-heading text-white">
-                  {person.name}
-                </h2>
+                <h2 className="type-heading text-white">{person.name}</h2>
 
-                <h3 className="type-card text-zinc-300">
-                  {person.role}
-                </h3>
+                <h3 className="type-card text-zinc-300">{person.role}</h3>
 
-                <p className="max-w-xl type-body text-zinc-400">
-                  {person.experience}
-                </p>
+                <p className="max-w-xl type-body text-zinc-400">{person.experience}</p>
 
-                <a
-                  href={person.linkedinUrl}
-                  className="group inline-flex items-center gap-4 pt-2"
-                >
+                <a href={person.linkedinUrl} className="group inline-flex items-center gap-4 pt-2">
                   <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#82E926] transition group-hover:scale-110">
-                    <ArrowUpRight
-                      size={28}
-                      className="text-black"
-                    />
+                    <ArrowUpRight size={28} className="text-black" />
                   </span>
 
-                  <span className="text-lg text-white">
-                    LinkedIn
-                  </span>
+                  <span className="text-lg text-white">LinkedIn</span>
                 </a>
               </div>
             ))}
@@ -166,7 +145,7 @@ function VisionariesSection({
 
 function About() {
   // Team arrives with the page (route loader), so it is ready on the first render
-  const [visionaries] = useState<any[]>(Route.useLoaderData().team);
+  const [visionaries] = useState<TeamMember[]>(Route.useLoaderData().team);
   const teamLoaded = true;
 
   // ========================================= REFS ====================================================
@@ -229,7 +208,11 @@ function About() {
       let d = `M ${pts[0].x} ${pts[0].y}`;
       for (let i = 1; i < pts.length - 1; i++) {
         const [a, b, c] = [pts[i - 1], pts[i], pts[i + 1]];
-        const r = Math.min(RADIUS, Math.hypot(b.x - a.x, b.y - a.y) / 2, Math.hypot(c.x - b.x, c.y - b.y) / 2);
+        const r = Math.min(
+          RADIUS,
+          Math.hypot(b.x - a.x, b.y - a.y) / 2,
+          Math.hypot(c.x - b.x, c.y - b.y) / 2,
+        );
         const inX = b.x - Math.sign(b.x - a.x) * r;
         const inY = b.y - Math.sign(b.y - a.y) * r;
         const outX = b.x + Math.sign(c.x - b.x) * r;
@@ -278,7 +261,8 @@ function About() {
         for (let n = walker.nextNode(); n; n = walker.nextNode()) {
           if (!n.textContent?.trim()) continue;
           range.selectNodeContents(n);
-          for (const r of Array.from(range.getClientRects())) maxRight1 = Math.max(maxRight1, r.right - c.left);
+          for (const r of Array.from(range.getClientRects()))
+            maxRight1 = Math.max(maxRight1, r.right - c.left);
         }
       }
       const freeW = xRight - maxRight1;
@@ -308,7 +292,10 @@ function About() {
       path.setAttribute("d", d);
       dot.setAttribute("cx", String(xDrop));
       // On phones the dot rides inside the narrow side gutter, so it must be smaller than it.
-      dot.setAttribute("r", wrapped ? String(Math.min(14, Math.max(5, (freeW >= 30 ? freeW / 2 : xDrop) - 4))) : "14");
+      dot.setAttribute(
+        "r",
+        wrapped ? String(Math.min(14, Math.max(5, (freeW >= 30 ? freeW / 2 : xDrop) - 4))) : "14",
+      );
       dot.setAttribute("cy", "0");
     };
 
@@ -351,7 +338,8 @@ function About() {
         (context) => {
           const conditions = context.conditions as Record<string, boolean>;
           const compact = conditions.mobile || conditions.short;
-          const distanceY = () => Math.min(window.innerHeight * (compact ? 0.1 : 0.16), compact ? 72 : 140);
+          const distanceY = () =>
+            Math.min(window.innerHeight * (compact ? 0.1 : 0.16), compact ? 72 : 140);
           const scrollDefaults = {
             scrub: conditions.mobile ? 0.8 : conditions.tablet ? 0.95 : 1.1,
             invalidateOnRefresh: true,
@@ -387,7 +375,7 @@ function About() {
                 start: "top top",
                 end: "+=120%",
                 scrub: true,
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
               },
@@ -396,7 +384,11 @@ function About() {
 
           // Statement section animation (text lines slide in ONE BY ONE from right + pin/hold)
           if (outcomesHeadingSectionRef.current) {
-            const statementLines = Array.from(outcomesHeadingSectionRef.current.querySelectorAll<HTMLElement>(".statement-text-item"));
+            const statementLines = Array.from(
+              outcomesHeadingSectionRef.current.querySelectorAll<HTMLElement>(
+                ".statement-text-item",
+              ),
+            );
             if (statementLines.length > 0) {
               gsap.set(statementLines, { y: "100vh", opacity: 0 });
 
@@ -406,18 +398,22 @@ function About() {
                   start: "top top",
                   end: "+=203%",
                   scrub: 0.5,
-                  pin: true,
+                  pin: canPin(),
                   anticipatePin: 1,
-                }
+                },
               });
 
               statementLines.forEach((line, i) => {
-                tlStatement.to(line, {
-                  y: 0,
-                  opacity: 1,
-                  duration: 1.2,
-                  ease: "power1.out",
-                }, i * 0.95);
+                tlStatement.to(
+                  line,
+                  {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power1.out",
+                  },
+                  i * 0.95,
+                );
               });
 
               tlStatement.to({}, { duration: 0.4 });
@@ -425,8 +421,16 @@ function About() {
           }
 
           // We Serve Clients animation (Heading from RIGHT, Content lines from LEFT + pin/hold)
-          if (serveClientsSectionRef.current && serveClientsHeadingRef.current && serveClientsContentRef.current) {
-            const serveLeftItems = Array.from(serveClientsContentRef.current.querySelectorAll<HTMLElement>(".serve-client-left-item"));
+          if (
+            serveClientsSectionRef.current &&
+            serveClientsHeadingRef.current &&
+            serveClientsContentRef.current
+          ) {
+            const serveLeftItems = Array.from(
+              serveClientsContentRef.current.querySelectorAll<HTMLElement>(
+                ".serve-client-left-item",
+              ),
+            );
 
             gsap.set(serveClientsHeadingRef.current, { x: "100vw", opacity: 0 });
             gsap.set(serveLeftItems, { x: "-100vw", opacity: 0 });
@@ -437,9 +441,9 @@ function About() {
                 start: "top top",
                 end: "+=257%",
                 scrub: 0.5,
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
-              }
+              },
             });
 
             // Heading from right
@@ -452,12 +456,16 @@ function About() {
 
             // Items from left
             serveLeftItems.forEach((item) => {
-              tlServe.to(item, {
-                x: 0,
-                opacity: 1,
-                duration: 1.2,
-                ease: "power1.out",
-              }, ">-0.4");
+              tlServe.to(
+                item,
+                {
+                  x: 0,
+                  opacity: 1,
+                  duration: 1.2,
+                  ease: "power1.out",
+                },
+                ">-0.4",
+              );
             });
 
             tlServe.to({}, { duration: 0.4 });
@@ -465,7 +473,9 @@ function About() {
 
           // Mission animation (elements slide in ONE BY ONE from right + pin/hold)
           if (missionSectionRef.current) {
-            const missionItems = Array.from(missionSectionRef.current.querySelectorAll<HTMLElement>(".mission-text-item"));
+            const missionItems = Array.from(
+              missionSectionRef.current.querySelectorAll<HTMLElement>(".mission-text-item"),
+            );
             if (missionItems.length > 0) {
               gsap.set(missionItems, { x: "100vw", y: "100vh", opacity: 0 });
 
@@ -475,19 +485,23 @@ function About() {
                   start: "top top",
                   end: "+=203%",
                   scrub: 0.5,
-                  pin: true,
+                  pin: canPin(),
                   anticipatePin: 1,
-                }
+                },
               });
 
               missionItems.forEach((item, i) => {
-                tlMission.to(item, {
-                  x: 0,
-                  y: 0,
-                  opacity: 1,
-                  duration: 1.2,
-                  ease: "power1.out",
-                }, i * 0.95);
+                tlMission.to(
+                  item,
+                  {
+                    x: 0,
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power1.out",
+                  },
+                  i * 0.95,
+                );
               });
 
               tlMission.to({}, { duration: 0.4 });
@@ -496,7 +510,9 @@ function About() {
 
           // Vision animation (elements slide in ONE BY ONE from right + pin/hold)
           if (visionSectionRef.current) {
-            const visionItems = Array.from(visionSectionRef.current.querySelectorAll<HTMLElement>(".vision-text-item"));
+            const visionItems = Array.from(
+              visionSectionRef.current.querySelectorAll<HTMLElement>(".vision-text-item"),
+            );
             if (visionItems.length > 0) {
               gsap.set(visionItems, { x: "100vw", y: "100vh", opacity: 0 });
 
@@ -506,19 +522,23 @@ function About() {
                   start: "top top",
                   end: "+=203%",
                   scrub: 0.5,
-                  pin: true,
+                  pin: canPin(),
                   anticipatePin: 1,
-                }
+                },
               });
 
               visionItems.forEach((item, i) => {
-                tlVision.to(item, {
-                  x: 0,
-                  y: 0,
-                  opacity: 1,
-                  duration: 1.2,
-                  ease: "power1.out",
-                }, i * 0.95);
+                tlVision.to(
+                  item,
+                  {
+                    x: 0,
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power1.out",
+                  },
+                  i * 0.95,
+                );
               });
 
               tlVision.to({}, { duration: 0.4 });
@@ -535,9 +555,9 @@ function About() {
                 start: "top top",
                 end: "+=133%",
                 scrub: 0.5,
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
-              }
+              },
             });
 
             tlApproachHeading
@@ -548,9 +568,11 @@ function About() {
                 ease: "power1.out",
               })
               .to({}, { duration: 0.4 });
-          }          // Our Approach Cards animation (cards slide in ONE BY ONE from right + pin/hold)
+          } // Our Approach Cards animation (cards slide in ONE BY ONE from right + pin/hold)
           if (approachCardsSectionRef.current) {
-            const cardElements = Array.from(approachCardsSectionRef.current.querySelectorAll<HTMLElement>(".approach-card-item"));
+            const cardElements = Array.from(
+              approachCardsSectionRef.current.querySelectorAll<HTMLElement>(".approach-card-item"),
+            );
             if (cardElements.length > 0) {
               gsap.set(cardElements, { x: "100vw", opacity: 0 });
 
@@ -560,18 +582,22 @@ function About() {
                   start: "top top",
                   end: "+=300%",
                   scrub: 0.5,
-                  pin: true,
+                  pin: canPin(),
                   anticipatePin: 1,
-                }
+                },
               });
 
               cardElements.forEach((card, i) => {
-                tlApproachCards.to(card, {
-                  x: 0,
-                  opacity: 1,
-                  duration: 1.2,
-                  ease: "power1.out",
-                }, i * 1.2);
+                tlApproachCards.to(
+                  card,
+                  {
+                    x: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power1.out",
+                  },
+                  i * 1.2,
+                );
               });
 
               tlApproachCards.to({}, { duration: 1.2 });
@@ -594,9 +620,9 @@ function About() {
                 start: "top top",
                 end: "+=133%",
                 scrub: 0.5,
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
-              }
+              },
             });
 
             tlVisionariesHeading
@@ -660,7 +686,7 @@ function About() {
                 start: "top top",
                 end: "+=337%",
                 scrub: 0.5,
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
               },
             });
@@ -686,7 +712,7 @@ function About() {
                   duration: 1.2,
                   ease: "power3.inOut",
                 },
-                "<"
+                "<",
               )
               .to(
                 content[0],
@@ -696,7 +722,7 @@ function About() {
                   duration: 1,
                   ease: "power3.inOut",
                 },
-                "<"
+                "<",
               )
               .fromTo(
                 images[1],
@@ -714,7 +740,7 @@ function About() {
                   duration: 1.2,
                   ease: "power3.out",
                 },
-                "<20%"
+                "<20%",
               )
               .fromTo(
                 content[1],
@@ -728,7 +754,7 @@ function About() {
                   duration: 1,
                   ease: "power3.out",
                 },
-                "<"
+                "<",
               )
 
               // Card 2 (Anuraj Paniker) hold duration
@@ -752,7 +778,7 @@ function About() {
                   duration: 1.2,
                   ease: "power3.inOut",
                 },
-                "<"
+                "<",
               )
               .to(
                 content[1],
@@ -762,7 +788,7 @@ function About() {
                   duration: 1,
                   ease: "power3.inOut",
                 },
-                "<"
+                "<",
               )
               .fromTo(
                 images[2],
@@ -780,7 +806,7 @@ function About() {
                   duration: 1.2,
                   ease: "power3.out",
                 },
-                "<20%"
+                "<20%",
               )
               .fromTo(
                 content[2],
@@ -794,7 +820,7 @@ function About() {
                   duration: 1,
                   ease: "power3.out",
                 },
-                "<"
+                "<",
               )
               .to(
                 circle,
@@ -805,7 +831,7 @@ function About() {
                   duration: 1.2,
                   ease: "power3.inOut",
                 },
-                "<"
+                "<",
               )
 
               // Card 3 (Aishwarya Abnave) hold duration on screen after animation completes
@@ -814,7 +840,9 @@ function About() {
 
           // Culture & Values animation (cards slide in ONE BY ONE from right + pin/hold)
           if (cultureSectionRef.current) {
-            const cultureCards = Array.from(cultureSectionRef.current.querySelectorAll<HTMLElement>(".culture-card-item"));
+            const cultureCards = Array.from(
+              cultureSectionRef.current.querySelectorAll<HTMLElement>(".culture-card-item"),
+            );
             if (cultureCards.length > 0) {
               gsap.set(cultureCards, { x: "100vw", opacity: 0 });
 
@@ -824,18 +852,22 @@ function About() {
                   start: "top top",
                   end: "+=254%",
                   scrub: 0.5,
-                  pin: true,
+                  pin: canPin(),
                   anticipatePin: 1,
-                }
+                },
               });
 
               cultureCards.forEach((card, i) => {
-                tlCulture.to(card, {
-                  x: 0,
-                  opacity: 1,
-                  duration: 1.2,
-                  ease: "power1.out",
-                }, i * 0.95);
+                tlCulture.to(
+                  card,
+                  {
+                    x: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power1.out",
+                  },
+                  i * 0.95,
+                );
               });
 
               tlCulture.to({}, { duration: 0.4 });
@@ -853,30 +885,40 @@ function About() {
                 start: "top top",
                 end: "+=260%",
                 scrub: 0.5,
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
-              }
+              },
             });
 
             tlTechHeading
-              .to(techLine1Ref.current, {
-                x: 0,
-                opacity: 1,
-                duration: 1.2,
-                ease: "power1.out",
-              }, 0)
-              .to(techLine2Ref.current, {
-                x: 0,
-                opacity: 1,
-                duration: 1.2,
-                ease: "power1.out",
-              }, 0)
+              .to(
+                techLine1Ref.current,
+                {
+                  x: 0,
+                  opacity: 1,
+                  duration: 1.2,
+                  ease: "power1.out",
+                },
+                0,
+              )
+              .to(
+                techLine2Ref.current,
+                {
+                  x: 0,
+                  opacity: 1,
+                  duration: 1.2,
+                  ease: "power1.out",
+                },
+                0,
+              )
               .to({}, { duration: 0.5 });
           }
 
           // Designed For What's Next animation (text & button slide in ONE BY ONE from right + pin/hold)
           if (nextSectionRef.current) {
-            const nextItems = Array.from(nextSectionRef.current.querySelectorAll<HTMLElement>(".next-text-item"));
+            const nextItems = Array.from(
+              nextSectionRef.current.querySelectorAll<HTMLElement>(".next-text-item"),
+            );
             if (nextItems.length > 0) {
               gsap.set(nextItems, { x: "100vw", opacity: 0 });
 
@@ -886,18 +928,22 @@ function About() {
                   start: "top top",
                   end: "+=203%",
                   scrub: 0.5,
-                  pin: true,
+                  pin: canPin(),
                   anticipatePin: 1,
-                }
+                },
               });
 
               nextItems.forEach((item, i) => {
-                tlNext.to(item, {
-                  x: 0,
-                  opacity: 1,
-                  duration: 1.2,
-                  ease: "power1.out",
-                }, i * 0.95);
+                tlNext.to(
+                  item,
+                  {
+                    x: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power1.out",
+                  },
+                  i * 0.95,
+                );
               });
 
               tlNext.to({}, { duration: 0.4 });
@@ -918,7 +964,7 @@ function About() {
               ScrollTrigger.refresh();
             });
           });
-        }
+        },
       );
 
       return () => mm.revert();
@@ -931,15 +977,11 @@ function About() {
     <PageShell>
       <div ref={rootRef} className="about-page overflow-x-clip bg-black">
         {/* ================= ORIGINAL HERO SECTION ================= */}
-        <section
-          ref={heroRef}
-          className="relative min-h-screen overflow-hidden"
-        >
+        <section ref={heroRef} className="relative min-h-screen overflow-hidden">
           <div className="absolute inset-0 grid-bg opacity-50" />
 
           {/* MAIN HERO CONTAINER */}
           <div className="about-hero relative mx-auto min-h-[calc(100svh-6rem)] w-full max-w-[1400px] px-6 sm:px-12 lg:px-16 flex flex-col justify-center items-start text-left">
-
             {/* TEXT */}
             <div className="relative z-20 max-w-full flex flex-col items-start text-left">
               {/* Figma (About hero): Inter Semi Bold 96px / 116px line height;
@@ -950,14 +992,20 @@ function About() {
                 data-about-motion
                 className="hero-headline font-sans font-semibold text-white max-w-full text-left"
                 // Same font size as the Home hero headline (.type-display)
-                style={{ fontSize: "clamp(2.75rem, 6vw, 7rem)", lineHeight: 116 / 96, letterSpacing: 0 }}
+                style={{
+                  fontSize: "clamp(2.75rem, 6vw, 7rem)",
+                  lineHeight: 116 / 96,
+                  letterSpacing: 0,
+                }}
               >
                 <span className="block lg:whitespace-nowrap">
                   Technology <span style={aboutHeroOutline}>That</span>
                 </span>
                 <span className="block lg:whitespace-nowrap">
                   <span style={aboutHeroOutline}>Works</span> For Your{" "}
-                  <span ref={heroBusinessRef} style={aboutHeroOutline}>Business</span>
+                  <span ref={heroBusinessRef} style={aboutHeroOutline}>
+                    Business
+                  </span>
                 </span>
               </h1>
 
@@ -981,9 +1029,7 @@ function About() {
                 data-about-motion
                 className="cta-pill mt-16 sm:mt-20 transition-transform duration-300 ease-out hover:scale-105"
               >
-                <span className="text-black type-button">
-                  Get in touch
-                </span>
+                <span className="text-black type-button">Get in touch</span>
                 <div className="cta-pill-icon">
                   <ArrowUpRight size={20} className="text-black" strokeWidth={2.5} />
                 </div>
@@ -1032,23 +1078,28 @@ function About() {
                 strokeLinecap="round"
               />
 
-              <circle
-                ref={orbDotRef}
-                cx="1040"
-                cy="0"
-                r="14"
-                fill="#39FF14"
-              />
+              <circle ref={orbDotRef} cx="1040" cy="0" r="14" fill="#39FF14" />
             </svg>
           </div>
         </section>
         {/* ================= HERO ENDS ================= */}
 
         {/* ============= STATEMENT SECTION ============= */}
-        <section ref={outcomesHeadingSectionRef} className="solutions-outcomes-heading h-screen flex items-center justify-center relative w-full overflow-hidden text-center bg-black px-6 sm:px-10">
-          <h2 ref={outcomesHeadingRef} style={{ perspective: "1000px" }} className="text-[clamp(1.2rem,2.8vw,2.35rem)] font-bold leading-[1.35] text-center text-white tracking-tight">
-            <span className="statement-text-item block">We build on-demand teams tailored to your project —</span>
-            <span className="statement-text-item block">reducing overhead, expanding your service portfolio,</span>
+        <section
+          ref={outcomesHeadingSectionRef}
+          className="solutions-outcomes-heading h-screen flex items-center justify-center relative w-full overflow-hidden text-center bg-black px-6 sm:px-10"
+        >
+          <h2
+            ref={outcomesHeadingRef}
+            style={{ perspective: "1000px" }}
+            className="text-[clamp(1.2rem,2.8vw,2.35rem)] font-bold leading-[1.35] text-center text-white tracking-tight"
+          >
+            <span className="statement-text-item block">
+              We build on-demand teams tailored to your project —
+            </span>
+            <span className="statement-text-item block">
+              reducing overhead, expanding your service portfolio,
+            </span>
             <span className="statement-text-item block">and delivering on time, every time.</span>
           </h2>
         </section>
@@ -1086,9 +1137,7 @@ function About() {
               >
                 Across
               </span>
-              <span className="serve-client-left-item text-white">
-                India
-              </span>
+              <span className="serve-client-left-item text-white">India</span>
               <span
                 className="serve-client-left-item"
                 style={{
@@ -1109,12 +1158,17 @@ function About() {
           className="relative h-screen w-full bg-black flex flex-col items-center justify-center text-center px-6 overflow-hidden"
         >
           <div ref={missionContentRef} className="flex flex-col items-center max-w-4xl mx-auto">
-            <img src="/about/mission-goal.png" alt="Our Mission" className="mission-text-item w-24 sm:w-36 h-auto mb-8 sm:mb-12 object-contain" />
+            <img
+              src="/about/mission-goal.png"
+              alt="Our Mission"
+              className="mission-text-item w-24 sm:w-36 h-auto mb-8 sm:mb-12 object-contain"
+            />
             <h2 className="mission-text-item text-[clamp(2.25rem,5vw,4.5rem)] font-bold text-white mb-6 sm:mb-8 tracking-tight">
               Our Mission
             </h2>
             <p className="mission-text-item text-[clamp(1.2rem,2.8vw,2.35rem)] font-medium text-white/90 leading-snug tracking-tight">
-              To provide top-notch, on-demand IT services that make us our clients&apos; first choice.
+              To provide top-notch, on-demand IT services that make us our clients&apos; first
+              choice.
             </p>
           </div>
         </section>
@@ -1125,12 +1179,17 @@ function About() {
           className="relative h-screen w-full bg-black flex flex-col items-center justify-center text-center px-6 overflow-hidden"
         >
           <div ref={visionContentRef} className="flex flex-col items-center max-w-4xl mx-auto">
-            <img src="/about/vision.png" alt="Our Vision" className="vision-text-item w-24 sm:w-36 h-auto mb-8 sm:mb-12 object-contain" />
+            <img
+              src="/about/vision.png"
+              alt="Our Vision"
+              className="vision-text-item w-24 sm:w-36 h-auto mb-8 sm:mb-12 object-contain"
+            />
             <h2 className="vision-text-item text-[clamp(2.25rem,5vw,4.5rem)] font-bold text-white mb-6 sm:mb-8 tracking-tight">
               Our Vision
             </h2>
             <p className="vision-text-item text-[clamp(1.2rem,2.8vw,2.35rem)] font-medium text-white/90 leading-snug tracking-tight">
-              A future where every business has access to quality tech solutions — on demand, within budget.
+              A future where every business has access to quality tech solutions — on demand, within
+              budget.
             </p>
           </div>
         </section>
@@ -1171,7 +1230,9 @@ function About() {
                   <Search className="w-14 h-14 text-[#82E926]" />
                   <div>
                     <h3 className="text-black type-card font-extrabold mb-2">Discovery</h3>
-                    <p className="text-black font-semibold type-body">Understand the challenge and goals.</p>
+                    <p className="text-black font-semibold type-body">
+                      Understand the challenge and goals.
+                    </p>
                   </div>
                 </div>
 
@@ -1180,7 +1241,9 @@ function About() {
                   <Search className="w-14 h-14 text-[#82E926]" />
                   <div>
                     <h3 className="text-black type-card font-extrabold mb-2">Discovery</h3>
-                    <p className="text-black font-semibold type-body">Understand the challenge and goals.</p>
+                    <p className="text-black font-semibold type-body">
+                      Understand the challenge and goals.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1194,7 +1257,9 @@ function About() {
                   <Users className="w-14 h-14 text-[#82E926]" />
                   <div>
                     <h3 className="text-black type-card font-extrabold mb-2">Team Assembly</h3>
-                    <p className="text-black font-semibold type-body">Exact specialists for the job.</p>
+                    <p className="text-black font-semibold type-body">
+                      Exact specialists for the job.
+                    </p>
                   </div>
                 </div>
 
@@ -1203,7 +1268,9 @@ function About() {
                   <Users className="w-14 h-14 text-[#82E926]" />
                   <div>
                     <h3 className="text-black type-card font-extrabold mb-2">Team Assembly</h3>
-                    <p className="text-black font-semibold type-body">Exact specialists for the job.</p>
+                    <p className="text-black font-semibold type-body">
+                      Exact specialists for the job.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1217,7 +1284,9 @@ function About() {
                   <RotateCw className="w-14 h-14 text-[#82E926]" />
                   <div>
                     <h3 className="text-black type-card font-extrabold mb-2">Agile Delivery</h3>
-                    <p className="text-black font-semibold type-body">Iterative sprints, continuous feedback.</p>
+                    <p className="text-black font-semibold type-body">
+                      Iterative sprints, continuous feedback.
+                    </p>
                   </div>
                 </div>
 
@@ -1226,7 +1295,9 @@ function About() {
                   <RotateCw className="w-14 h-14 text-[#82E926]" />
                   <div>
                     <h3 className="text-black type-card font-extrabold mb-2">Agile Delivery</h3>
-                    <p className="text-black font-semibold type-body">Iterative sprints, continuous feedback.</p>
+                    <p className="text-black font-semibold type-body">
+                      Iterative sprints, continuous feedback.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1239,8 +1310,12 @@ function About() {
                 <div className="flip-front relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
                   <HeartHandshake className="w-14 h-14 text-[#82E926]" />
                   <div>
-                    <h3 className="text-black type-card font-extrabold mb-2">Support &amp; Scale</h3>
-                    <p className="text-black font-semibold type-body">Managed support post-delivery.</p>
+                    <h3 className="text-black type-card font-extrabold mb-2">
+                      Support &amp; Scale
+                    </h3>
+                    <p className="text-black font-semibold type-body">
+                      Managed support post-delivery.
+                    </p>
                   </div>
                 </div>
 
@@ -1248,8 +1323,12 @@ function About() {
                 <div className="flip-back relative p-6 sm:p-8 flex flex-col justify-between items-start text-left !bg-white border border-zinc-200 rounded-2xl shadow-2xl overflow-hidden">
                   <HeartHandshake className="w-14 h-14 text-[#82E926]" />
                   <div>
-                    <h3 className="text-black type-card font-extrabold mb-2">Support &amp; Scale</h3>
-                    <p className="text-black font-semibold type-body">Managed support post-delivery.</p>
+                    <h3 className="text-black type-card font-extrabold mb-2">
+                      Support &amp; Scale
+                    </h3>
+                    <p className="text-black font-semibold type-body">
+                      Managed support post-delivery.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1304,9 +1383,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left">
-                      Innovation
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left">Innovation</h3>
                     <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       1
                     </span>
@@ -1314,16 +1391,18 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left z-10">
-                      Innovation
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left z-10">Innovation</h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
                       <h4 className="text-white type-body font-bold text-left">
-                        We don't follow trends<br />We apply what actually works.
+                        We don't follow trends
+                        <br />
+                        We apply what actually works.
                       </h4>
                       <p className="text-zinc-200 type-body text-left">
-                        At Asteri, innovation means finding smarter ways to solve real problems. Every solution we build is designed to move faster, cost less, and outlast the alternatives.
+                        At Asteri, innovation means finding smarter ways to solve real problems.
+                        Every solution we build is designed to move faster, cost less, and outlast
+                        the alternatives.
                       </p>
                     </div>
 
@@ -1339,9 +1418,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left">
-                      Integrity
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left">Integrity</h3>
                     <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       2
                     </span>
@@ -1349,16 +1426,17 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left z-10">
-                      Integrity
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left z-10">Integrity</h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
                       <h4 className="text-white type-body font-bold text-left">
-                        We say what we mean,<br />and deliver what we promise.
+                        We say what we mean,
+                        <br />
+                        and deliver what we promise.
                       </h4>
                       <p className="text-zinc-200 type-body text-left">
-                        Honest scoping, transparent timelines, and no surprises at go-live. Our clients trust us because we treat their business like our own — always.
+                        Honest scoping, transparent timelines, and no surprises at go-live. Our
+                        clients trust us because we treat their business like our own — always.
                       </p>
                     </div>
 
@@ -1374,9 +1452,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left">
-                      Client-First
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left">Client-First</h3>
                     <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       3
                     </span>
@@ -1384,16 +1460,17 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left z-10">
-                      Client-First
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left z-10">Client-First</h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
                       <h4 className="text-white type-body font-bold text-left">
-                        We say what we mean,<br />and deliver what we promise.
+                        We say what we mean,
+                        <br />
+                        and deliver what we promise.
                       </h4>
                       <p className="text-zinc-200 type-body text-left">
-                        Honest scoping, transparent timelines, and no surprises at go-live. Our clients trust us because we treat their business like our own — always.
+                        Honest scoping, transparent timelines, and no surprises at go-live. Our
+                        clients trust us because we treat their business like our own — always.
                       </p>
                     </div>
 
@@ -1409,9 +1486,7 @@ function About() {
                 <div className="flip-inner">
                   {/* FRONT */}
                   <div className="flip-front relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left">
-                      Agility
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left">Agility</h3>
                     <span className="text-[260px] sm:text-[340px] font-bold text-white/40 leading-none absolute -bottom-10 -right-4 select-none pointer-events-none">
                       4
                     </span>
@@ -1419,16 +1494,17 @@ function About() {
 
                   {/* BACK */}
                   <div className="flip-back relative p-6 sm:p-7 flex flex-col justify-between items-start text-left bg-[rgb(137,137,137)] border border-zinc-500/40 rounded-3xl overflow-hidden">
-                    <h3 className="text-white type-card font-bold text-left z-10">
-                      Agility
-                    </h3>
+                    <h3 className="text-white type-card font-bold text-left z-10">Agility</h3>
 
                     <div className="z-10 space-y-3 max-w-[280px]">
                       <h4 className="text-white type-body font-bold text-left">
-                        Built to move fast without<br />breaking things.
+                        Built to move fast without
+                        <br />
+                        breaking things.
                       </h4>
                       <p className="text-zinc-200 type-body text-left">
-                        Markets shift. Priorities change. Our on-demand model means we can assemble, scale, and pivot your team without the lag of traditional IT engagements.
+                        Markets shift. Priorities change. Our on-demand model means we can assemble,
+                        scale, and pivot your team without the lag of traditional IT engagements.
                       </p>
                     </div>
 
@@ -1443,7 +1519,10 @@ function About() {
         </section>
 
         {/* ============= TECHNOLOGY MATTERS SECTION ============= */}
-        <section ref={techSectionRef} className="relative h-screen w-full bg-black flex items-center justify-center px-6 sm:px-10 overflow-hidden">
+        <section
+          ref={techSectionRef}
+          className="relative h-screen w-full bg-black flex items-center justify-center px-6 sm:px-10 overflow-hidden"
+        >
           <div className="w-full max-w-[1200px] mx-auto text-center">
             <h2
               ref={techHeadingRef}
@@ -1457,14 +1536,21 @@ function About() {
                 lineHeight: "1.15",
               }}
             >
-              <span ref={techLine1Ref} className="block whitespace-normal sm:whitespace-nowrap">Technology Only Matters</span>
-              <span ref={techLine2Ref} className="block whitespace-normal sm:whitespace-nowrap">When It Delivers Clarity.</span>
+              <span ref={techLine1Ref} className="block whitespace-normal sm:whitespace-nowrap">
+                Technology Only Matters
+              </span>
+              <span ref={techLine2Ref} className="block whitespace-normal sm:whitespace-nowrap">
+                When It Delivers Clarity.
+              </span>
             </h2>
           </div>
         </section>
 
         {/* ============= DESIGNED FOR WHAT'S NEXT SECTION ============= */}
-        <section ref={nextSectionRef} className="relative h-screen w-full bg-black flex flex-col items-center justify-center px-5 overflow-hidden">
+        <section
+          ref={nextSectionRef}
+          className="relative h-screen w-full bg-black flex flex-col items-center justify-center px-5 overflow-hidden"
+        >
           {/* CONTENT */}
           <div className="relative z-10 text-center max-w-7xl w-full mx-auto flex flex-col items-center justify-center px-4">
             <h2 className="next-text-item text-white type-display tracking-tight text-center sm:whitespace-nowrap">
@@ -1477,9 +1563,7 @@ function About() {
             </p>
 
             <button className="next-text-item cta-pill mt-10 mx-auto font-bold hover:scale-105 transition-transform">
-              <span className="text-black type-button text-center">
-                Talk To Us
-              </span>
+              <span className="text-black type-button text-center">Talk To Us</span>
               <div className="cta-pill-icon">
                 <ArrowUpRight size={24} className="text-black" strokeWidth={2.5} />
               </div>

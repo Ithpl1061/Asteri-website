@@ -95,8 +95,6 @@
   transform: none;
 }
 
-
-
 .industries-security-card p {
   width: 650px;
   margin: 0 0 0 111px;
@@ -229,7 +227,6 @@
   }
 }
 
-
 /* ==========================================================================
    INDUSTRIES - phones (<= 700px)
    Same scenes, order, colours and animations. The Banking card board keeps its
@@ -239,16 +236,28 @@
    ========================================================================== */
 @media (max-width: 700px) {
   /* ---- no tall empty screens between scenes ---- */
-  .industries-complexity { height: 55svh !important; min-height: 0 !important; }
+  .industries-complexity {
+    height: 55svh !important;
+    min-height: 0 !important;
+  }
   .industries-message,
   .industries-ticker,
   .industries-title-sec,
   .industries-impact,
-  .industries-next { min-height: 42svh !important; }
-  .industries-next > div { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+  .industries-next {
+    min-height: 42svh !important;
+  }
+  .industries-next > div {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
 
   /* ---- Banking & Financial Services card board ---- */
-  .industries-cards-sec { min-height: 100svh !important; padding-top: 4.5rem; padding-bottom: 1rem; }
+  .industries-cards-sec {
+    min-height: 100svh !important;
+    padding-top: 4.5rem;
+    padding-bottom: 1rem;
+  }
 
   .industries-banking-layout {
     --w: min(92vw, 420px);
@@ -267,27 +276,98 @@
     line-height: 1.1;
   }
 
-  .industries-carousel { top: 70px; right: 0; width: 118px; height: 33px; }
+  .industries-carousel {
+    top: 70px;
+    right: 0;
+    width: 118px;
+    height: 33px;
+  }
 
   .industries-security-card,
   .industries-resilience-card,
   .industries-speed-card,
-  .industries-banking-image { border-width: 2px; border-radius: 12px; }
+  .industries-banking-image {
+    border-width: 2px;
+    border-radius: 12px;
+  }
 
-  .industries-security-card { top: 112px; left: 0; width: var(--w); height: 94px; }
-  .industries-security-arrow { top: 16px; left: 14px; width: 36px; height: 60px; border-radius: 24px; }
-  .industries-security-card p { width: calc(var(--w) - 84px); margin: 0 0 0 68px; font-size: 1rem; letter-spacing: -0.3px; line-height: 1.15; }
+  .industries-security-card {
+    top: 112px;
+    left: 0;
+    width: var(--w);
+    height: 94px;
+  }
+  .industries-security-arrow {
+    top: 16px;
+    left: 14px;
+    width: 36px;
+    height: 60px;
+    border-radius: 24px;
+  }
+  .industries-security-card p {
+    width: calc(var(--w) - 84px);
+    margin: 0 0 0 68px;
+    font-size: 1rem;
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+  }
 
-  .industries-resilience-card { top: 220px; left: 0; width: calc((var(--w) - 12px) / 2); height: 170px; }
-  .industries-resilience-card h3 { width: calc(100% - 28px); margin: 12px 0 0 14px; font-size: 1.3rem; letter-spacing: -1px; line-height: 1.05; }
-  .industries-resilience-arrow { top: auto; bottom: 12px; left: 14px; width: 56px; height: 34px; border-radius: 24px; }
+  .industries-resilience-card {
+    top: 220px;
+    left: 0;
+    width: calc((var(--w) - 12px) / 2);
+    height: 170px;
+  }
+  .industries-resilience-card h3 {
+    width: calc(100% - 28px);
+    margin: 12px 0 0 14px;
+    font-size: 1.3rem;
+    letter-spacing: -1px;
+    line-height: 1.05;
+  }
+  .industries-resilience-arrow {
+    top: auto;
+    bottom: 12px;
+    left: 14px;
+    width: 56px;
+    height: 34px;
+    border-radius: 24px;
+  }
 
-  .industries-speed-card { top: 220px; left: calc((var(--w) + 12px) / 2); width: calc((var(--w) - 12px) / 2); height: 170px; }
-  .industries-speed-card p { width: calc(100% - 28px); margin: 14px 0 0 14px; font-size: 0.92rem; letter-spacing: -0.3px; line-height: 1.15; }
-  .industries-speed-card button { bottom: 12px; left: 12px; width: calc(100% - 24px); height: 38px; padding: 0 8px 0 14px; font-size: 0.85rem; letter-spacing: -0.3px; }
-  .industries-speed-card button img { width: 24px; height: 24px; }
+  .industries-speed-card {
+    top: 220px;
+    left: calc((var(--w) + 12px) / 2);
+    width: calc((var(--w) - 12px) / 2);
+    height: 170px;
+  }
+  .industries-speed-card p {
+    width: calc(100% - 28px);
+    margin: 14px 0 0 14px;
+    font-size: 0.92rem;
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+  }
+  .industries-speed-card button {
+    bottom: 12px;
+    left: 12px;
+    width: calc(100% - 24px);
+    height: 38px;
+    padding: 0 8px 0 14px;
+    font-size: 0.85rem;
+    letter-spacing: -0.3px;
+  }
+  .industries-speed-card button img {
+    width: 24px;
+    height: 24px;
+  }
 
-  .industries-banking-image { top: 404px; left: 0; right: auto; width: var(--w); height: 138px; }
+  .industries-banking-image {
+    top: 404px;
+    left: 0;
+    right: auto;
+    width: var(--w);
+    height: 138px;
+  }
 }
 
 /* Industries - very short phones: shrink the whole Banking board a little so it stays on screen */

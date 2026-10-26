@@ -2,7 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ServiceDetailPage } from "@/components/ServiceDetailPage";
 
 export const Route = createFileRoute("/services/software-development")({
-  head: () => ({ meta: [{ title: "Software Development — Asteri" }] }),
+  head: () => ({
+    meta: [
+      { title: "Software Development — Asteri" },
+      {
+        name: "description",
+        content:
+          "We design and build dependable digital products, internal tools, and enterprise platforms with your teams and customers in mind.",
+      },
+    ],
+  }),
   component: SoftwareDevelopment,
 });
 

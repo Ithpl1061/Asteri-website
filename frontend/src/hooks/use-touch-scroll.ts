@@ -1,8 +1,5 @@
 import { useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /**
  * Phones/tablets: take over touch scrolling so pinned scroll-scenes stay locked to the
@@ -11,7 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export function useTouchScroll() {
   useEffect(() => {
-    if (typeof window === "undefined" || window.innerWidth >= 1024 || !ScrollTrigger.isTouch) return;
+    if (typeof window === "undefined" || window.innerWidth >= 1024 || !ScrollTrigger.isTouch)
+      return;
     ScrollTrigger.normalizeScroll({
       type: "touch",
       allowNestedScroll: true,

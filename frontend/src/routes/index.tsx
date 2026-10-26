@@ -1,23 +1,44 @@
+import { z } from "zod";
+import { serviceSchema, industrySchema, partnerSchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { loadApi } from "@/lib/api";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import * as LucideIcons from "lucide-react";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { gsap, ScrollTrigger, MotionPathPlugin } from "@/lib/gsap";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Banknote,
+  Cpu,
+  GraduationCap,
+  HelpCircle,
+  ShoppingBag,
+  Stethoscope,
+  Truck,
+} from "lucide-react";
+
+// Icons for the industries table, looked up by the iconName stored in the database.
+// Only these icons are imported, so the bundle does not include the whole icon set.
+const INDUSTRY_ICONS: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
+  Banknote,
+  Cpu,
+  GraduationCap,
+  ShoppingBag,
+  Stethoscope,
+  Truck,
+};
 import { PageShell } from "@/components/PageShell";
 import { GlowOrb } from "@/components/GlowOrb";
-
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+import type { Service, Industry, Partner } from "@/lib/types";
+import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/")({
   // Data is loaded on the server, so it is in the first HTML
   loader: async () => {
     const [services, industries, partners] = await Promise.all([
-      loadApi<any[]>("/api/services", []),
-      loadApi<any[]>("/api/industries", []),
-      loadApi<any[]>("/api/partners", []),
+      loadApi("/api/services", z.array(serviceSchema), []),
+      loadApi("/api/industries", z.array(industrySchema), []),
+      loadApi("/api/partners", z.array(partnerSchema), []),
     ]);
     return { services, industries, partners };
   },
@@ -43,7 +64,7 @@ export const Route = createFileRoute("/")({
  *      ...content...
  *   </section>
  *
- *   scrollTrigger: { trigger: xRef.current, pin: true, start: "top top",
+ *   scrollTrigger: { trigger: xRef.current, pin: canPin(), start: "top top",
  *                    end: "+=NNNN", scrub: 1 }
  *
  * pin:true + the default pinSpacing:true makes GSAP insert its own spacer
@@ -53,7 +74,7 @@ export const Route = createFileRoute("/")({
  * Do NOT:
  *  - add an arbitrary h-[Nvh] class to a pinned section (that was the bug:
  *    two independent, hand-tuned numbers that drift apart -> blank gaps)
- *  - combine CSS `position: sticky` with GSAP `pin: true` on the same
+ *  - combine CSS `position: sticky` with GSAP `pin: canPin()` on the same
  *    element (they fight for control of positioning)
  *  - use `pinSpacing: false` unless you deliberately want the next
  *    section to slide over/under this one (it did NOT want that here —
@@ -167,13 +188,12 @@ function Home() {
   const partnerCardRef = useRef<HTMLDivElement>(null);
   const collaborationsSectionRef = useRef<HTMLElement>(null);
 
-
   const heroOutlineStroke = "clamp(1px, 0.55vw, 3px)";
 
   const loaderData = Route.useLoaderData();
-  const [services] = useState<any[]>(loaderData.services);
-  const [industries] = useState<any[]>(loaderData.industries);
-  const [partners] = useState<any[]>(loaderData.partners);
+  const [services] = useState<Service[]>(loaderData.services);
+  const [industries] = useState<Industry[]>(loaderData.industries);
+  const [partners] = useState<Partner[]>(loaderData.partners);
   // =================================== END REFS ==========================================
 
   //======================================= HERO ENTRANCE (runs once on load, all breakpoints) ===========
@@ -186,7 +206,11 @@ function Home() {
 
     const tl = gsap
       .timeline({ delay: 0.3 })
-      .fromTo(dot, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(2.2)" });
+      .fromTo(
+        dot,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(2.2)" },
+      );
 
     return () => {
       tl.kill();
@@ -250,7 +274,15 @@ function Home() {
       const aboutSection = about2Ref.current;
       const connectorDot = aboutConnectorDotRef.current;
 
-      if (isPinned && heroDot && introSection && introDot && introLineLeft && aboutSection && connectorDot) {
+      if (
+        isPinned &&
+        heroDot &&
+        introSection &&
+        introDot &&
+        introLineLeft &&
+        aboutSection &&
+        connectorDot
+      ) {
         const ease = gsap.parseEase("power1.inOut");
         const PHONE = window.innerWidth < 1024; // longer runway on touch widths
         const HOLD = PHONE ? 1.7 : 1.3; // intro hold length, in viewport heights
@@ -324,7 +356,7 @@ function Home() {
           trigger: introSection,
           start: "top top",
           end: `+=${HOLD * 100}%`,
-          pin: true,
+          pin: canPin(),
           anticipatePin: 1,
           onUpdate: (self) => {
             p2 = self.progress;
@@ -410,7 +442,9 @@ function Home() {
           const matrix = path?.getScreenCTM();
           if (!dot || !path || !svg || !track || !matrix) return;
 
-          const point = path.getPointAtLength(path.getTotalLength() * Math.min(Math.max(progress, 0), 1));
+          const point = path.getPointAtLength(
+            path.getTotalLength() * Math.min(Math.max(progress, 0), 1),
+          );
           const screenPoint = svg.createSVGPoint();
           screenPoint.x = point.x;
           screenPoint.y = point.y;
@@ -477,15 +511,13 @@ function Home() {
               start: "top top",
               end: () => `+=${Math.max(getOrbTravel(), window.innerHeight)}`,
               scrub: true,
-              pin: true,
+              pin: canPin(),
               anticipatePin: 1,
               invalidateOnRefresh: true,
               onRefresh: updateHeroOrb,
             },
           });
         }
-
-
 
         // =====================================================
         // ABOUT INTRO — title + connector lines
@@ -500,9 +532,13 @@ function Home() {
           });
           // Only the title animates; the green lines either side are fixed
           // (no grow/shrink, so they never blink when scrolling in and out).
-          introTl.from(".about-intro-title", { opacity: 0, y: 40, duration: 0.9, ease: "power3.out" });
+          introTl.from(".about-intro-title", {
+            opacity: 0,
+            y: 40,
+            duration: 0.9,
+            ease: "power3.out",
+          });
         }
-
 
         // =====================================================
         // ABOUT CONTENT + explosion + quotes
@@ -520,7 +556,7 @@ function Home() {
               start: "top top",
               end: pinEnd(6000),
               scrub: scrubFor(1.5),
-              pin: true,
+              pin: canPin(),
               anticipatePin: 1,
             },
           });
@@ -531,10 +567,12 @@ function Home() {
             .to(".about-text", { opacity: 1, x: 0, duration: 2.2, ease: "power3.out" }, 0.6)
             .to(".about-btn", { opacity: 1, x: 0, duration: 2.2, ease: "power3.out" }, 0.9)
             .to({}, { duration: 1.5 })
-            .to(
-              [".about-title-main", ".about-text", ".about-btn"],
-              { opacity: 0, x: -80, duration: 0.8, ease: "power2.in" },
-            )
+            .to([".about-title-main", ".about-text", ".about-btn"], {
+              opacity: 0,
+              x: -80,
+              duration: 0.8,
+              ease: "power2.in",
+            })
             .to(".about-connector", { opacity: 0, duration: 0.8, ease: "power2.in" }, "<")
             .to(quoteRef.current, { opacity: 1, duration: 0.8 }, "+=0.1")
             .to(quote1Ref.current, { opacity: 1, y: 0, duration: 1, ease: "power4.out" })
@@ -569,7 +607,11 @@ function Home() {
             .to(".about-title-main", { opacity: 1, x: 0, duration: 1.2, ease: "power2.out" }, 0.1)
             .to(".about-text", { opacity: 1, x: 0, duration: 1.2, ease: "power2.out" }, 0.3)
             .to(".about-btn", { opacity: 1, x: 0, duration: 1.2, ease: "power2.out" }, 0.5)
-            .to([".about-title-main", ".about-text", ".about-btn"], { opacity: 0, x: -40, duration: 0.25 }, 1.15)
+            .to(
+              [".about-title-main", ".about-text", ".about-btn"],
+              { opacity: 0, x: -40, duration: 0.25 },
+              1.15,
+            )
             .to(quoteRef.current, { autoAlpha: 1, duration: 0.2 }, 1.25)
             .to(quote1Ref.current, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 1.3)
             .to(quote1Ref.current, { opacity: 0, y: -28, duration: 0.3, ease: "power2.in" }, 1.95)
@@ -581,7 +623,13 @@ function Home() {
         // =====================================================
         gsap.set(".what-content", { opacity: 0 });
         gsap.set(".what-card", { opacity: 0, scale: 0.95 });
-        gsap.set(".service-row", { opacity: 0, x: isCompact ? 0 : 350, y: 0, force3D: true, willChange: "transform, opacity" });
+        gsap.set(".service-row", {
+          opacity: 0,
+          x: isCompact ? 0 : 350,
+          y: 0,
+          force3D: true,
+          willChange: "transform, opacity",
+        });
 
         if (isPinned) {
           const whatTl = gsap.timeline({
@@ -590,7 +638,7 @@ function Home() {
               start: "top top",
               end: pinEnd(4400),
               scrub: scrubFor(0.3),
-              pin: true,
+              pin: canPin(),
               anticipatePin: 1,
             },
           });
@@ -651,7 +699,7 @@ function Home() {
               start: "top top",
               end: pinEnd(1800),
               scrub: scrubFor(1),
-              pin: true,
+              pin: canPin(),
               anticipatePin: 1,
             },
           });
@@ -661,20 +709,24 @@ function Home() {
               ".industries-left",
               { x: isCompact ? 0 : -80, opacity: 0 },
               { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" },
-              0
+              0,
             )
             .fromTo(
               ".industries-right",
               { x: isCompact ? 0 : 80, opacity: 0 },
               { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" },
-              0
+              0,
             )
-            .to(".industries-grid", {
-              x: 0,
-              opacity: 1,
-              duration: 1.2,
-              ease: "power2.out",
-            }, 0.3);
+            .to(
+              ".industries-grid",
+              {
+                x: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power2.out",
+              },
+              0.3,
+            );
         } else {
           gsap.to(".industries-grid", {
             x: 0,
@@ -720,7 +772,7 @@ function Home() {
               start: "top top",
               end: pinEnd(3600),
               scrub: scrubFor(1.5),
-              pin: true,
+              pin: canPin(),
               anticipatePin: 1,
             },
           });
@@ -745,7 +797,7 @@ function Home() {
               certifiedEdRef.current,
               certifiedCopyRef.current,
             ],
-            { opacity: 0, y: isCompact ? 15 : 30 }
+            { opacity: 0, y: isCompact ? 15 : 30 },
           );
 
           if (isPinned) {
@@ -755,7 +807,7 @@ function Home() {
                 start: "top top",
                 end: pinEnd(2760),
                 scrub: scrubFor(1),
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
               },
             });
@@ -765,7 +817,12 @@ function Home() {
               .to({}, { duration: 0.6 })
               .to(certifiedReRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
               .to({}, { duration: 0.6 })
-              .to(certifiedCertifiRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
+              .to(certifiedCertifiRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.out",
+              })
               .to({}, { duration: 0.6 })
               .to(certifiedEdRef.current, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
               .to({}, { duration: 0.6 })
@@ -782,13 +839,28 @@ function Home() {
 
             mobileCertifiedTl
               .to(certifiedWeRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" })
-              .to(certifiedReRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "+=0.1")
-              .to(certifiedCertifiRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "+=0.1")
-              .to(certifiedEdRef.current, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, "+=0.1")
-              .to(certifiedCopyRef.current, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "+=0.15");
+              .to(
+                certifiedReRef.current,
+                { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+                "+=0.1",
+              )
+              .to(
+                certifiedCertifiRef.current,
+                { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+                "+=0.1",
+              )
+              .to(
+                certifiedEdRef.current,
+                { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+                "+=0.1",
+              )
+              .to(
+                certifiedCopyRef.current,
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                "+=0.15",
+              );
           }
         }
-
 
         // =====================================================
         // PLATFORMS & PARTNERS — slide in from right (from services page)
@@ -803,7 +875,7 @@ function Home() {
                 start: "top top",
                 end: pinEnd(1140),
                 scrub: true,
-                pin: true,
+                pin: canPin(),
                 anticipatePin: 1,
               },
             });
@@ -878,7 +950,11 @@ function Home() {
               t,
             );
             if (i < collabRows.length - 1) {
-              collabTl.to(row, { x: () => -window.innerWidth, opacity: 0, duration: 1, ease: "power2.in" }, t + 1.6);
+              collabTl.to(
+                row,
+                { x: () => -window.innerWidth, opacity: 0, duration: 1, ease: "power2.in" },
+                t + 1.6,
+              );
             }
           });
           collabTl.to({}, { duration: 1 });
@@ -1018,7 +1094,6 @@ function Home() {
   return (
     <>
       <PageShell>
-
         {/* ============================== HERO =================================== */}
         <section
           ref={heroRef}
@@ -1061,7 +1136,9 @@ function Home() {
 
               <div className="text-center">
                 <div className="relative inline-block">
-                  <p ref={heroLine3Ref} className="type-display text-white">in Pune</p>
+                  <p ref={heroLine3Ref} className="type-display text-white">
+                    in Pune
+                  </p>
 
                   {/* Connector: orb beside the last word, line out to the right edge */}
                   <span
@@ -1078,8 +1155,6 @@ function Home() {
             </div>
           </div>
         </section>
-
-
 
         {/* ============================== ABOUT INTRO =================================== */}
         {/* Big title with connectors (Figma): on the right a line runs to the
@@ -1296,18 +1371,26 @@ function Home() {
             className="industries-grid w-full grid grid-cols-1 border-y border-white bg-black sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-auto"
           >
             {industries.map((i, idx) => {
-              const IconComp = (LucideIcons as any)[i.iconName] || LucideIcons.HelpCircle;
+              const IconComp = INDUSTRY_ICONS[i.iconName] || HelpCircle;
               return (
                 <div
                   key={i.id}
-                  className={`industry-card flex min-h-[163px] items-center justify-center bg-black px-4 py-[23px] sm:min-h-[183px] sm:px-6 ${idx < industries.length - 1 ? "border-b sm:border-b-0 sm:border-r border-white/50" : ""
-                    }`}
+                  className={`industry-card flex min-h-[163px] items-center justify-center bg-black px-4 py-[23px] sm:min-h-[183px] sm:px-6 ${
+                    idx < industries.length - 1
+                      ? "border-b sm:border-b-0 sm:border-r border-white/50"
+                      : ""
+                  }`}
                 >
                   <div className="text-center">
                     <IconComp className="mx-auto mb-3 sm:mb-4 h-9 w-9 sm:h-10 sm:w-10 text-primary" />
                     <div className="type-card text-white">
                       {i.titleLine1}
-                      {i.titleLine2 ? <><br />{i.titleLine2}</> : null}
+                      {i.titleLine2 ? (
+                        <>
+                          <br />
+                          {i.titleLine2}
+                        </>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -1400,7 +1483,9 @@ function Home() {
               <br />
               Management
             </div>
-            <div className="case-tag type-card static w-fit max-w-full justify-self-start">SAP AMC</div>
+            <div className="case-tag type-card static w-fit max-w-full justify-self-start">
+              SAP AMC
+            </div>
             <div className="case-tag type-card static w-fit max-w-full justify-self-end">
               Vehicle Management
               <br />
@@ -1435,10 +1520,19 @@ function Home() {
             }
           >
             <div>
-              <span ref={certifiedWeRef} className="inline-block will-change-transform">we</span><span ref={certifiedReRef} className="inline-block will-change-transform">’re</span>
+              <span ref={certifiedWeRef} className="inline-block will-change-transform">
+                we
+              </span>
+              <span ref={certifiedReRef} className="inline-block will-change-transform">
+                ’re
+              </span>
             </div>
-            <div ref={certifiedCertifiRef} className="will-change-transform">certifi</div>
-            <div ref={certifiedEdRef} className="will-change-transform">ed</div>
+            <div ref={certifiedCertifiRef} className="will-change-transform">
+              certifi
+            </div>
+            <div ref={certifiedEdRef} className="will-change-transform">
+              ed
+            </div>
             <p
               ref={certifiedCopyRef}
               className="certified-copy mt-6 max-w-[34rem] font-sans text-base font-semibold text-white will-change-transform lg:absolute lg:mt-0 lg:max-w-none"
@@ -1534,14 +1628,36 @@ function Home() {
             <div className="collab-logos-container relative mt-4 sm:mt-6 w-full overflow-hidden">
               <div
                 className="collab-logos-wrapper relative mx-auto"
-                style={{ "--collab-w": "min(100vw, 2400px)", width: "var(--collab-w)", height: "calc(var(--collab-w) * 0.24)" } as CSSProperties}
+                style={
+                  {
+                    "--collab-w": "min(100vw, 2400px)",
+                    width: "var(--collab-w)",
+                    height: "calc(var(--collab-w) * 0.24)",
+                  } as CSSProperties
+                }
               >
-                <div className="collab-logos-inner absolute left-0 top-1/2 w-full -translate-y-1/2" style={{ aspectRatio: "2 / 1" }}>
-                  {[[0,29],[29,50.4],[50.4,67.3],[67.3,100]].map(([from, to], i) => (
-                    <div key={`collab-col-${i}`} className="collab-col absolute inset-0" style={{ opacity: 0 }}>
+                <div
+                  className="collab-logos-inner absolute left-0 top-1/2 w-full -translate-y-1/2"
+                  style={{ aspectRatio: "2 / 1" }}
+                >
+                  {[
+                    [0, 29],
+                    [29, 50.4],
+                    [50.4, 67.3],
+                    [67.3, 100],
+                  ].map(([from, to], i) => (
+                    <div
+                      key={`collab-col-${i}`}
+                      className="collab-col absolute inset-0"
+                      style={{ opacity: 0 }}
+                    >
                       <img
                         src="/figma/home/collaborations-logos.png"
-                        alt={i === 0 ? "Our collaborators: Tata Communications, Humanata, Compulink, Steel1, intellimation.ai, Apexpertise, Roche, Themis Medicare, Symbiosis International, POSCO, Amdocs, Xoriant, CitiusTech, Indian Army 512 Army Base Workshop, GA Steel Tech and Netafim" : ""}
+                        alt={
+                          i === 0
+                            ? "Our collaborators: Tata Communications, Humanata, Compulink, Steel1, intellimation.ai, Apexpertise, Roche, Themis Medicare, Symbiosis International, POSCO, Amdocs, Xoriant, CitiusTech, Indian Army 512 Army Base Workshop, GA Steel Tech and Netafim"
+                            : ""
+                        }
                         loading="eager"
                         className="collab-logo-img pointer-events-none h-full w-full max-w-none select-none"
                         style={{ clipPath: `inset(${from}% 0 ${100 - to}% 0)` }}
@@ -1586,23 +1702,14 @@ function Home() {
           className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-black px-6 py-20 sm:min-h-[100dvh] lg:h-screen lg:min-h-0 lg:px-0 lg:py-0"
         >
           <div className="relative z-10 max-w-5xl text-center">
-            <h2
-              ref={nextTitleRef}
-              className="text-white type-display"
-            >
+            <h2 ref={nextTitleRef} className="text-white type-display">
               Let&apos;s Build What&apos;s Next.
             </h2>
-            <p
-              ref={nextTextRef}
-              className="mt-4 type-lead font-semibold text-white"
-            >
+            <p ref={nextTextRef} className="mt-4 type-lead font-semibold text-white">
               We&apos;ll help you design the path forward.
             </p>
 
-            <button
-              ref={nextBtnRef}
-              className="cta-pill mt-8"
-            >
+            <button ref={nextBtnRef} className="cta-pill mt-8">
               <span className="type-button text-black">Get In Touch</span>
               <div className="cta-pill-icon">
                 <ArrowUpRight size={28} className="text-black" strokeWidth={2.3} />

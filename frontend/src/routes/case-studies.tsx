@@ -1,38 +1,52 @@
+import { z } from "zod";
+import { caseStudySchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { loadApi } from "@/lib/api";
 import { PageShell } from "@/components/PageShell";
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import "./case-studies.css";
-
-gsap.registerPlugin(ScrollTrigger);
+import type { CaseStudy } from "@/lib/types";
+import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/case-studies")({
   // Case studies are loaded on the server, so they are in the first HTML
   loader: async () => ({
-    caseStudies: await loadApi<any[]>("/api/case-studies", []),
+    caseStudies: await loadApi("/api/case-studies", z.array(caseStudySchema), []),
   }),
-  head: () => ({ meta: [{ title: "Case Studies — Asteri" }] }),
+  head: () => ({
+    meta: [
+      { title: "Case Studies — Asteri" },
+      {
+        name: "description",
+        content: "Client projects from Asteri: the problem, the approach we took, and the outcome.",
+      },
+    ],
+  }),
   component: CaseStudies,
 });
 
 function CaseStudies() {
-  const [caseStudies] = useState<any[]>(Route.useLoaderData().caseStudies);
+  const [caseStudies] = useState<CaseStudy[]>(Route.useLoaderData().caseStudies);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       // Hero Animation
       const heroTl = gsap.timeline();
       gsap.set(".case-hero h1", { y: 100, opacity: 0 });
       gsap.set(".case-hero p", { y: 50, opacity: 0 });
       gsap.set(".case-hero .case-contact-button", { x: -50, opacity: 0 });
 
-      heroTl.to(".case-hero h1", { y: 0, opacity: 1, duration: 1, ease: "power3.out" })
-            .to(".case-hero p", { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.6")
-            .to(".case-hero .case-contact-button", { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.6");
+      heroTl
+        .to(".case-hero h1", { y: 0, opacity: 1, duration: 1, ease: "power3.out" })
+        .to(".case-hero p", { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.6")
+        .to(
+          ".case-hero .case-contact-button",
+          { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
+          "-=0.6",
+        );
       const storySection = gsap.utils.toArray(".case-story")[0];
       const storyLine1 = gsap.utils.toArray(".case-story h2:nth-child(1)")[0];
       const storyLine2 = gsap.utils.toArray(".case-story h2:nth-child(2)")[0];
@@ -44,25 +58,26 @@ function CaseStudies() {
             start: "center center",
             end: "+=975",
             scrub: 1.5,
-            pin: true,
+            pin: canPin(),
             anticipatePin: 1,
           },
         });
 
-        storyTl.fromTo(
-          storyLine1,
-          { x: "-50vw", opacity: 0 },
-          { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
-          0
-        ).fromTo(
-          storyLine2,
-          { x: "50vw", opacity: 0 },
-          { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
-          0
-        ).to({}, { duration: 0.3 });
+        storyTl
+          .fromTo(
+            storyLine1,
+            { x: "-50vw", opacity: 0 },
+            { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
+            0,
+          )
+          .fromTo(
+            storyLine2,
+            { x: "50vw", opacity: 0 },
+            { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
+            0,
+          )
+          .to({}, { duration: 0.3 });
       }
-
-
 
       const prefaceTl = gsap.timeline({
         scrollTrigger: {
@@ -70,16 +85,18 @@ function CaseStudies() {
           start: "center center",
           end: "+=1060",
           scrub: 1.5,
-          pin: true,
+          pin: canPin(),
           anticipatePin: 1,
         },
       });
 
-      prefaceTl.fromTo(
-        ".case-preface p",
-        { opacity: 0, y: 100 },
-        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.out", duration: 1 }
-      ).to({}, { duration: 0.3 });
+      prefaceTl
+        .fromTo(
+          ".case-preface p",
+          { opacity: 0, y: 100 },
+          { opacity: 1, y: 0, stagger: 0.2, ease: "power2.out", duration: 1 },
+        )
+        .to({}, { duration: 0.3 });
       gsap.fromTo(
         ".case-study-heading",
         { y: 100, opacity: 0 },
@@ -92,10 +109,10 @@ function CaseStudies() {
             start: "center center",
             end: "+=1500",
             scrub: 1.5,
-            pin: true,
+            pin: canPin(),
             anticipatePin: 1,
           },
-        }
+        },
       );
 
       gsap.set(".case-study-panel > h2", { y: 50, opacity: 0 });
@@ -107,9 +124,9 @@ function CaseStudies() {
           start: "top top",
           end: "+=1133",
           scrub: 1,
-          pin: true,
+          pin: canPin(),
           anticipatePin: 1,
-        }
+        },
       });
 
       panelTl.to(".panel-wrapper", {
@@ -138,22 +155,25 @@ function CaseStudies() {
             start: "center center",
             end: "+=975",
             scrub: 1.5,
-            pin: true,
+            pin: canPin(),
             anticipatePin: 1,
           },
         });
 
-        measureTl.fromTo(
-          measureLine1,
-          { x: "-50vw", opacity: 0 },
-          { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
-          0
-        ).fromTo(
-          measureLine2,
-          { x: "50vw", opacity: 0 },
-          { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
-          0
-        ).to({}, { duration: 0.3 });
+        measureTl
+          .fromTo(
+            measureLine1,
+            { x: "-50vw", opacity: 0 },
+            { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
+            0,
+          )
+          .fromTo(
+            measureLine2,
+            { x: "50vw", opacity: 0 },
+            { x: 0, opacity: 1, ease: "power2.out", duration: 1 },
+            0,
+          )
+          .to({}, { duration: 0.3 });
       }
       const ctaSection = gsap.utils.toArray(".case-cta")[0];
       const ctaTitle = gsap.utils.toArray(".case-cta-content h2")[0];
@@ -169,32 +189,33 @@ function CaseStudies() {
             start: "top top",
             end: "+=2400",
             scrub: 1.5,
-            pin: true,
+            pin: canPin(),
             anticipatePin: 1,
           },
         });
 
-        ctaTl.to(ctaTitle, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        })
-        .to({}, { duration: 0.5 })
-        .to(ctaText, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        })
-        .to({}, { duration: 0.5 })
-        .to(ctaButton, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        })
-        .to({}, { duration: 0.4 });
+        ctaTl
+          .to(ctaTitle, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.5 })
+          .to(ctaText, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.5 })
+          .to(ctaButton, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.4 });
       }
     }, containerRef);
 
@@ -210,7 +231,9 @@ function CaseStudies() {
             <br />
             <span>Real</span> Results.
           </h1>
-          <p className="type-lead font-semibold">How Asteri has helped businesses transform with technology.</p>
+          <p className="type-lead font-semibold">
+            How Asteri has helped businesses transform with technology.
+          </p>
           <Link to="/contact" className="case-contact-button">
             <span>Contact Now</span>
             <img src="/figma/case-studies/contact-arrow.svg" alt="" aria-hidden />
@@ -232,26 +255,34 @@ function CaseStudies() {
         </div>
 
         <div className="case-study-stage">
-          <div className="panel-wrapper" style={{ position: "absolute", inset: 0, backgroundColor: "#fff" }}>
+          <div
+            className="panel-wrapper"
+            style={{ position: "absolute", inset: 0, backgroundColor: "#fff" }}
+          >
             {caseStudies.map((study) => (
               <section key={study.id} className="case-study-panel" data-node-id="2513:797">
                 <div className="case-panel-column case-panel-situation">
-                <h3>The Situation</h3>
-                <p>{study.situationText}</p>
+                  <h3>The Situation</h3>
+                  <p>{study.situationText}</p>
                 </div>
                 <div className="case-panel-column case-panel-approach">
-                <h3>The Approach</h3>
-                <ul>
-                  {JSON.parse(study.approachList).map((point: string, i: number) => (
-                    <li key={i}>{point}</li>
-                  ))}
-                </ul>
+                  <h3>The Approach</h3>
+                  <ul>
+                    {study.approachList.map((point: string, i: number) => (
+                      <li key={i}>{point}</li>
+                    ))}
+                  </ul>
                 </div>
                 <div className="case-panel-column case-panel-outcome">
-                <h3>The Outcome</h3>
-                <p>{study.outcomeText}</p>
+                  <h3>The Outcome</h3>
+                  <p>{study.outcomeText}</p>
                 </div>
-                <img className="case-panel-arrow" src="/figma/case-studies/case-arrow.svg" alt="" aria-hidden />
+                <img
+                  className="case-panel-arrow"
+                  src="/figma/case-studies/case-arrow.svg"
+                  alt=""
+                  aria-hidden
+                />
                 <h2 style={{ whiteSpace: "pre-line" }}>{study.industryName}</h2>
               </section>
             ))}
@@ -265,8 +296,12 @@ function CaseStudies() {
 
         <section className="case-cta" data-node-id="2513:1189">
           <div className="case-cta-content flex flex-col items-center justify-center text-center max-w-7xl mx-auto w-full px-4">
-            <h2 className="type-display sm:whitespace-nowrap">Let&apos;s build your success story</h2>
-            <p className="type-lead font-semibold">Start a conversation and define what success looks like for your project.</p>
+            <h2 className="type-display sm:whitespace-nowrap">
+              Let&apos;s build your success story
+            </h2>
+            <p className="type-lead font-semibold">
+              Start a conversation and define what success looks like for your project.
+            </p>
             <Link to="/contact" className="case-talk-button">
               <img src="/figma/case-studies/talk-to-us.png" alt="Talk to Us" />
             </Link>

@@ -1,12 +1,14 @@
+import { z } from "zod";
+import { blogPostSchema } from "@/lib/schemas";
 import { createFileRoute } from "@tanstack/react-router";
 import { apiUrl, loadApi } from "@/lib/api";
 import { PageShell } from "@/components/PageShell";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
+import { useHydrated } from "@/lib/use-hydrated";
+import { Turnstile } from "@/components/Turnstile";
 import "./blog.css";
-
-gsap.registerPlugin(ScrollTrigger);
+import type { BlogPost } from "@/lib/types";
 
 type FeaturedPost = {
   category: string;
@@ -23,11 +25,10 @@ type RecentPost = {
   categoryAfter?: boolean;
 };
 
-
 export const Route = createFileRoute("/blog")({
   // Posts are loaded on the server, so they are in the first HTML
   loader: async () => ({
-    posts: await loadApi<any[]>("/api/blog/posts", []),
+    posts: await loadApi("/api/blog/posts", z.array(blogPostSchema), []),
   }),
   head: () => ({
     meta: [
@@ -92,11 +93,19 @@ function Blog() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [subscribed, setSubscribed] = useState(false);
   const [subFailed, setSubFailed] = useState(false);
+  const hydrated = useHydrated();
   const posts = Route.useLoaderData().posts;
-  const [featuredPosts] = useState<any[]>(() => posts.filter((p: any) => p.isFeatured));
-  const [recentPosts] = useState<any[]>(() => posts.filter((p: any) => !p.isFeatured));
+  const [featuredPosts] = useState<BlogPost[]>(() => posts.filter((p) => p.isFeatured));
+  const [recentPosts] = useState<BlogPost[]>(() => posts.filter((p) => !p.isFeatured));
 
-  const positions = ["recent-ai", "recent-cloud", "recent-system", "recent-crm", "recent-automation", "recent-productivity"];
+  const positions = [
+    "recent-ai",
+    "recent-cloud",
+    "recent-system",
+    "recent-crm",
+    "recent-automation",
+    "recent-productivity",
+  ];
 
   useLayoutEffect(() => {
     if (!containerRef.current || featuredPosts.length === 0 || recentPosts.length === 0) return;
@@ -147,7 +156,11 @@ function Blog() {
           });
           // one card on screen at a time: the previous card leaves to the left as this one arrives
           if (holdBetween && i > 0) {
-            tlFeatured.to(featuredCards[i - 1], { x: "-100vw", opacity: 0, duration: 1.2, ease: "power2.inOut" }, "<");
+            tlFeatured.to(
+              featuredCards[i - 1],
+              { x: "-100vw", opacity: 0, duration: 1.2, ease: "power2.inOut" },
+              "<",
+            );
           }
           if (holdBetween && i < featuredCards.length - 1) tlFeatured.to({}, { duration: 0.6 });
         });
@@ -157,7 +170,7 @@ function Blog() {
 
       const recentHeadingSection = query(".blog-recent-heading")[0];
       const recentTitle = query(".blog-recent-heading h2")[0];
-      
+
       const recentCardsSection = query(".blog-recent-cards")[0];
       const recentLayout = query(".blog-recent-cards .recent-layout")[0];
       const recentBtn = query(".blog-recent-cards .blog-load-more")[0];
@@ -175,12 +188,14 @@ function Blog() {
           },
         });
 
-        tlRecentHeading.to(recentTitle, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        }).to({}, { duration: 0.3 });
+        tlRecentHeading
+          .to(recentTitle, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.3 });
       }
 
       if (recentCardsSection && recentLayout && recentBtn) {
@@ -199,20 +214,21 @@ function Blog() {
           },
         });
 
-        tlRecentCards.to(recentLayout, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        })
-        .to({}, { duration: 0.5 })
-        .to(recentBtn, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        })
-        .to({}, { duration: 0.3 });
+        tlRecentCards
+          .to(recentLayout, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.5 })
+          .to(recentBtn, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.3 });
       }
 
       if (newsletter && title && text && form) {
@@ -237,21 +253,21 @@ function Blog() {
           duration: 1,
           ease: "power2.out",
         })
-        .to({}, { duration: 0.5 })
-        .to(text, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        })
-        .to({}, { duration: 0.5 })
-        .to(form, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        })
-        .to({}, { duration: 0.4 });
+          .to({}, { duration: 0.5 })
+          .to(text, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.5 })
+          .to(form, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: 0.4 });
       }
     }, containerRef);
 
@@ -270,7 +286,9 @@ function Blog() {
               on Technology <span className="blog-outline">That Matters</span>
             </div>
           </h1>
-          <p className="type-lead font-semibold">Insights from our certified architects and strategists.</p>
+          <p className="type-lead font-semibold">
+            Insights from our certified architects and strategists.
+          </p>
         </section>
 
         <section className="blog-topics" aria-label="Browse topics" data-node-id="2513:1824">
@@ -283,7 +301,17 @@ function Blog() {
           <button type="button" className="blog-search">
             <span>Browse Topics</span>
             <span className="blog-search-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#000"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.35-4.35" />
                 <circle cx="8" cy="11" r="1.5" fill="#000" stroke="none" />
@@ -298,8 +326,8 @@ function Blog() {
           <h2 className="type-title">Featured Posts</h2>
           <div className="featured-grid">
             {featuredPosts.map((post) => (
-              <FeaturedCard 
-                key={post.title} 
+              <FeaturedCard
+                key={post.title}
                 category={post.category?.name || "Topic"}
                 title={post.title}
                 image={post.imageUrl}
@@ -329,8 +357,8 @@ function Blog() {
         <section className="blog-recent-cards min-h-screen h-screen flex flex-col items-center justify-center relative overflow-hidden w-full">
           <div className="recent-layout">
             {recentPosts.map((post, index) => (
-              <RecentCard 
-                key={post.title} 
+              <RecentCard
+                key={post.title}
                 category={post.category?.name || "Topic"}
                 title={post.title}
                 image={post.imageUrl}
@@ -347,30 +375,47 @@ function Blog() {
         <section className="blog-newsletter" data-node-id="2521:150">
           <div className="newsletter-content flex flex-col items-center justify-center text-center max-w-7xl mx-auto w-full px-4">
             <h2 className="type-display sm:whitespace-nowrap">Get insights delivered</h2>
-            <p className="type-lead font-semibold mt-4">Practitioner-written articles — no fluff, real lessons.</p>
-            <form className="blog-subscribe-form" onSubmit={(e) => {
-              e.preventDefault();
-              const email = new FormData(e.currentTarget).get('email');
-              const form = e.currentTarget;
-              setSubFailed(false);
-              fetch(apiUrl('/api/newsletter'), {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-              })
-              .then(res => {
-                if (!res.ok) throw new Error(`Newsletter request failed: ${res.status}`);
-                form.reset();
-                setSubscribed(true);
-                window.setTimeout(() => setSubscribed(false), 4500);
-              })
-              .catch(err => {
-                console.error(err);
-                setSubFailed(true);
-              });
-            }}>
-              <input type="email" name="email" placeholder="Enter Your Email" aria-label="Email address" required />
-              <button type="submit">Subscribe</button>
+            <p className="type-lead font-semibold mt-4">
+              Practitioner-written articles — no fluff, real lessons.
+            </p>
+            <form
+              className="blog-subscribe-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const email = new FormData(e.currentTarget).get("email");
+                const form = e.currentTarget;
+                setSubFailed(false);
+                fetch(apiUrl("/api/newsletter"), {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    email,
+                    captchaToken: new FormData(form).get("cf-turnstile-response"),
+                  }),
+                })
+                  .then((res) => {
+                    if (!res.ok) throw new Error(`Newsletter request failed: ${res.status}`);
+                    form.reset();
+                    setSubscribed(true);
+                    window.setTimeout(() => setSubscribed(false), 4500);
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                    setSubFailed(true);
+                  });
+              }}
+            >
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter Your Email"
+                aria-label="Email address"
+                required
+              />
+              <Turnstile />
+              <button type="submit" disabled={!hydrated}>
+                Subscribe
+              </button>
               {subFailed && (
                 <p role="alert" style={{ color: "#ff6b6b", marginTop: "12px" }}>
                   Sorry, we could not subscribe you. Please try again.
@@ -379,10 +424,23 @@ function Blog() {
               {subscribed && (
                 <div className="subscribe-success" role="status" aria-live="polite">
                   {Array.from({ length: 14 }).map((_, i) => (
-                    <i key={i} className="subscribe-spark" style={{ ["--a" as string]: `${i * (360 / 14)}deg`, ["--d" as string]: `${i % 3 === 0 ? 120 : i % 3 === 1 ? 90 : 65}px`, animationDelay: `${(i % 5) * 60}ms` }} />
+                    <i
+                      key={i}
+                      className="subscribe-spark"
+                      style={{
+                        ["--a" as string]: `${i * (360 / 14)}deg`,
+                        ["--d" as string]: `${i % 3 === 0 ? 120 : i % 3 === 1 ? 90 : 65}px`,
+                        animationDelay: `${(i % 5) * 60}ms`,
+                      }}
+                    />
                   ))}
                   <span className="subscribe-success-text">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l2.2 6.3L20.5 10l-6.3 1.7L12 18l-2.2-6.3L3.5 10l6.3-1.7L12 2z" fill="#82e926" /></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path
+                        d="M12 2l2.2 6.3L20.5 10l-6.3 1.7L12 18l-2.2-6.3L3.5 10l6.3-1.7L12 2z"
+                        fill="#82e926"
+                      />
+                    </svg>
                     You&apos;re subscribed!
                   </span>
                 </div>

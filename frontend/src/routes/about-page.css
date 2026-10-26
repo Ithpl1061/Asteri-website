@@ -160,7 +160,7 @@
   top: 26.811%;
   left: 2.66%;
   width: 24.806%;
-  color: #FFF;
+  color: #fff;
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   font-size: 128px;
   font-style: normal;
@@ -209,7 +209,7 @@
 .approach-card-discovery h3 {
   top: 53.015%;
   left: 15.045%;
-  width: 5.510%;
+  width: 5.51%;
 }
 
 .approach-card-discovery p {
@@ -371,15 +371,13 @@
 .about-page .solutions-outcomes-heading h2 {
   font-size: clamp(1.2rem, 2.8vw, 2.35rem) !important;
   line-height: 1.35 !important;
-  letter-spacing: -.02em !important;
+  letter-spacing: -0.02em !important;
   font-weight: 700 !important;
   color: #fff !important;
   margin: 0 auto !important;
   max-width: 1250px !important;
   padding: 0 1.5rem !important;
 }
-
-
 
 /* ==========================================================================
    ABOUT — phone layouts for the card sections (desktop is untouched).
@@ -628,3 +626,8 @@
   }
 }
 
+/* Visionary cards are stacked; the inactive ones are transparent but still took clicks.
+   Fully transparent cards must not receive pointer events, so the visible card's link works. */
+.visionaries-content > div[style*="opacity: 0;"] {
+  pointer-events: none;
+}

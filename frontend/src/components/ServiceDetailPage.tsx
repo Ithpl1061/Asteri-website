@@ -24,7 +24,11 @@ export function ServiceDetailPage({
         </div>
 
         <div className="service-detail-intro">
-          <Section eyebrow="How we help" title="Built around your business." description={description} />
+          <Section
+            eyebrow="How we help"
+            title="Built around your business."
+            description={description}
+          />
         </div>
 
         <div className="service-detail-capabilities">

@@ -10,7 +10,9 @@ test.describe("Asteri Website — Automation Testing", () => {
     await expect(header).toBeVisible();
   });
 
-  test("Valuable Customers section and logos are displayed properly", async ({ page }, testInfo) => {
+  test("Valuable Customers section and logos are displayed properly", async ({
+    page,
+  }, testInfo) => {
     await page.goto("/");
     await page.waitForLoadState("domcontentloaded");
 

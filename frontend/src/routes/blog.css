@@ -21,10 +21,7 @@
   margin: 0;
   color: #fff;
   font-family: var(--font-display);
-  
-  
-  
-  
+
   white-space: nowrap;
 }
 
@@ -46,9 +43,6 @@
   margin: 2rem 0 0;
   color: #fff;
   font-family: var(--font-display);
-  
-  
-  
 }
 
 .blog-topics {
@@ -166,7 +160,10 @@
   border-radius: 1.25rem;
   background: #fff;
   color: #000;
-  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 
@@ -689,15 +686,24 @@
   inherits: false;
 }
 
-.featured-card::after, .recent-card::after {
+.featured-card::after,
+.recent-card::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 20;
   border-radius: inherit;
-  padding: 3px; 
-  background: conic-gradient(from var(--border-angle), transparent 40%, #82e926, #a3f754, transparent 60%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  padding: 3px;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 40%,
+    #82e926,
+    #a3f754,
+    transparent 60%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: bg-spin 3s linear infinite;
@@ -711,7 +717,9 @@
 }
 
 /* Newsletter success — sparkle burst instead of a browser alert */
-.blog-subscribe-form { position: relative; }
+.blog-subscribe-form {
+  position: relative;
+}
 .subscribe-success {
   position: absolute;
   inset: 0;
@@ -733,7 +741,9 @@
   font-size: clamp(1rem, 1.6vw, 1.5rem);
   animation: subscribePop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
 }
-.subscribe-success-text svg { animation: subscribeSpin 1.6s ease-in-out infinite; }
+.subscribe-success-text svg {
+  animation: subscribeSpin 1.6s ease-in-out infinite;
+}
 .subscribe-spark {
   position: absolute;
   left: 50%;
@@ -746,16 +756,52 @@
   opacity: 0;
   animation: subscribeSpark 1.1s ease-out forwards;
 }
-@keyframes subscribeFade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes subscribePop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-@keyframes subscribeSpin { 0%, 100% { transform: rotate(0) scale(1); } 50% { transform: rotate(90deg) scale(1.25); } }
+@keyframes subscribeFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes subscribePop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes subscribeSpin {
+  0%,
+  100% {
+    transform: rotate(0) scale(1);
+  }
+  50% {
+    transform: rotate(90deg) scale(1.25);
+  }
+}
 @keyframes subscribeSpark {
-  0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--a)) translateX(0) scale(0.2); }
-  25% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--a)) translateX(var(--d)) scale(1.4); }
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--a)) translateX(0) scale(0.2);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--a)) translateX(var(--d)) scale(1.4);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .subscribe-spark, .subscribe-success-text svg { animation: none; opacity: 0; }
+  .subscribe-spark,
+  .subscribe-success-text svg {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* Scroll-animation performance: promote animated blocks to their own GPU layers
@@ -771,7 +817,6 @@
   transform: translateZ(0);
 }
 
-
 /* ==========================================================================
    BLOG - phones (<= 700px)
    Same scenes, order, colours and animations as desktop. Each pinned scene is sized
@@ -783,36 +828,116 @@
    ========================================================================== */
 @media (max-width: 700px) {
   /* ---- hero + topic filter ---- */
-  .blog-hero { padding-top: 5.5rem; padding-inline: 1.25rem; }
-  .blog-topics { margin-top: 2.25rem; flex-direction: column; align-items: stretch; gap: 0.9rem; padding-inline: 1.25rem; }
-  .blog-topic-list { width: 100%; justify-content: flex-start; gap: 1.4rem; overflow-x: auto; padding-bottom: 0.25rem; scrollbar-width: none; }
-  .blog-topic-list::-webkit-scrollbar { display: none; }
-  .blog-topic-list button { flex: none; }
-  .blog-search { width: 100%; height: 3.4rem; margin-left: 0; padding: 0 0.6rem 0 1.2rem; font-size: 1rem; }
-  .blog-search-icon { width: 2.4rem; height: 2.4rem; }
-  .blog-search-icon img { width: 1.7rem; height: 1.7rem; }
+  .blog-hero {
+    padding-top: 5.5rem;
+    padding-inline: 1.25rem;
+  }
+  .blog-topics {
+    margin-top: 2.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.9rem;
+    padding-inline: 1.25rem;
+  }
+  .blog-topic-list {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1.4rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+  }
+  .blog-topic-list::-webkit-scrollbar {
+    display: none;
+  }
+  .blog-topic-list button {
+    flex: none;
+  }
+  .blog-search {
+    width: 100%;
+    height: 3.4rem;
+    margin-left: 0;
+    padding: 0 0.6rem 0 1.2rem;
+    font-size: 1rem;
+  }
+  .blog-search-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+  .blog-search-icon img {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
 
   /* ---- Featured Posts: the original tall cards, flipping in one over another ----
      Card design/size is exactly the desktop one (17.5rem x 26.5rem: copy on top, big photo
      below, green Read button). A phone fits one card at a time, so the three cards share one
      spot and each flips in (same animation as desktop) on top of the previous one. */
-  .blog-featured { min-height: 100svh; margin-top: 0; padding: 4.5rem 0 1rem; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-  .blog-featured h2 { font-size: clamp(2rem, 9vw, 2.6rem); }
-  .featured-grid { grid-template-columns: 17.5rem; gap: 0; width: max-content; margin: 1.25rem auto 0; }
-  .featured-grid > * { grid-area: 1 / 1; }
-  .featured-card { width: 17.5rem; height: 26.5rem; border-radius: 1.25rem; }
-  .featured-card-copy { padding: 1.85rem 1.15rem 0; }
-  .featured-card-copy p { font-size: 1.05rem; }
-  .featured-card-copy h3 { margin-top: 1.55rem; font-size: 1.35rem; line-height: 1.22; }
-  .featured-card-image { height: 15rem; }
-  .featured-card .blog-read-button { bottom: 1.3rem; left: 1.15rem; width: 8.5rem; height: 2.8rem; padding: 0 0.7rem 0 1.45rem; }
-  .featured-card .blog-read-button span { font-size: 1.35rem; }
-  .featured-card .blog-read-button img { width: 1.75rem; height: 1.75rem; }
-
+  .blog-featured {
+    min-height: 100svh;
+    margin-top: 0;
+    padding: 4.5rem 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .blog-featured h2 {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+  }
+  .featured-grid {
+    grid-template-columns: 17.5rem;
+    gap: 0;
+    width: max-content;
+    margin: 1.25rem auto 0;
+  }
+  .featured-grid > * {
+    grid-area: 1 / 1;
+  }
+  .featured-card {
+    width: 17.5rem;
+    height: 26.5rem;
+    border-radius: 1.25rem;
+  }
+  .featured-card-copy {
+    padding: 1.85rem 1.15rem 0;
+  }
+  .featured-card-copy p {
+    font-size: 1.05rem;
+  }
+  .featured-card-copy h3 {
+    margin-top: 1.55rem;
+    font-size: 1.35rem;
+    line-height: 1.22;
+  }
+  .featured-card-image {
+    height: 15rem;
+  }
+  .featured-card .blog-read-button {
+    bottom: 1.3rem;
+    left: 1.15rem;
+    width: 8.5rem;
+    height: 2.8rem;
+    padding: 0 0.7rem 0 1.45rem;
+  }
+  .featured-card .blog-read-button span {
+    font-size: 1.35rem;
+  }
+  .featured-card .blog-read-button img {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 
   /* ---- Recent Posts: heading, then the board of six cards ---- */
-  .blog-recent-heading { height: auto !important; min-height: 38svh !important; }
-  .blog-recent-cards { height: 100svh !important; min-height: 0 !important; padding-top: 4.5rem; }
+  .blog-recent-heading {
+    height: auto !important;
+    min-height: 38svh !important;
+  }
+  .blog-recent-cards {
+    height: 100svh !important;
+    min-height: 0 !important;
+    padding-top: 4.5rem;
+  }
   .recent-layout {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.6rem;
@@ -820,23 +945,79 @@
     margin: 0 auto;
   }
   .recent-ai,
-  .recent-productivity { grid-column: span 2; }
-  .recent-card { height: clamp(6.6rem, 17.5svh, 8.4rem); border-radius: 0.9rem; }
-  .recent-card .recent-card-copy { top: 0.65rem; left: 0.85rem; width: calc(100% - 1.7rem); }
-  .recent-card .recent-card-copy p { margin: 0; font-size: 0.7rem; }
-  .recent-card .recent-card-copy h3 { margin-top: 0.3rem; font-size: 0.85rem; line-height: 1.15; }
-  .recent-card .blog-read-button { bottom: 0.5rem; left: 0.8rem; right: auto; width: 5.2rem; height: 1.9rem; padding: 0 0.35rem 0 0.8rem; }
-  .recent-card .blog-read-button span { font-size: 0.8rem; }
-  .recent-card .blog-read-button img { width: 1.15rem; height: 1.15rem; }
-  .blog-load-more { margin-top: 0.8rem; font-size: 1rem; }
-  .blog-load-more img { width: 1.9rem; height: 1.9rem; }
+  .recent-productivity {
+    grid-column: span 2;
+  }
+  .recent-card {
+    height: clamp(6.6rem, 17.5svh, 8.4rem);
+    border-radius: 0.9rem;
+  }
+  .recent-card .recent-card-copy {
+    top: 0.65rem;
+    left: 0.85rem;
+    width: calc(100% - 1.7rem);
+  }
+  .recent-card .recent-card-copy p {
+    margin: 0;
+    font-size: 0.7rem;
+  }
+  .recent-card .recent-card-copy h3 {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    line-height: 1.15;
+  }
+  .recent-card .blog-read-button {
+    bottom: 0.5rem;
+    left: 0.8rem;
+    right: auto;
+    width: 5.2rem;
+    height: 1.9rem;
+    padding: 0 0.35rem 0 0.8rem;
+  }
+  .recent-card .blog-read-button span {
+    font-size: 0.8rem;
+  }
+  .recent-card .blog-read-button img {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .blog-load-more {
+    margin-top: 0.8rem;
+    font-size: 1rem;
+  }
+  .blog-load-more img {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
 
   /* ---- Newsletter ---- */
-  .blog-newsletter { min-height: 80svh; margin-top: 0; }
-  .newsletter-content { padding: 3rem 1.25rem; }
-  .newsletter-content h2 { font-size: clamp(2.1rem, 10vw, 2.8rem); line-height: 1.15; }
-  .newsletter-content p { margin-top: 1.5rem; font-size: 0.95rem; }
-  .blog-subscribe-form { width: calc(100% - 1rem); height: 3.4rem; margin-top: 2rem; padding-left: 1.1rem; }
-  .blog-subscribe-form input { font-size: 0.95rem; }
-  .blog-subscribe-form button { width: 6.4rem; height: 3.1rem; font-size: 0.9rem; }
+  .blog-newsletter {
+    min-height: 80svh;
+    margin-top: 0;
+  }
+  .newsletter-content {
+    padding: 3rem 1.25rem;
+  }
+  .newsletter-content h2 {
+    font-size: clamp(2.1rem, 10vw, 2.8rem);
+    line-height: 1.15;
+  }
+  .newsletter-content p {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+  }
+  .blog-subscribe-form {
+    width: calc(100% - 1rem);
+    height: 3.4rem;
+    margin-top: 2rem;
+    padding-left: 1.1rem;
+  }
+  .blog-subscribe-form input {
+    font-size: 0.95rem;
+  }
+  .blog-subscribe-form button {
+    width: 6.4rem;
+    height: 3.1rem;
+    font-size: 0.9rem;
+  }
 }

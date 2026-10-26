@@ -2,7 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ServiceDetailPage } from "@/components/ServiceDetailPage";
 
 export const Route = createFileRoute("/services/data-science")({
-  head: () => ({ meta: [{ title: "Data Science — Asteri" }] }),
+  head: () => ({
+    meta: [
+      { title: "Data Science — Asteri" },
+      {
+        name: "description",
+        content:
+          "We create practical data foundations, analytics, and intelligent models that help teams see what matters and act sooner.",
+      },
+    ],
+  }),
   component: DataScience,
 });
 

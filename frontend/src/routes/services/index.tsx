@@ -1,28 +1,34 @@
+import { z } from "zod";
+import { partnerSchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { loadApi } from "@/lib/api";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useTouchScroll } from "@/hooks/use-touch-scroll";
 import "../services-page.css";
-
-gsap.registerPlugin(ScrollTrigger);
+import type { Partner } from "@/lib/types";
+import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/services/")({
   // Partners are loaded on the server, so they are in the first HTML
   loader: async () => ({
-    partners: await loadApi<any[]>("/api/partners", []),
+    partners: await loadApi("/api/partners", z.array(partnerSchema), []),
   }),
   head: () => ({
-    meta: [{ title: "Services — Asteri" }],
+    meta: [
+      { title: "Services — Asteri" },
+      {
+        name: "description",
+        content:
+          "Asteri services: AI and automation, Salesforce and SAP consulting, cloud, data science and software development.",
+      },
+    ],
   }),
   component: Services,
 });
-
-
 
 function Button({
   children,
@@ -34,20 +40,16 @@ function Button({
   dark?: boolean;
 }) {
   return (
-    <Link
-      to={href}
-      className={`figma-service-button${dark ? " figma-service-button--dark" : ""}`}
-    >
-      <span className="type-button">{children}</span><b>↗</b>
+    <Link to={href} className={`figma-service-button${dark ? " figma-service-button--dark" : ""}`}>
+      <span className="type-button">{children}</span>
+      <b>↗</b>
     </Link>
   );
 }
 
-
-
 function Services() {
   useTouchScroll();
-  const [partners] = useState<any[]>(Route.useLoaderData().partners);
+  const [partners] = useState<Partner[]>(Route.useLoaderData().partners);
   const containerRef = useRef<HTMLDivElement>(null);
   const introSectionRef = useRef<HTMLElement>(null);
   const servicRef = useRef<HTMLDivElement>(null);
@@ -83,9 +85,9 @@ function Services() {
             start: "top top",
             end: phone ? "+=780" : "+=1200",
             scrub: sc(true),
-            pin: true,
+            pin: canPin(),
             invalidateOnRefresh: true,
-          }
+          },
         });
 
         tl.to(servicRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0.1)
@@ -105,24 +107,28 @@ function Services() {
           opacity: 0,
           y: 50,
           duration: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
 
       if (coreSectionRef.current) {
-        const coreCards = gsap.utils.toArray<HTMLElement>(".figma-services__core--desktop .core-card");
-        
+        const coreCards = gsap.utils.toArray<HTMLElement>(
+          ".figma-services__core--desktop .core-card",
+        );
+
         gsap.set(coreCards, { x: 250, opacity: 0 });
 
         const coreTl = gsap.timeline({
           scrollTrigger: {
             trigger: coreSectionRef.current,
             start: "top top",
-            end: phone ? "+=1700" : () => `+=${2000 * (window.innerWidth < 1479 ? window.innerWidth / 1479 : 1)}`,
+            end: phone
+              ? "+=1700"
+              : () => `+=${2000 * (window.innerWidth < 1479 ? window.innerWidth / 1479 : 1)}`,
             scrub: sc(0.5),
-            pin: true,
+            pin: canPin(),
             invalidateOnRefresh: true,
-          }
+          },
         });
 
         if (coreCards.length >= 2) {
@@ -147,7 +153,12 @@ function Services() {
       }
 
       if (workSubHeadingSectionRef.current && workSubHeadingRef.current) {
-        gsap.set(workSubHeadingRef.current, { rotationX: 90, y: 50, opacity: 0, transformOrigin: "50% 50%" });
+        gsap.set(workSubHeadingRef.current, {
+          rotationX: 90,
+          y: 50,
+          opacity: 0,
+          transformOrigin: "50% 50%",
+        });
 
         const tlWorkSubHeading = gsap.timeline({
           scrollTrigger: {
@@ -155,17 +166,19 @@ function Services() {
             start: "center center",
             end: phone ? "+=520" : "+=800",
             scrub: sc(true),
-            pin: true,
-          }
+            pin: canPin(),
+          },
         });
 
-        tlWorkSubHeading.to(workSubHeadingRef.current, {
-          rotationX: 0,
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out"
-        }).to({}, { duration: phone ? 0.3 : 1 });
+        tlWorkSubHeading
+          .to(workSubHeadingRef.current, {
+            rotationX: 0,
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: phone ? 0.3 : 1 });
       }
 
       // Process list moving dot animation and synchronized text fade (same as solutions page)
@@ -183,16 +196,20 @@ function Services() {
                 start: "top center",
                 end: "bottom center",
                 scrub: sc(true),
-              }
+              },
             });
 
             // Dot moves continuously from top to bottom
-            workTl.to(dotRef.current, {
-              // desktop: 24px + 3 rows * 341px; phones: measured from the real row height
-              top: phone ? `${24 + (n - 1) * workItems[0].offsetHeight}px` : "1047px",
-              ease: "none",
-              duration: totalDuration,
-            }, 0);
+            workTl.to(
+              dotRef.current,
+              {
+                // desktop: 24px + 3 rows * 341px; phones: measured from the real row height
+                top: phone ? `${24 + (n - 1) * workItems[0].offsetHeight}px` : "1047px",
+                ease: "none",
+                duration: totalDuration,
+              },
+              0,
+            );
 
             // Initial state: First item is active, others are subtly dimmed
             gsap.set(workItems[0], { opacity: 1 });
@@ -203,8 +220,16 @@ function Services() {
             // Crossfade items as the dot travels from item i to item i+1
             for (let i = 0; i < n - 1; i++) {
               const transitionStart = i + 0.35;
-              workTl.to(workItems[i], { opacity: 0.25, ease: "power1.inOut", duration: 0.65 }, transitionStart);
-              workTl.to(workItems[i + 1], { opacity: 1, ease: "power1.inOut", duration: 0.65 }, transitionStart);
+              workTl.to(
+                workItems[i],
+                { opacity: 0.25, ease: "power1.inOut", duration: 0.65 },
+                transitionStart,
+              );
+              workTl.to(
+                workItems[i + 1],
+                { opacity: 1, ease: "power1.inOut", duration: 0.65 },
+                transitionStart,
+              );
             }
           }
         }
@@ -219,16 +244,18 @@ function Services() {
             start: "top 45px",
             end: phone ? "+=520" : "+=800",
             scrub: sc(true),
-            pin: true,
-          }
+            pin: canPin(),
+          },
         });
 
-        tlPartner.to(partnerCardRef.current, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out"
-        }).to({}, { duration: phone ? 0.3 : 1 });
+        tlPartner
+          .to(partnerCardRef.current, {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .to({}, { duration: phone ? 0.3 : 1 });
       }
 
       if (quoteSectionRef.current && quoteLine1Ref.current && quoteLine2Ref.current) {
@@ -241,15 +268,20 @@ function Services() {
             start: "center center",
             end: "+=800",
             scrub: sc(true),
-            pin: true,
-          }
+            pin: canPin(),
+          },
         });
 
         tlQuote
           .to(quoteLine1Ref.current, { x: 0, opacity: 1, duration: 1, ease: "power3.out" }, 0)
           .to(quoteLine2Ref.current, { x: 0, opacity: 1, duration: 1, ease: "power3.out" }, 0)
           .to({}, { duration: 1 }) // Screen hold
-          .to([quoteLine1Ref.current, quoteLine2Ref.current], { opacity: 0, y: -40, duration: 0.8, ease: "power2.in" });
+          .to([quoteLine1Ref.current, quoteLine2Ref.current], {
+            opacity: 0,
+            y: -40,
+            duration: 0.8,
+            ease: "power2.in",
+          });
       }
 
       if (supportSectionRef.current && supportTextRef.current) {
@@ -261,8 +293,8 @@ function Services() {
             start: "center center",
             end: "+=800",
             scrub: sc(true),
-            pin: true,
-          }
+            pin: canPin(),
+          },
         });
 
         tlSupport
@@ -277,7 +309,7 @@ function Services() {
             opacity: 0,
             y: -40,
             duration: 0.8,
-            ease: "power2.in"
+            ease: "power2.in",
           });
       }
 
@@ -292,8 +324,8 @@ function Services() {
               start: "center center",
               end: "+=800",
               scrub: sc(true),
-              pin: true,
-            }
+              pin: canPin(),
+            },
           });
 
           ctaTl
@@ -301,14 +333,14 @@ function Services() {
               x: 0,
               opacity: 1,
               duration: 1,
-              ease: "power3.out"
+              ease: "power3.out",
             })
             .to({}, { duration: 1.5 }) // Hold firmly fixed in center
             .to(ctaContent, {
               opacity: 0,
               y: -40,
               duration: 0.8,
-              ease: "power2.in"
+              ease: "power2.in",
             }); // Clean exit before Footer
         }
       }
@@ -329,77 +361,146 @@ function Services() {
         <Navbar />
         <div className="figma-services__canvas">
           <section className="figma-services__hero">
-            <h1 className="type-display"><span>Technology <i>Systems</i></span><span><i>Designed</i> To Perform</span></h1>
+            <h1 className="type-display">
+              <span>
+                Technology <i>Systems</i>
+              </span>
+              <span>
+                <i>Designed</i> To Perform
+              </span>
+            </h1>
             <p className="type-lead font-semibold">From infrastructure to intelligent platforms.</p>
             <Button href="/services/salesforce">Explore More</Button>
           </section>
 
-        <p className="figma-services__statement type-lead font-medium">Our services combine strategic thinking with practical implementation — ensuring systems are not only well designed, but dependable in real-world environments.</p>
+          <p className="figma-services__statement type-lead font-medium">
+            Our services combine strategic thinking with practical implementation — ensuring systems
+            are not only well designed, but dependable in real-world environments.
+          </p>
 
-        <section className="figma-services__core figma-services__core--mobile">
-          <h2 className="type-title">CORE SERVICES</h2>
-          <article>
-            <h3>Salesforce</h3>
-            <div className="figma-services__core-side"><h4>Consulting</h4><p>Strategic CRM solutions that enhance customer engagement and operational visibility.</p></div>
-            <p className="figma-services__core-copy">We help organizations implement, customize, and optimize Salesforce platforms to align with business processes and drive measurable outcomes.</p>
-            <Button href="/services/salesforce" dark>Explore More</Button>
-          </article>
-          <article className="figma-services__sap-card">
-            <h3>SAP</h3>
-            <div className="figma-services__sap-side"><h4>Consulting</h4><p>Enterprise-grade solutions designed to streamline complex business operations.</p></div>
-            <p className="figma-services__sap-copy">We support implementation, optimization, and integration of SAP systems to improve efficiency, visibility, and decision-making.</p>
-            <Button href="/contact" dark>Explore More</Button>
-          </article>
-        </section>
+          <section className="figma-services__core figma-services__core--mobile">
+            <h2 className="type-title">CORE SERVICES</h2>
+            <article>
+              <h3>Salesforce</h3>
+              <div className="figma-services__core-side">
+                <h4>Consulting</h4>
+                <p>
+                  Strategic CRM solutions that enhance customer engagement and operational
+                  visibility.
+                </p>
+              </div>
+              <p className="figma-services__core-copy">
+                We help organizations implement, customize, and optimize Salesforce platforms to
+                align with business processes and drive measurable outcomes.
+              </p>
+              <Button href="/services/salesforce" dark>
+                Explore More
+              </Button>
+            </article>
+            <article className="figma-services__sap-card">
+              <h3>SAP</h3>
+              <div className="figma-services__sap-side">
+                <h4>Consulting</h4>
+                <p>
+                  Enterprise-grade solutions designed to streamline complex business operations.
+                </p>
+              </div>
+              <p className="figma-services__sap-copy">
+                We support implementation, optimization, and integration of SAP systems to improve
+                efficiency, visibility, and decision-making.
+              </p>
+              <Button href="/contact" dark>
+                Explore More
+              </Button>
+            </article>
+          </section>
 
-        <section className="figma-services__work figma-services__work--mobile">
-          <h3 className="type-title">OUR PROCESS</h3>
-          <ol>
-            <li><strong className="type-heading">Understand</strong><i /><p className="type-lead font-semibold">We begin by learning how your organization operates — technically and operationally.</p></li>
-            <li><strong className="type-heading">Design</strong><span /><p className="type-lead font-semibold">Solutions are architected with clarity, scalability, and long-term sustainability in mind.</p></li>
-            <li><strong className="type-heading">Implement</strong><span /><p className="type-lead font-semibold">We execute with structured delivery, ensuring stability and minimal disruption.</p></li>
-            <li><strong className="type-heading">Support</strong><span /><p className="type-lead font-semibold">Our engagement continues beyond implementation, ensuring systems evolve with your needs.</p></li>
-          </ol>
-        </section>
+          <section className="figma-services__work figma-services__work--mobile">
+            <h3 className="type-title">OUR PROCESS</h3>
+            <ol>
+              <li>
+                <strong className="type-heading">Understand</strong>
+                <i />
+                <p className="type-lead font-semibold">
+                  We begin by learning how your organization operates — technically and
+                  operationally.
+                </p>
+              </li>
+              <li>
+                <strong className="type-heading">Design</strong>
+                <span />
+                <p className="type-lead font-semibold">
+                  Solutions are architected with clarity, scalability, and long-term sustainability
+                  in mind.
+                </p>
+              </li>
+              <li>
+                <strong className="type-heading">Implement</strong>
+                <span />
+                <p className="type-lead font-semibold">
+                  We execute with structured delivery, ensuring stability and minimal disruption.
+                </p>
+              </li>
+              <li>
+                <strong className="type-heading">Support</strong>
+                <span />
+                <p className="type-lead font-semibold">
+                  Our engagement continues beyond implementation, ensuring systems evolve with your
+                  needs.
+                </p>
+              </li>
+            </ol>
+          </section>
 
+          <section className="figma-services__partner-grid figma-services__partner-grid--canvas">
+            <div className="relative flex items-center justify-center w-full">
+              <h2 className="type-title !text-[clamp(2.5rem,5vw,5.6rem)] lg:whitespace-nowrap mb-0 text-center">
+                PLATFORMS &amp; PARTNERS
+              </h2>
+              <Link
+                to="/partnership"
+                aria-label="View all platforms and partners"
+                className="!absolute !right-[36px] !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105"
+              >
+                <span className="grid h-12 w-16 place-items-center text-[#8AF500] lg:h-14 lg:w-20">
+                  <ArrowLeft size={34} strokeWidth={2} />
+                </span>
+                <span className="grid h-12 w-16 place-items-center bg-[#F3F3F3] text-[#8AF500] lg:h-14 lg:w-20">
+                  <ArrowRight size={34} strokeWidth={2} />
+                </span>
+              </Link>
+            </div>
+            <div className="figma-services__partner-card">
+              {partners.map((p) => (
+                <figure key={p.name}>
+                  <img src={p.logoUrl} alt={p.name} />
+                </figure>
+              ))}
+            </div>
+          </section>
 
-        <section className="figma-services__partner-grid figma-services__partner-grid--canvas">
-          <div className="relative flex items-center justify-center w-full">
-            <h2 className="type-title !text-[clamp(2.5rem,5vw,5.6rem)] lg:whitespace-nowrap mb-0 text-center">PLATFORMS &amp; PARTNERS</h2>
-            <Link to="/partnership" aria-label="View all platforms and partners" className="!absolute !right-[36px] !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105">
-              <span className="grid h-12 w-16 place-items-center text-[#8AF500] lg:h-14 lg:w-20"><ArrowLeft size={34} strokeWidth={2} /></span>
-              <span className="grid h-12 w-16 place-items-center bg-[#F3F3F3] text-[#8AF500] lg:h-14 lg:w-20"><ArrowRight size={34} strokeWidth={2} /></span>
-            </Link>
-          </div>
-          <div className="figma-services__partner-card">{partners.map((p) => <figure key={p.name}><img src={p.logoUrl} alt={p.name} /></figure>)}</div>
-        </section>
+          <section className="figma-services__quote figma-services__quote--mobile">
+            <h2 className="type-statement">Technology works best</h2>
+            <h2 className="type-statement">when it works quietly.</h2>
+          </section>
+          <p className="figma-services__support figma-services__support--mobile type-statement">
+            Systems that support teams, decisions, and growth — without unnecessary complexity.
+          </p>
 
-        <section className="figma-services__quote figma-services__quote--mobile"><h2 className="type-statement">Technology works best</h2><h2 className="type-statement">when it works quietly.</h2></section>
-        <p className="figma-services__support figma-services__support--mobile type-statement">Systems that support teams, decisions, and growth — without unnecessary complexity.</p>
+          <section className="figma-services__cta figma-services__cta--mobile">
+            <div>
+              <h2 className="type-title">Let’s design the systems</h2>
+              <p className="type-lead font-semibold">behind your next phase of growth.</p>
+              <Button href="/contact">Start a conversation</Button>
+            </div>
+          </section>
+        </div>
 
-        <section className="figma-services__cta figma-services__cta--mobile"><div><h2 className="type-title">Let’s design the systems</h2><p className="type-lead font-semibold">behind your next phase of growth.</p><Button href="/contact">Start a conversation</Button></div></section>
-      </div>
-
-      <section ref={introSectionRef} className="intro-absolute flex items-center justify-center">
-        <div className="flex flex-col items-start w-fit mx-auto text-white">
-          <div
-            ref={servicRef}
-            className="servic-part tracking-tighter -ml-1"
-            style={{
-              color: "#FFF",
-              fontFamily: '"Inter", sans-serif',
-              fontSize: "clamp(5rem, 20.8vw, 308px)",
-              fontStyle: "normal",
-              fontWeight: 700,
-              lineHeight: "73.394%",
-            }}
-          >
-            servic
-          </div>
-          <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 mt-2 md:mt-3">
+        <section ref={introSectionRef} className="intro-absolute flex items-center justify-center">
+          <div className="flex flex-col items-start w-fit mx-auto text-white">
             <div
-              ref={esRef}
-              className="es-part tracking-tighter -ml-1"
+              ref={servicRef}
+              className="servic-part tracking-tighter -ml-1"
               style={{
                 color: "#FFF",
                 fontFamily: '"Inter", sans-serif',
@@ -409,97 +510,199 @@ function Services() {
                 lineHeight: "73.394%",
               }}
             >
-              es
+              servic
             </div>
-            <div ref={textRef} className="text-part flex flex-col pt-2 md:pt-3 mt-[4%] text-left">
-              <p className="type-body text-white/90 max-w-[320px] m-0">
-                We design and deliver technology systems that<br />
-                help organizations operate with clarity,<br />
-                resilience, and scale.
+            <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 mt-2 md:mt-3">
+              <div
+                ref={esRef}
+                className="es-part tracking-tighter -ml-1"
+                style={{
+                  color: "#FFF",
+                  fontFamily: '"Inter", sans-serif',
+                  fontSize: "clamp(5rem, 20.8vw, 308px)",
+                  fontStyle: "normal",
+                  fontWeight: 700,
+                  lineHeight: "73.394%",
+                }}
+              >
+                es
+              </div>
+              <div ref={textRef} className="text-part flex flex-col pt-2 md:pt-3 mt-[4%] text-left">
+                <p className="type-body text-white/90 max-w-[320px] m-0">
+                  We design and deliver technology systems that
+                  <br />
+                  help organizations operate with clarity,
+                  <br />
+                  resilience, and scale.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          ref={coreSectionRef}
+          className="figma-services__core figma-services__core--desktop"
+        >
+          <h2 className="type-title">CORE SERVICES</h2>
+          <article className="core-card">
+            <h3>Salesforce</h3>
+            <div className="figma-services__core-side">
+              <h4>Consulting</h4>
+              <p>
+                Strategic CRM solutions that enhance customer engagement and operational visibility.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
+            <p className="figma-services__core-copy">
+              We help organizations implement, customize, and optimize Salesforce platforms to align
+              with business processes and drive measurable outcomes.
+            </p>
+            <Button href="/services/salesforce" dark>
+              Explore More
+            </Button>
+          </article>
+          <article className="figma-services__sap-card core-card">
+            <h3>SAP</h3>
+            <div className="figma-services__sap-side">
+              <h4>Consulting</h4>
+              <p>Enterprise-grade solutions designed to streamline complex business operations.</p>
+            </div>
+            <p className="figma-services__sap-copy">
+              We support implementation, optimization, and integration of SAP systems to improve
+              efficiency, visibility, and decision-making.
+            </p>
+            <Button href="/contact" dark>
+              Explore More
+            </Button>
+          </article>
+        </section>
 
-      <section ref={coreSectionRef} className="figma-services__core figma-services__core--desktop">
-        <h2 className="type-title">CORE SERVICES</h2>
-        <article className="core-card">
-          <h3>Salesforce</h3>
-          <div className="figma-services__core-side"><h4>Consulting</h4><p>Strategic CRM solutions that enhance customer engagement and operational visibility.</p></div>
-          <p className="figma-services__core-copy">We help organizations implement, customize, and optimize Salesforce platforms to align with business processes and drive measurable outcomes.</p>
-          <Button href="/services/salesforce" dark>Explore More</Button>
-        </article>
-        <article className="figma-services__sap-card core-card">
-          <h3>SAP</h3>
-          <div className="figma-services__sap-side"><h4>Consulting</h4><p>Enterprise-grade solutions designed to streamline complex business operations.</p></div>
-          <p className="figma-services__sap-copy">We support implementation, optimization, and integration of SAP systems to improve efficiency, visibility, and decision-making.</p>
-          <Button href="/contact" dark>Explore More</Button>
-        </article>
-      </section>
-
-      <section ref={workSubHeadingSectionRef} className="figma-services__work-subheading--desktop w-full flex justify-center min-h-[75vh] items-center overflow-hidden">
-        <h3
-          ref={workSubHeadingRef}
-          className="uppercase tracking-tight"
-          style={{
-            color: "#FFF",
-            textAlign: "center",
-            fontFamily: '"Inter", sans-serif',
-            fontSize: "clamp(2.25rem, 8.88vw, 128px)",
-            fontStyle: "normal",
-            fontWeight: 600,
-            lineHeight: "normal",
-            perspective: "1000px",
-          }}
+        <section
+          ref={workSubHeadingSectionRef}
+          className="figma-services__work-subheading--desktop w-full flex justify-center min-h-[75vh] items-center overflow-hidden"
         >
-          OUR PROCESS
-        </h3>
-      </section>
+          <h3
+            ref={workSubHeadingRef}
+            className="uppercase tracking-tight"
+            style={{
+              color: "#FFF",
+              textAlign: "center",
+              fontFamily: '"Inter", sans-serif',
+              fontSize: "clamp(2.25rem, 8.88vw, 128px)",
+              fontStyle: "normal",
+              fontWeight: 600,
+              lineHeight: "normal",
+              perspective: "1000px",
+            }}
+          >
+            OUR PROCESS
+          </h3>
+        </section>
 
-      <section ref={workListSectionRef} className="figma-services__work-list--desktop">
-        <ol>
-          <div ref={dotRef} className="figma-services__moving-dot" aria-hidden="true" />
-          <li><strong className="type-heading">Understand</strong><span /><p className="type-lead font-semibold">We begin by learning how your organization operates — technically and operationally.</p></li>
-          <li><strong className="type-heading">Design</strong><span /><p className="type-lead font-semibold">Solutions are architected with clarity, scalability, and long-term sustainability in mind.</p></li>
-          <li><strong className="type-heading">Implement</strong><span /><p className="type-lead font-semibold">We execute with structured delivery, ensuring stability and minimal disruption.</p></li>
-          <li><strong className="type-heading">Support</strong><span /><p className="type-lead font-semibold">Our engagement continues beyond implementation, ensuring systems evolve with your needs.</p></li>
-        </ol>
-      </section>
+        <section ref={workListSectionRef} className="figma-services__work-list--desktop">
+          <ol>
+            <div ref={dotRef} className="figma-services__moving-dot" aria-hidden="true" />
+            <li>
+              <strong className="type-heading">Understand</strong>
+              <span />
+              <p className="type-lead font-semibold">
+                We begin by learning how your organization operates — technically and operationally.
+              </p>
+            </li>
+            <li>
+              <strong className="type-heading">Design</strong>
+              <span />
+              <p className="type-lead font-semibold">
+                Solutions are architected with clarity, scalability, and long-term sustainability in
+                mind.
+              </p>
+            </li>
+            <li>
+              <strong className="type-heading">Implement</strong>
+              <span />
+              <p className="type-lead font-semibold">
+                We execute with structured delivery, ensuring stability and minimal disruption.
+              </p>
+            </li>
+            <li>
+              <strong className="type-heading">Support</strong>
+              <span />
+              <p className="type-lead font-semibold">
+                Our engagement continues beyond implementation, ensuring systems evolve with your
+                needs.
+              </p>
+            </li>
+          </ol>
+        </section>
 
-      <section ref={partnerSectionRef} className="figma-services__partner-grid figma-services__partner-grid--desktop">
-        <div className="relative flex items-center justify-center w-full">
-          <h2 className="type-title !text-[clamp(2.5rem,5vw,5.6rem)] lg:whitespace-nowrap mb-0 text-center">PLATFORMS &amp; PARTNERS</h2>
-          <Link to="/partnership" aria-label="View all platforms and partners" className="!absolute !right-[36px] !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105">
-              <span className="grid h-12 w-16 place-items-center text-[#8AF500] lg:h-14 lg:w-20"><ArrowLeft size={34} strokeWidth={2} /></span>
-              <span className="grid h-12 w-16 place-items-center bg-[#F3F3F3] text-[#8AF500] lg:h-14 lg:w-20"><ArrowRight size={34} strokeWidth={2} /></span>
+        <section
+          ref={partnerSectionRef}
+          className="figma-services__partner-grid figma-services__partner-grid--desktop"
+        >
+          <div className="relative flex items-center justify-center w-full">
+            <h2 className="type-title !text-[clamp(2.5rem,5vw,5.6rem)] lg:whitespace-nowrap mb-0 text-center">
+              PLATFORMS &amp; PARTNERS
+            </h2>
+            <Link
+              to="/partnership"
+              aria-label="View all platforms and partners"
+              className="!absolute !right-[36px] !top-1/2 !-translate-y-1/2 hidden md:flex overflow-hidden rounded-full border-2 border-[#8AF500] transition-transform hover:scale-105"
+            >
+              <span className="grid h-12 w-16 place-items-center text-[#8AF500] lg:h-14 lg:w-20">
+                <ArrowLeft size={34} strokeWidth={2} />
+              </span>
+              <span className="grid h-12 w-16 place-items-center bg-[#F3F3F3] text-[#8AF500] lg:h-14 lg:w-20">
+                <ArrowRight size={34} strokeWidth={2} />
+              </span>
             </Link>
-        </div>
-        <div ref={partnerCardRef} className="figma-services__partner-card">{partners.map((p) => <figure key={p.name}><img src={p.logoUrl} alt={p.name} /></figure>)}</div>
-      </section>
-
-      <section ref={quoteSectionRef} className="figma-services__quote--desktop w-full flex flex-col justify-center min-h-[75vh] items-center">
-        <h2 ref={quoteLine1Ref} className="type-statement whitespace-nowrap">Technology works best</h2>
-        <h2 ref={quoteLine2Ref} className="type-statement whitespace-nowrap">when it works quietly.</h2>
-      </section>
-
-      <section ref={supportSectionRef} className="figma-services__support--desktop w-full flex justify-center min-h-[75vh] items-center">
-        <p ref={supportTextRef} className="type-statement max-w-[1000px] text-center px-6 text-white">
-          Systems that support teams, decisions, and growth — without unnecessary complexity.
-        </p>
-      </section>
-
-      <section ref={ctaSectionRef} className="figma-services__cta--desktop w-full flex flex-col justify-center min-h-[75vh] items-center">
-        <div className="flex flex-col items-center justify-center text-center w-full max-w-7xl mx-auto px-4">
-          <h2 className="type-display sm:whitespace-nowrap">Let’s design the systems</h2>
-          <p className="type-lead font-semibold">behind your next phase of growth.</p>
-          <div className="flex justify-center items-center w-full">
-            <Button href="/contact">Start a conversation</Button>
           </div>
-        </div>
-      </section>
-    </div>
-    <Footer />
+          <div ref={partnerCardRef} className="figma-services__partner-card">
+            {partners.map((p) => (
+              <figure key={p.name}>
+                <img src={p.logoUrl} alt={p.name} />
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        <section
+          ref={quoteSectionRef}
+          className="figma-services__quote--desktop w-full flex flex-col justify-center min-h-[75vh] items-center"
+        >
+          <h2 ref={quoteLine1Ref} className="type-statement whitespace-nowrap">
+            Technology works best
+          </h2>
+          <h2 ref={quoteLine2Ref} className="type-statement whitespace-nowrap">
+            when it works quietly.
+          </h2>
+        </section>
+
+        <section
+          ref={supportSectionRef}
+          className="figma-services__support--desktop w-full flex justify-center min-h-[75vh] items-center"
+        >
+          <p
+            ref={supportTextRef}
+            className="type-statement max-w-[1000px] text-center px-6 text-white"
+          >
+            Systems that support teams, decisions, and growth — without unnecessary complexity.
+          </p>
+        </section>
+
+        <section
+          ref={ctaSectionRef}
+          className="figma-services__cta--desktop w-full flex flex-col justify-center min-h-[75vh] items-center"
+        >
+          <div className="flex flex-col items-center justify-center text-center w-full max-w-7xl mx-auto px-4">
+            <h2 className="type-display sm:whitespace-nowrap">Let’s design the systems</h2>
+            <p className="type-lead font-semibold">behind your next phase of growth.</p>
+            <div className="flex justify-center items-center w-full">
+              <Button href="/contact">Start a conversation</Button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <Footer />
     </>
   );
 }

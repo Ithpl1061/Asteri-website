@@ -1,21 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import {
-  Linkedin,
-  Instagram,
-  Youtube,
-  Mail,
-  Phone,
-  MapPin,
-  ArrowUp,
-} from "lucide-react";
+import { Linkedin, Instagram, Youtube, Mail, Phone, MapPin, ArrowUp } from "lucide-react";
 
 import { useEffect, useRef } from "react";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+import { gsap, ScrollTrigger, MotionPathPlugin } from "@/lib/gsap";
+import { site, socialHref } from "@/lib/site";
 
 export function Footer({ disableAnimations = false }: { disableAnimations?: boolean }) {
   const footerRef = useRef(null);
@@ -23,113 +12,114 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
   const scrollToHero = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-//================================== Footer Animation ==================================
-    useEffect(() => {
-      if (disableAnimations) return;
+  //================================== Footer Animation ==================================
+  useEffect(() => {
+    if (disableAnimations) return;
 
-      gsap.set(".footer-logo", {
-        y: 120,
-        opacity: 0,
-      });
+    gsap.set(".footer-logo", {
+      y: 120,
+      opacity: 0,
+    });
 
-      gsap.set(".footer-left a", {
-        y: 80,
-        opacity: 0,
-      });
+    gsap.set(".footer-left a", {
+      y: 80,
+      opacity: 0,
+    });
 
-      gsap.set(".footer-middle a", {
-        y: 80,
-        opacity: 0,
-      });
+    gsap.set(".footer-middle a", {
+      y: 80,
+      opacity: 0,
+    });
 
-      gsap.set(".footer-contact-item", {
-        x: 150,
-        opacity: 0,
-      });
+    gsap.set(".footer-contact-item", {
+      x: 150,
+      opacity: 0,
+    });
 
-      gsap.set(".footer-social", {
-        x: 150,
-        opacity: 0,
-      });
+    gsap.set(".footer-social", {
+      x: 150,
+      opacity: 0,
+    });
 
-      gsap.set(".asteri-footer-huge-logo", {
-        y: 100,
-      });
+    gsap.set(".asteri-footer-huge-logo", {
+      y: 100,
+    });
 
-      const footerTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".footer-section",
-          start: "top bottom",
-          end: "bottom bottom",
-          scrub: 1,
-          // pin : true,
-        },
-      });
+    const footerTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".footer-section",
+        start: "top bottom",
+        end: "bottom bottom",
+        scrub: 1,
+        // pin : true,
+      },
+    });
 
-      footerTl.to(".footer-logo", {
+    footerTl.to(".footer-logo", {
+      y: 0,
+      opacity: 1,
+    });
+
+    footerTl.to(
+      ".footer-left a",
+      {
         y: 0,
         opacity: 1,
-      });
+        stagger: 0.12,
+      },
+      0.1,
+    );
 
-      footerTl.to(
-        ".footer-left a",
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.12,
-        },
-        0.1
-      );
+    footerTl.to(
+      ".footer-middle a",
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.12,
+      },
+      0.3,
+    );
 
-      footerTl.to(
-        ".footer-middle a",
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.12,
-        },
-        0.3
-      );
+    footerTl.to(
+      ".footer-contact-item",
+      {
+        x: 0,
+        opacity: 1,
+        stagger: 0.15,
+      },
+      0.5,
+    );
 
-      footerTl.to(
-        ".footer-contact-item",
-        {
-          x: 0,
-          opacity: 1,
-          stagger: 0.15,
-        },
-        0.5
-      );
+    footerTl.to(
+      ".footer-social",
+      {
+        x: 0,
+        opacity: 1,
+      },
+      0.8,
+    );
 
-      footerTl.to(
-        ".footer-social",
-        {
-          x: 0,
-          opacity: 1,
-        },
-        0.8
-      );
+    footerTl.to(
+      ".asteri-footer-huge-logo",
+      {
+        y: 0,
+        duration: 2,
+      },
+      0,
+    );
 
-      footerTl.to(
-        ".asteri-footer-huge-logo",
-        {
-          y: 0,
-          duration: 2,
-        },
-        0
-      );
+    return () => {
+      footerTl.kill();
+      footerTl.scrollTrigger?.kill();
+    };
+  }, [disableAnimations]);
 
-      return () => {
-        footerTl.kill();
-        footerTl.scrollTrigger?.kill();
-      };
-    }, [disableAnimations]);
-
-//================================== Mian Code =========================================
+  //================================== Mian Code =========================================
   return (
-    <footer  
-    ref={footerRef} 
-    className="footer-section relative overflow-hidden border-t border-[#82E926]/20 bg-black text-white">
+    <footer
+      ref={footerRef}
+      className="footer-section relative overflow-hidden border-t border-[#82E926]/20 bg-black text-white"
+    >
       <div className="footer-content relative z-10 mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-12 pt-12">
         {/* TOP SECTION */}
         <div className="grid items-start gap-10 md:grid-cols-1 lg:grid-cols-[320px_1fr_420px]">
@@ -162,36 +152,22 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
                 Solutions
               </Link>
 
-              <Link
-                to="/industries"
-                className="transition hover:text-[#7ED957]"
-              >
+              <Link to="/industries" className="transition hover:text-[#7ED957]">
                 Industries
               </Link>
             </div>
 
             {/* RIGHT COLUMN */}
             <div className="footer-middle flex flex-col gap-4 text-[18px] sm:text-[20px] whitespace-nowrap">
-              <Link
-                to="/partnership"
-                className="transition hover:text-[#7ED957]"
-              >
+              <Link to="/partnership" className="transition hover:text-[#7ED957]">
                 Partnership
               </Link>
 
-              <Link
-                to="/case-studies"
-                className="transition hover:text-[#7ED957]"
-              >
+              <Link to="/case-studies" className="transition hover:text-[#7ED957]">
                 Case Studies
               </Link>
 
-
-
-              <Link
-                to="/products"
-                className="transition hover:text-[#7ED957]"
-              >
+              <Link to="/products" className="transition hover:text-[#7ED957]">
                 Products
               </Link>
 
@@ -199,10 +175,7 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
                 Blog
               </Link>
 
-              <Link
-                to="/contact"
-                className="transition hover:text-[#7ED957]"
-              >
+              <Link to="/contact" className="transition hover:text-[#7ED957]">
                 Contact
               </Link>
             </div>
@@ -217,9 +190,7 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
 
             <div className="footer-contact-item flex items-center gap-4 text-[20px]">
               <Phone className="h-6 w-6 shrink-0 text-[#7ED957]" />
-              <span className="sm:whitespace-nowrap">
-                +1 302 319 9898 / +91 982 342 0330
-              </span>
+              <span className="sm:whitespace-nowrap">+1 302 319 9898 / +91 982 342 0330</span>
             </div>
 
             <div className="footer-contact-item flex items-center gap-4 text-[20px]">
@@ -230,7 +201,7 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
             <div className="footer-social flex items-center justify-between pt-4 gap-4 flex-wrap">
               <div className="flex gap-6">
                 <a
-                  href="#"
+                  href={socialHref(site.social.linkedin)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -238,22 +209,17 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
                 </a>
 
                 <a
-                  href="#"
+                  href={socialHref(site.social.instagram)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <Instagram className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
                 </a>
 
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={socialHref(site.social.youtube)} target="_blank" rel="noopener noreferrer">
                   <Youtube className="h-8 w-8 cursor-pointer text-[#7ED957] transition hover:scale-110" />
                 </a>
               </div>
-
             </div>
           </div>
         </div>
@@ -276,7 +242,7 @@ export function Footer({ disableAnimations = false }: { disableAnimations?: bool
             <ArrowUp className="h-5 w-5 sm:h-6 sm:w-6 text-[#7ED957] transition-transform duration-300 group-hover:-translate-y-1 group-hover:text-black" />
           </button>
         </div>
-        </div>
+      </div>
     </footer>
   );
 }
