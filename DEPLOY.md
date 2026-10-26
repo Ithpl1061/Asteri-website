@@ -76,9 +76,11 @@ ALTER DATABASE asteri OWNER TO asteri_user;
 ```
 *(By default, PostgreSQL on Ubuntu is configured to only allow local socket connections, which is secure for our setup).*
 
-## 4. Migrate Data from Windows to VPS
+## 4. Copy the Initial Data from Windows to VPS (one-time)
 
-The seed scripts in `backend/seed*.js` delete and re-insert their tables and refuse to run when `NODE_ENV=production` (set `ALLOW_SEED_PROD=yes` only for a deliberate restore). Do not run them against production data. To copy a local database exactly (including manual pgAdmin entries), use a custom-format dump. A dump is a backup and restore tool, not the way production data is created.
+**Current state:** the production data is still copied once from the local database with a dump, because the seed scripts are not yet idempotent. They delete and re-insert their tables, so they are not safe to run against live data. They refuse to run when `NODE_ENV=production` unless `ALLOW_SEED_PROD=yes` is set, and that is only for a deliberate restore.
+
+**Target state:** migrations (`npx prisma migrate deploy`) plus one idempotent seed (upserts keyed on unique slugs) are the single source of truth. Until that is in place, treat the dump as the one-time copy, and use custom-format dumps (section 13) as backups only.
 
 **On your local Windows machine:**
 Export the database in custom format (`-Fc`). Open Command Prompt or PowerShell:
@@ -157,6 +159,8 @@ pm2 save
 pm2 startup
 ```
 Run the command that `pm2 startup` outputs to ensure PM2 starts automatically on server reboot.
+
+The frontend process reads page data from the API during server rendering. It uses `API_INTERNAL_URL` from `ecosystem.config.cjs` (`http://127.0.0.1:5000`). If the backend is down, the pages still load, but the content sections are empty.
 
 ## 9. Setup Nginx
 

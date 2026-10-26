@@ -22,11 +22,21 @@ jobs:
       - name: Type check
         run: npx tsc --noEmit
       - name: Lint
-        # Still reports formatting problems (see review item M2). Remove continue-on-error once fixed.
         run: npx eslint .
-        continue-on-error: true
+      - name: Every referenced asset exists in public/
+        run: node scripts/check-assets.mjs
       - name: Production build
         run: npx vite build
+      - name: Install Chromium for smoke tests
+        run: npx playwright install --with-deps chromium
+      - name: Start the built server
+        run: |
+          PORT=3000 HOST=127.0.0.1 node .output/server/index.mjs &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:3000/ > /dev/null && break; sleep 1; done
+      - name: Smoke tests (every route, contact and newsletter forms)
+        env:
+          BASE_URL: http://127.0.0.1:3000
+        run: npx playwright test e2e/smoke.spec.ts --project="Desktop Chrome"
 
   backend:
     runs-on: ubuntu-latest
@@ -42,6 +52,8 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
       - name: Syntax check
-        run: node --check index.js
+        run: |
+          node --check index.js
+          for f in src/*.js src/*/*.js; do node --check "$f"; done
       - name: Prisma client generates
         run: npx prisma generate
