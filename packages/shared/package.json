@@ -1,0 +1,10 @@
+{
+  "name": "@asteri/shared",
+  "private": true,
+  "type": "module",
+  "main": "./src/schemas.js",
+  "types": "./src/schemas.d.ts",
+  "dependencies": {
+    "zod": "^4.6.7"
+  }
+}
