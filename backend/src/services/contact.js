@@ -1,5 +1,6 @@
 const prisma = require('../lib/prisma');
 const { notifyNewContact } = require('./mailer');
+const logger = require('../lib/logger');
 
 // Stores a contact message and starts the notification email without waiting for it
 async function createContactMessage({ name, email, message }) {
@@ -7,7 +8,7 @@ async function createContactMessage({ name, email, message }) {
     data: { name, email, message }
   });
   notifyNewContact(newMsg).catch((error) =>
-    console.error('Contact notification email failed:', error)
+    logger.error({ err: error, contactId: newMsg.id }, 'Contact notification email failed')
   );
   return newMsg;
 }

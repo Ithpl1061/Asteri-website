@@ -12,7 +12,7 @@ function errorHandler(error, req, res, next) {
   if (error.type === 'entity.too.large') {
     return res.status(413).json({ error: 'Request too large' });
   }
-  console.error('Unhandled error:', error);
+  req.log.error({ err: error }, 'Unhandled error');
   res.status(500).json({ error: 'Internal server error' });
 }
 

@@ -14,7 +14,7 @@ router.get('/api/health', async (req, res) => {
     });
   } catch (error) {
     // Log the real error on the server; never send it to the public
-    console.error('Health check failed:', error);
+    req.log.error({ err: error }, 'Health check failed');
     res.status(500).json({
       status: 'error',
       database: 'disconnected'

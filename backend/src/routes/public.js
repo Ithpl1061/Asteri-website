@@ -18,7 +18,7 @@ router.post('/api/contact', publicPostLimiter, requireCaptcha, validate(contactS
     const newMsg = await createContactMessage({ name, email, message });
     res.status(201).json({ success: true, data: newMsg });
   } catch (error) {
-    console.error('Contact submit failed:', error);
+    req.log.error({ err: error }, 'Contact submit failed');
     res.status(500).json({ error: 'Failed to submit contact message' });
   }
 });
@@ -31,7 +31,7 @@ router.post('/api/newsletter', publicPostLimiter, requireCaptcha, validate(newsl
     const subscriber = await subscribe(req.validated.email);
     res.status(201).json(subscriber);
   } catch (error) {
-    console.error('Newsletter subscribe failed:', error);
+    req.log.error({ err: error }, 'Newsletter subscribe failed');
     res.status(500).json({ error: 'Failed to subscribe' });
   }
 });

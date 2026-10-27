@@ -13,7 +13,7 @@ router.get('/api/admin/contact-messages', requireAdmin, async (req, res) => {
     });
     res.set('Cache-Control', 'no-store').json(messages);
   } catch (error) {
-    console.error('Admin contact list failed:', error);
+    req.log.error({ err: error }, 'Admin contact list failed');
     res.status(500).json({ error: 'Failed to load contact messages' });
   }
 });

@@ -22,7 +22,7 @@ for (const [path, query, errorMessage] of ENDPOINTS) {
     try {
       res.set('Cache-Control', 'public, max-age=300').json(await query());
     } catch (error) {
-      console.error(`${path} failed:`, error);
+      req.log.error({ err: error, path }, 'Content query failed');
       res.status(500).json({ error: errorMessage });
     }
   });

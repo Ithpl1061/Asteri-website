@@ -23,7 +23,7 @@ async function requireCaptcha(req, res, next) {
     }
     next();
   } catch (error) {
-    console.error('Turnstile verification failed:', error);
+    req.log.error({ err: error }, 'Turnstile verification failed');
     res.status(503).json({ error: 'The security check is unavailable right now. Please try again.' });
   }
 }
