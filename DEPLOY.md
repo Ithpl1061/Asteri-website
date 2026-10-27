@@ -78,9 +78,9 @@ ALTER DATABASE asteri OWNER TO asteri_user;
 
 ## 4. Copy the Initial Data from Windows to VPS (one-time)
 
-**Current state:** the production data is still copied once from the local database with a dump, because the seed scripts are not yet idempotent. They delete and re-insert their tables, so they are not safe to run against live data. They refuse to run when `NODE_ENV=production` unless `ALLOW_SEED_PROD=yes` is set, and that is only for a deliberate restore.
+**Current state:** the seed is one idempotent script, `backend/prisma/seed.js` (run with `npm run db:seed` in `backend/`). It only upserts and never deletes rows, so it can run more than once. Rows are matched by slug or by a natural key (name or title). It refuses to run when `NODE_ENV=production` unless `ALLOW_SEED_PROD=yes` is set.
 
-**Target state:** migrations (`npx prisma migrate deploy`) plus one idempotent seed (upserts keyed on unique slugs) are the single source of truth. Until that is in place, treat the dump as the one-time copy, and use custom-format dumps (section 13) as backups only.
+**Target state:** migrations (`npx prisma migrate deploy`) followed by `npm run db:seed` are the single source of truth. The one-time copy of the local data still uses the dump below; use custom-format dumps (section 13) as backups.
 
 **On your local Windows machine:**
 Export the database in custom format (`-Fc`). Open Command Prompt or PowerShell:
