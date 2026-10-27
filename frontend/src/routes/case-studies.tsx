@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { caseStudySchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { loadApi } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { PageShell } from "@/components/PageShell";
 import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -11,8 +11,13 @@ import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/case-studies")({
   // Case studies are loaded on the server, so they are in the first HTML
-  loader: async () => ({
-    caseStudies: await loadApi("/api/case-studies", z.array(caseStudySchema), []),
+  loader: async ({ context }) => ({
+    caseStudies: await ensureApi(
+      context.queryClient,
+      "/api/case-studies",
+      z.array(caseStudySchema),
+      [],
+    ),
   }),
   head: () => ({
     meta: [

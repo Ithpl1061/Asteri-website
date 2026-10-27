@@ -123,7 +123,7 @@ function ContactInformation() {
           <b>Phone:</b>
           <span>
             <img
-              src="https://flagcdn.com/w40/in.png"
+              src="/flags/in.svg"
               alt="India"
               style={{
                 display: "inline-block",
@@ -137,7 +137,7 @@ function ContactInformation() {
             India: +91 20 35609326
             <br />
             <img
-              src="https://flagcdn.com/w40/ca.png"
+              src="/flags/ca.svg"
               alt="Canada"
               style={{
                 display: "inline-block",

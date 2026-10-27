@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { solutionOutcomeSchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { loadApi } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -12,8 +12,13 @@ import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/solutions")({
   // Outcomes are loaded on the server, so they are in the first HTML
-  loader: async () => ({
-    outcomes: await loadApi("/api/solutions-outcomes", z.array(solutionOutcomeSchema), []),
+  loader: async ({ context }) => ({
+    outcomes: await ensureApi(
+      context.queryClient,
+      "/api/solutions-outcomes",
+      z.array(solutionOutcomeSchema),
+      [],
+    ),
   }),
   head: () => ({
     meta: [

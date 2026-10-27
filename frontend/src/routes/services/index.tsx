@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { partnerSchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { loadApi } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -14,8 +14,8 @@ import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/services/")({
   // Partners are loaded on the server, so they are in the first HTML
-  loader: async () => ({
-    partners: await loadApi("/api/partners", z.array(partnerSchema), []),
+  loader: async ({ context }) => ({
+    partners: await ensureApi(context.queryClient, "/api/partners", z.array(partnerSchema), []),
   }),
   head: () => ({
     meta: [

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { industryDetailSchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { loadApi } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { useRef, useEffect, useState } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
@@ -35,8 +35,13 @@ import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/industries")({
   // Industry details are loaded on the server, so they are in the first HTML
-  loader: async () => ({
-    details: await loadApi("/api/industry-details", z.array(industryDetailSchema), []),
+  loader: async ({ context }) => ({
+    details: await ensureApi(
+      context.queryClient,
+      "/api/industry-details",
+      z.array(industryDetailSchema),
+      [],
+    ),
   }),
   head: () => ({
     meta: [

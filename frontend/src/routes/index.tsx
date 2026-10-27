@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { serviceSchema, industrySchema, partnerSchema } from "@/lib/schemas";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { loadApi } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { gsap, ScrollTrigger, MotionPathPlugin } from "@/lib/gsap";
 import {
@@ -34,11 +34,11 @@ import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/")({
   // Data is loaded on the server, so it is in the first HTML
-  loader: async () => {
+  loader: async ({ context }) => {
     const [services, industries, partners] = await Promise.all([
-      loadApi("/api/services", z.array(serviceSchema), []),
-      loadApi("/api/industries", z.array(industrySchema), []),
-      loadApi("/api/partners", z.array(partnerSchema), []),
+      ensureApi(context.queryClient, "/api/services", z.array(serviceSchema), []),
+      ensureApi(context.queryClient, "/api/industries", z.array(industrySchema), []),
+      ensureApi(context.queryClient, "/api/partners", z.array(partnerSchema), []),
     ]);
     return { services, industries, partners };
   },

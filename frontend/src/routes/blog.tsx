@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { blogPostSchema } from "@/lib/schemas";
 import { createFileRoute } from "@tanstack/react-router";
-import { apiUrl, loadApi } from "@/lib/api";
+import { apiUrl } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { PageShell } from "@/components/PageShell";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
@@ -25,10 +26,13 @@ type RecentPost = {
   categoryAfter?: boolean;
 };
 
+// Recent posts shown per Load More click.
+const RECENT_PAGE_SIZE = 6;
+
 export const Route = createFileRoute("/blog")({
   // Posts are loaded on the server, so they are in the first HTML
-  loader: async () => ({
-    posts: await loadApi("/api/blog/posts", z.array(blogPostSchema), []),
+  loader: async ({ context }) => ({
+    posts: await ensureApi(context.queryClient, "/api/blog/posts", z.array(blogPostSchema), []),
   }),
   head: () => ({
     meta: [
@@ -97,6 +101,10 @@ function Blog() {
   const posts = Route.useLoaderData().posts;
   const [featuredPosts] = useState<BlogPost[]>(() => posts.filter((p) => p.isFeatured));
   const [recentPosts] = useState<BlogPost[]>(() => posts.filter((p) => !p.isFeatured));
+  // Load More reveals the next page of recent posts. The button stays in the DOM (hidden when nothing
+  // is left) so the scroll animation below keeps the same timing.
+  const [visibleRecentCount, setVisibleRecentCount] = useState(RECENT_PAGE_SIZE);
+  const hasMoreRecent = recentPosts.length > visibleRecentCount;
 
   const positions = [
     "recent-ai",
@@ -356,7 +364,7 @@ function Blog() {
 
         <section className="blog-recent-cards min-h-screen h-screen flex flex-col items-center justify-center relative overflow-hidden w-full">
           <div className="recent-layout">
-            {recentPosts.map((post, index) => (
+            {recentPosts.slice(0, visibleRecentCount).map((post, index) => (
               <RecentCard
                 key={post.title}
                 category={post.category?.name || "Topic"}
@@ -367,7 +375,12 @@ function Blog() {
               />
             ))}
           </div>
-          <button type="button" className="blog-load-more">
+          <button
+            type="button"
+            className="blog-load-more"
+            hidden={!hasMoreRecent}
+            onClick={() => setVisibleRecentCount((count) => count + RECENT_PAGE_SIZE)}
+          >
             Load More <img src="/figma/blog/down-button.png" alt="" aria-hidden />
           </button>
         </section>

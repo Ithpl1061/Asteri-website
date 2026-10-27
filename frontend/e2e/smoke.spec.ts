@@ -130,6 +130,31 @@ test("newsletter shows an error when the API fails, and success when it accepts"
   await expect(page.getByText("You're subscribed!")).toBeVisible();
 });
 
+test("newsletter shows success for a repeat signup of the same email", async ({ page }) => {
+  // The API upserts, so a repeat email is accepted (201), not rejected with a duplicate error.
+  await page.route("**/api/newsletter", (route) =>
+    route.fulfill({
+      status: 201,
+      contentType: "application/json",
+      body: JSON.stringify({ id: 1, email: "reader@example.com" }),
+    }),
+  );
+  await page.goto("/blog");
+  await page.waitForLoadState("networkidle");
+
+  const form = page.locator(".blog-subscribe-form");
+  const email = form.getByRole("textbox", { name: "Email address" });
+  await email.fill("reader@example.com");
+  await form.getByRole("button", { name: "Subscribe" }).click();
+  await expect(page.getByText("You're subscribed!")).toBeVisible();
+
+  await page.waitForTimeout(4600); // the success message clears after 4.5s
+  await email.fill("reader@example.com");
+  await form.getByRole("button", { name: "Subscribe" }).click();
+  await expect(page.getByText("You're subscribed!")).toBeVisible();
+  await expect(page.getByRole("alert")).toHaveCount(0);
+});
+
 test("admin contact page is not indexed and shows an error for a wrong token", async ({ page }) => {
   await page.route("**/api/admin/contact-messages", (route) =>
     route.fulfill({

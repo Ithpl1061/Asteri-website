@@ -9,57 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SolutionsRouteImport } from './routes/solutions'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as PartnershipRouteImport } from './routes/partnership'
-import { Route as IndustriesRouteImport } from './routes/industries'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CaseStudiesRouteImport } from './routes/case-studies'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesIndexRouteImport } from './routes/services/index'
-import { Route as ProductsIndexRouteImport } from './routes/products/index'
-import { Route as ServicesSoftwareDevelopmentRouteImport } from './routes/services/software-development'
-import { Route as ServicesSapConsultingRouteImport } from './routes/services/sap-consulting'
-import { Route as ServicesSalesforceRouteImport } from './routes/services/salesforce'
-import { Route as ServicesDataScienceRouteImport } from './routes/services/data-science'
-import { Route as ServicesCloudSolutionsRouteImport } from './routes/services/cloud-solutions'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as CaseStudiesRouteImport } from './routes/case-studies'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as PartnershipRouteImport } from './routes/partnership'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as AdminContactRouteImport } from './routes/admin/contact'
+import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as ServicesIndexRouteImport } from './routes/services/index'
+import { Route as ServicesCloudSolutionsRouteImport } from './routes/services/cloud-solutions'
+import { Route as ServicesDataScienceRouteImport } from './routes/services/data-science'
+import { Route as ServicesSalesforceRouteImport } from './routes/services/salesforce'
+import { Route as ServicesSapConsultingRouteImport } from './routes/services/sap-consulting'
+import { Route as ServicesSoftwareDevelopmentRouteImport } from './routes/services/software-development'
 
-const SolutionsRoute = SolutionsRouteImport.update({
-  id: '/solutions',
-  path: '/solutions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PartnershipRoute = PartnershipRouteImport.update({
-  id: '/partnership',
-  path: '/partnership',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndustriesRoute = IndustriesRouteImport.update({
-  id: '/industries',
-  path: '/industries',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaseStudiesRoute = CaseStudiesRouteImport.update({
-  id: '/case-studies',
-  path: '/case-studies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -67,9 +37,49 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesRoute = CaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesRoute = IndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnershipRoute = PartnershipRouteImport.update({
+  id: '/partnership',
+  path: '/partnership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolutionsRoute = SolutionsRouteImport.update({
+  id: '/solutions',
+  path: '/solutions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminContactRoute = AdminContactRouteImport.update({
+  id: '/admin/contact',
+  path: '/admin/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
@@ -77,25 +87,9 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ServicesRoute,
 } as any)
-const ProductsIndexRoute = ProductsIndexRouteImport.update({
-  id: '/products/',
-  path: '/products/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesSoftwareDevelopmentRoute =
-  ServicesSoftwareDevelopmentRouteImport.update({
-    id: '/software-development',
-    path: '/software-development',
-    getParentRoute: () => ServicesRoute,
-  } as any)
-const ServicesSapConsultingRoute = ServicesSapConsultingRouteImport.update({
-  id: '/sap-consulting',
-  path: '/sap-consulting',
-  getParentRoute: () => ServicesRoute,
-} as any)
-const ServicesSalesforceRoute = ServicesSalesforceRouteImport.update({
-  id: '/salesforce',
-  path: '/salesforce',
+const ServicesCloudSolutionsRoute = ServicesCloudSolutionsRouteImport.update({
+  id: '/cloud-solutions',
+  path: '/cloud-solutions',
   getParentRoute: () => ServicesRoute,
 } as any)
 const ServicesDataScienceRoute = ServicesDataScienceRouteImport.update({
@@ -103,16 +97,22 @@ const ServicesDataScienceRoute = ServicesDataScienceRouteImport.update({
   path: '/data-science',
   getParentRoute: () => ServicesRoute,
 } as any)
-const ServicesCloudSolutionsRoute = ServicesCloudSolutionsRouteImport.update({
-  id: '/cloud-solutions',
-  path: '/cloud-solutions',
+const ServicesSalesforceRoute = ServicesSalesforceRouteImport.update({
+  id: '/salesforce',
+  path: '/salesforce',
   getParentRoute: () => ServicesRoute,
 } as any)
-const AdminContactRoute = AdminContactRouteImport.update({
-  id: '/admin/contact',
-  path: '/admin/contact',
-  getParentRoute: () => rootRouteImport,
+const ServicesSapConsultingRoute = ServicesSapConsultingRouteImport.update({
+  id: '/sap-consulting',
+  path: '/sap-consulting',
+  getParentRoute: () => ServicesRoute,
 } as any)
+const ServicesSoftwareDevelopmentRoute =
+  ServicesSoftwareDevelopmentRouteImport.update({
+    id: '/software-development',
+    path: '/software-development',
+    getParentRoute: () => ServicesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -246,53 +246,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/solutions': {
-      id: '/solutions'
-      path: '/solutions'
-      fullPath: '/solutions'
-      preLoaderRoute: typeof SolutionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/partnership': {
-      id: '/partnership'
-      path: '/partnership'
-      fullPath: '/partnership'
-      preLoaderRoute: typeof PartnershipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/industries': {
-      id: '/industries'
-      path: '/industries'
-      fullPath: '/industries'
-      preLoaderRoute: typeof IndustriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/case-studies': {
-      id: '/case-studies'
-      path: '/case-studies'
-      fullPath: '/case-studies'
-      preLoaderRoute: typeof CaseStudiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -302,11 +260,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies': {
+      id: '/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof CaseStudiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries': {
+      id: '/industries'
+      path: '/industries'
+      fullPath: '/industries'
+      preLoaderRoute: typeof IndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partnership': {
+      id: '/partnership'
+      path: '/partnership'
+      fullPath: '/partnership'
+      preLoaderRoute: typeof PartnershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions': {
+      id: '/solutions'
+      path: '/solutions'
+      fullPath: '/solutions'
+      preLoaderRoute: typeof SolutionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/contact': {
+      id: '/admin/contact'
+      path: '/admin/contact'
+      fullPath: '/admin/contact'
+      preLoaderRoute: typeof AdminContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/': {
@@ -316,32 +330,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof ServicesRoute
     }
-    '/products/': {
-      id: '/products/'
-      path: '/products'
-      fullPath: '/products/'
-      preLoaderRoute: typeof ProductsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/software-development': {
-      id: '/services/software-development'
-      path: '/software-development'
-      fullPath: '/services/software-development'
-      preLoaderRoute: typeof ServicesSoftwareDevelopmentRouteImport
-      parentRoute: typeof ServicesRoute
-    }
-    '/services/sap-consulting': {
-      id: '/services/sap-consulting'
-      path: '/sap-consulting'
-      fullPath: '/services/sap-consulting'
-      preLoaderRoute: typeof ServicesSapConsultingRouteImport
-      parentRoute: typeof ServicesRoute
-    }
-    '/services/salesforce': {
-      id: '/services/salesforce'
-      path: '/salesforce'
-      fullPath: '/services/salesforce'
-      preLoaderRoute: typeof ServicesSalesforceRouteImport
+    '/services/cloud-solutions': {
+      id: '/services/cloud-solutions'
+      path: '/cloud-solutions'
+      fullPath: '/services/cloud-solutions'
+      preLoaderRoute: typeof ServicesCloudSolutionsRouteImport
       parentRoute: typeof ServicesRoute
     }
     '/services/data-science': {
@@ -351,19 +344,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesDataScienceRouteImport
       parentRoute: typeof ServicesRoute
     }
-    '/services/cloud-solutions': {
-      id: '/services/cloud-solutions'
-      path: '/cloud-solutions'
-      fullPath: '/services/cloud-solutions'
-      preLoaderRoute: typeof ServicesCloudSolutionsRouteImport
+    '/services/salesforce': {
+      id: '/services/salesforce'
+      path: '/salesforce'
+      fullPath: '/services/salesforce'
+      preLoaderRoute: typeof ServicesSalesforceRouteImport
       parentRoute: typeof ServicesRoute
     }
-    '/admin/contact': {
-      id: '/admin/contact'
-      path: '/admin/contact'
-      fullPath: '/admin/contact'
-      preLoaderRoute: typeof AdminContactRouteImport
-      parentRoute: typeof rootRouteImport
+    '/services/sap-consulting': {
+      id: '/services/sap-consulting'
+      path: '/sap-consulting'
+      fullPath: '/services/sap-consulting'
+      preLoaderRoute: typeof ServicesSapConsultingRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/software-development': {
+      id: '/services/software-development'
+      path: '/software-development'
+      fullPath: '/services/software-development'
+      preLoaderRoute: typeof ServicesSoftwareDevelopmentRouteImport
+      parentRoute: typeof ServicesRoute
     }
   }
 }

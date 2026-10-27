@@ -15,23 +15,16 @@ export async function checkedJson<T>(res: Response): Promise<T> {
   return (await res.json()) as T;
 }
 
-// For route loaders: the response is checked against a zod schema. A failed request or a response
-// that does not match returns the fallback instead of failing the whole page; the problem is logged.
-export async function loadApi<S extends z.ZodTypeAny>(
+// Fetches one endpoint and checks the response against a zod schema. Throws on a failed request or
+// a response that does not match, so TanStack Query does not cache bad data. Used by lib/queries.ts.
+export async function fetchApi<S extends z.ZodTypeAny>(
   path: string,
   schema: S,
-  fallback: z.infer<S>,
 ): Promise<z.infer<S>> {
-  try {
-    const res = await fetch(apiUrl(path));
-    const parsed = schema.safeParse(await checkedJson<unknown>(res));
-    if (!parsed.success) {
-      console.error(`Unexpected response from ${path}`, parsed.error.flatten());
-      return fallback;
-    }
-    return parsed.data;
-  } catch (error) {
-    console.error(`Could not load ${path}`, error);
-    return fallback;
+  const res = await fetch(apiUrl(path));
+  const parsed = schema.safeParse(await checkedJson<unknown>(res));
+  if (!parsed.success) {
+    throw new Error(`Unexpected response from ${path}: ${parsed.error.message}`);
   }
+  return parsed.data;
 }

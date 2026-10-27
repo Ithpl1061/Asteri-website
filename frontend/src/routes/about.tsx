@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { teamMemberSchema } from "@/lib/schemas";
 import { createFileRoute } from "@tanstack/react-router";
-import { loadApi } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { gsap, ScrollTrigger, MotionPathPlugin } from "@/lib/gsap";
 import { ArrowUpRight, Search, Users, RotateCw, HeartHandshake } from "lucide-react";
@@ -14,8 +14,8 @@ import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/about")({
   // Data is loaded on the server, so it is in the first HTML
-  loader: async () => ({
-    team: await loadApi("/api/team", z.array(teamMemberSchema), []),
+  loader: async ({ context }) => ({
+    team: await ensureApi(context.queryClient, "/api/team", z.array(teamMemberSchema), []),
   }),
   head: () => ({
     meta: [

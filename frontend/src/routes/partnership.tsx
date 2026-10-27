@@ -2,7 +2,7 @@ import { z } from "zod";
 import { partnershipPrincipleSchema, partnerEcosystemSchema } from "@/lib/schemas";
 import { useRef, useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { loadApi } from "@/lib/api";
+import { ensureApi } from "@/lib/queries";
 import { PageShell } from "@/components/PageShell";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
@@ -12,10 +12,15 @@ import { canPin } from "@/lib/motion";
 
 export const Route = createFileRoute("/partnership")({
   // Partnership content is loaded on the server, so it is in the first HTML
-  loader: async () => {
+  loader: async ({ context }) => {
     const [partnerCards, ecosystem] = await Promise.all([
-      loadApi("/api/partnership-principles", z.array(partnershipPrincipleSchema), []),
-      loadApi("/api/partner-ecosystem", z.array(partnerEcosystemSchema), []),
+      ensureApi(
+        context.queryClient,
+        "/api/partnership-principles",
+        z.array(partnershipPrincipleSchema),
+        [],
+      ),
+      ensureApi(context.queryClient, "/api/partner-ecosystem", z.array(partnerEcosystemSchema), []),
     ]);
     return { partnerCards, ecosystem };
   },
