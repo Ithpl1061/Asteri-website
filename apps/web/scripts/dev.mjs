@@ -16,11 +16,25 @@ const portInUse = (port) =>
     s.once("error", () => resolve(false));
   });
 
+// Waits until something accepts connections on the port, or gives up after `ms`.
+const waitForPort = async (port, ms) => {
+  const until = Date.now() + ms;
+  while (Date.now() < until) {
+    if (await portInUse(port)) return true;
+    await new Promise((r) => setTimeout(r, 300));
+  }
+  return false;
+};
+
 if (await portInUse(5000)) {
   console.log("[dev] Backend already running on :5000, reusing it.");
 } else {
   console.log("[dev] Starting backend on :5000...");
   children.push(spawn("npm run dev", { cwd: backendDir, stdio: "inherit", shell: true }));
+  // Start Vite only once the backend is listening, so the check above is never raced.
+  if (!(await waitForPort(5000, 20000))) {
+    console.log("[dev] Backend did not start on :5000 within 20s; check the api terminal.");
+  }
 }
 
 children.push(spawn("npx vite dev", { cwd: root, stdio: "inherit", shell: true }));
