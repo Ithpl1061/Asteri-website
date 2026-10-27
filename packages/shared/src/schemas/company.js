@@ -35,6 +35,27 @@ export const partnerEcosystemSchema = z.object({
   ...timestamps,
 });
 
+// Products page. Cards and slide labels are read from these rows (matched by slug).
+export const productSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  name: z.string(),
+  type: z.string(),
+  description: z.string(),
+  logoUrl: z.string(),
+  sortOrder: z.number(),
+  isPublished: z.boolean(),
+  ...timestamps,
+});
+
+export const productEnablerSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  iconName: z.string(),
+  description: z.string(),
+  ...timestamps,
+});
+
 export const solutionOutcomeSchema = z.object({
   id: z.number(),
   title: z.string(),

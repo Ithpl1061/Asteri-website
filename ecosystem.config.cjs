@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "asteri-frontend",
-      cwd: "./frontend",
+      cwd: "./apps/web",
       script: "./.output/server/index.mjs",
       env: {
         PORT: 3000,
@@ -14,7 +14,7 @@ module.exports = {
     },
     {
       name: "asteri-backend",
-      cwd: "./backend",
+      cwd: "./apps/api",
       script: "./index.js",
       env: {
         NODE_ENV: "production"

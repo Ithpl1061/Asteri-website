@@ -1,0 +1,8 @@
+{
+  "name": "asteri",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

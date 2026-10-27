@@ -21,6 +21,11 @@ export type PartnershipPrinciple = Timestamps & { id: number; title: string; des
 export type PartnerEcosystem = Timestamps & {
   id: number; partnerName: string; subtitle: string; description: string; logoUrl: string;
 };
+export type Product = Timestamps & {
+  id: number; slug: string; name: string; type: string; description: string; logoUrl: string;
+  sortOrder: number; isPublished: boolean;
+};
+export type ProductEnabler = Timestamps & { id: number; title: string; iconName: string; description: string };
 export type SolutionOutcome = Timestamps & { id: number; title: string; description: string };
 export type BlogPost = Timestamps & {
   id: number; categoryId: number; title: string; content: string; imageUrl: string;
@@ -36,6 +41,8 @@ export declare const teamMemberSchema: ZodType<TeamMember>;
 export declare const partnerSchema: ZodType<Partner>;
 export declare const partnershipPrincipleSchema: ZodType<PartnershipPrinciple>;
 export declare const partnerEcosystemSchema: ZodType<PartnerEcosystem>;
+export declare const productSchema: ZodType<Product>;
+export declare const productEnablerSchema: ZodType<ProductEnabler>;
 export declare const solutionOutcomeSchema: ZodType<SolutionOutcome>;
 export declare const blogPostSchema: ZodType<BlogPost>;
 export declare const contactSchema: ZodType<{ name: string; email: string; message: string; website?: string | null; captchaToken?: string | null }>;

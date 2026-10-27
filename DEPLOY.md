@@ -78,7 +78,7 @@ ALTER DATABASE asteri OWNER TO asteri_user;
 
 ## 4. Copy the Initial Data from Windows to VPS (one-time)
 
-**Current state:** the seed is one idempotent script, `backend/prisma/seed.js` (run with `npm run db:seed` in `backend/`). It only upserts and never deletes rows, so it can run more than once. Rows are matched by slug or by a natural key (name or title). It refuses to run when `NODE_ENV=production` unless `ALLOW_SEED_PROD=yes` is set.
+**Current state:** the seed is one idempotent script, `apps/api/prisma/seed.js` (run with `npm run db:seed` in `apps/api/`). It only upserts and never deletes rows, so it can run more than once. Rows are matched by slug or by a natural key (name or title). It refuses to run when `NODE_ENV=production` unless `ALLOW_SEED_PROD=yes` is set.
 
 **Target state:** migrations (`npx prisma migrate deploy`) followed by `npm run db:seed` are the single source of truth. The one-time copy of the local data still uses the dump below; use custom-format dumps (section 13) as backups.
 
@@ -121,8 +121,9 @@ cd ~/asteri-web
 
 Install dependencies, set up the environment, and verify the database:
 ```bash
-cd ~/asteri-web/backend
-npm ci
+cd ~/asteri-web
+npm ci            # installs every workspace (apps/web, apps/api, packages/shared)
+cd apps/api
 cp .env.production.example .env
 ```
 Edit `.env` (`nano .env`) and update `CORS_ORIGIN` to your real domain and `DATABASE_URL` with your strong password.
@@ -140,8 +141,7 @@ npx prisma migrate status
 Install dependencies and build.
 **CRITICAL:** Ensure `VITE_API_URL` is empty during the build so that the frontend defaults to relative `/api` paths.
 ```bash
-cd ~/asteri-web/frontend
-npm ci
+cd ~/asteri-web/apps/web
 VITE_API_URL= npm run build
 ```
 Verify there are no hardcoded localhost strings in the final output:
@@ -249,14 +249,12 @@ cd ~/asteri-web
 git pull origin master
 
 # If backend changed:
-cd backend
-npm ci
+cd apps/api
 npx prisma generate
 npx prisma migrate deploy # Only if you have new migrations
 
 # If frontend changed:
-cd ../frontend
-npm ci
+cd ../web
 VITE_API_URL= npm run build
 
 # Restart apps
@@ -279,7 +277,7 @@ sudo tail -f /var/log/nginx/error.log
 **Common "502 Bad Gateway" Fixes:**
 - Ensure both apps are `online` in `pm2 status`.
 - Check if the port matches (Backend must be `5000`, Frontend must be `3000`).
-- Ensure `.env` is correctly configured in the `backend` folder.
+- Ensure `.env` is correctly configured in the `apps/api` folder.
 
 ## 16. Optional: Log Management
 

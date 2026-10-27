@@ -1,0 +1,23 @@
+name: Deploy
+
+# Manual only. Nothing deploys on push. Start it from the Actions tab (Run workflow).
+# The "production" environment should require a reviewer, so a second person approves each deploy.
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy on the VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
+          script_stop: true
+          script: |
+            cd "${{ secrets.VPS_REPO_DIR }}"
+            bash deploy/deploy.sh

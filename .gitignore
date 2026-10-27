@@ -20,11 +20,11 @@ session_memory.md
 edits.json
 .output/
 
-# Local screenshots and capture folders (NOT site assets; assets live in frontend/public/)
-frontend/*.png
-frontend/frames*/
-frontend/services-icons-check.png
-frontend/asteri-about-update/
+# Local screenshots and capture folders (NOT site assets; assets live in apps/web/public/)
+apps/web/*.png
+apps/web/frames*/
+apps/web/services-icons-check.png
+apps/web/asteri-about-update/
 
 playwright-report/
 test-results/

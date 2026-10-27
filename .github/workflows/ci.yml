@@ -8,52 +8,57 @@ on:
 jobs:
   frontend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: frontend/package-lock.json
-      - run: npm ci
+          cache-dependency-path: package-lock.json
+      - name: Install (all workspaces)
+        run: npm ci
       - name: Type check
+        working-directory: apps/web
         run: npx tsc --noEmit
       - name: Lint
+        working-directory: apps/web
         run: npx eslint .
       - name: Every referenced asset exists in public/
+        working-directory: apps/web
         run: node scripts/check-assets.mjs
       - name: Production build
+        working-directory: apps/web
         run: npx vite build
       - name: Install Chromium for smoke tests
+        working-directory: apps/web
         run: npx playwright install --with-deps chromium
       - name: Start the built server
+        working-directory: apps/web
         run: |
           PORT=3000 HOST=127.0.0.1 node .output/server/index.mjs &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:3000/ > /dev/null && break; sleep 1; done
       - name: Smoke tests (every route, contact and newsletter forms)
+        working-directory: apps/web
         env:
           BASE_URL: http://127.0.0.1:3000
         run: npx playwright test e2e/smoke.spec.ts --project="Desktop Chrome"
 
   backend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: backend/package-lock.json
-      - run: npm ci
+          cache-dependency-path: package-lock.json
+      - name: Install (all workspaces)
+        run: npm ci
       - name: Syntax check
+        working-directory: apps/api
         run: |
           node --check index.js
           for f in src/*.js src/*/*.js; do node --check "$f"; done
       - name: Prisma client generates
+        working-directory: apps/api
         run: npx prisma generate
